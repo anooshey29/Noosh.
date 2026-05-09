@@ -1,0 +1,1402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Noosh. — small kitchen, sweet things</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&family=Caveat:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #f8e8d2;
+    --cream-deep: #f4dcc0;
+    --paper: #fbf2e0;
+    --peach: #f4c8b6;
+    --peach-deep: #ecae9a;
+    --strawberry: #e8a8a2;
+    --cherry: #c4615a;
+    --sage: #a4b894;
+    --sage-deep: #87a07a;
+    --brown: #8b6f4d;
+    --brown-deep: #5c4530;
+    --cocoa: #4a2e1a;
+    --ink: #3d2d1c;
+    --line: rgba(61, 45, 28, 0.16);
+
+    --display: "Fraunces", "Times New Roman", serif;
+    --hand: "Caveat", cursive;
+    --body: "Nunito", system-ui, sans-serif;
+
+    --sidebar-w: 230px;
+    --sidebar-w-collapsed: 76px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(244, 200, 182, 0.45), transparent 50%),
+      radial-gradient(ellipse at 85% 25%, rgba(232, 168, 162, 0.28), transparent 45%),
+      radial-gradient(ellipse at 75% 80%, rgba(164, 184, 148, 0.22), transparent 50%),
+      radial-gradient(ellipse at 10% 90%, rgba(244, 220, 192, 0.5), transparent 45%);
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.24 0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .petals { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+  .petal {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: var(--strawberry);
+    border-radius: 0 100% 0 100%;
+    opacity: 0.32;
+    animation: drift 22s linear infinite;
+  }
+  .petal:nth-child(1) { left: 12%; animation-delay: 0s; animation-duration: 22s; }
+  .petal:nth-child(2) { left: 35%; animation-delay: -8s; background: var(--peach-deep); animation-duration: 26s; }
+  .petal:nth-child(3) { left: 58%; animation-delay: -14s; }
+  .petal:nth-child(4) { left: 78%; animation-delay: -4s; background: var(--strawberry); animation-duration: 24s; }
+  .petal:nth-child(5) { left: 92%; animation-delay: -18s; background: var(--peach); }
+  @keyframes drift {
+    0% { top: -20px; transform: rotate(0) translateX(0); }
+    50% { transform: rotate(180deg) translateX(40px); }
+    100% { top: 110vh; transform: rotate(360deg) translateX(0); }
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; border: none; background: none; cursor: pointer; color: inherit; }
+
+  /* ════════════════════ SIDEBAR ════════════════════ */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--paper);
+    border-right: 1px solid var(--line);
+    z-index: 100;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.45s cubic-bezier(.2,.7,.2,1),
+                padding 0.45s cubic-bezier(.2,.7,.2,1),
+                transform 0.4s cubic-bezier(.2,.7,.2,1);
+  }
+
+  /* ── collapsible: icon-rail state ── */
+  .sidebar.collapsed { width: var(--sidebar-w-collapsed); padding: 32px 10px; }
+  .sidebar.collapsed .side-tagline,
+  .sidebar.collapsed .side-divider,
+  .sidebar.collapsed .side-bottom h6,
+  .sidebar.collapsed .side-bottom ul,
+  .sidebar.collapsed .nav-label,
+  .sidebar.collapsed .cta-label { opacity: 0; transform: translateX(-6px); pointer-events: none; }
+  .sidebar.collapsed .side-brand {
+    font-size: 28px;
+    transform: rotate(-3deg);
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  .sidebar.collapsed .side-nav a { justify-content: center; padding: 12px 8px; }
+  .sidebar.collapsed .side-nav .icon { font-size: 22px; width: auto; }
+  .sidebar.collapsed .side-cta {
+    padding: 12px 8px;
+    font-size: 22px;
+    letter-spacing: 0;
+  }
+  .sidebar.collapsed .side-cta .cta-icon { display: inline !important; opacity: 1; }
+  .sidebar.collapsed .side-bottom { border-top: 1px dashed var(--line); padding-top: 16px; }
+  .side-tagline, .side-divider, .side-bottom h6, .side-bottom ul,
+  .nav-label, .cta-label {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  /* ── collapse toggle (cute little flower button) ── */
+  .collapse-btn {
+    position: absolute;
+    top: 26px; right: -14px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--cherry);
+    color: var(--paper);
+    box-shadow: 0 3px 0 -1px var(--brown-deep);
+    display: grid; place-items: center;
+    font-family: var(--hand);
+    font-size: 18px; font-weight: 700;
+    line-height: 1;
+    transition: transform 0.4s cubic-bezier(.2,.7,.2,1), box-shadow 0.2s ease;
+    z-index: 2;
+  }
+  .collapse-btn:hover { transform: rotate(20deg) scale(1.08); box-shadow: 0 4px 0 -1px var(--brown-deep); }
+  .collapse-btn::before {
+    content: "✿";
+    transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
+    display: inline-block;
+  }
+  .sidebar.collapsed .collapse-btn::before { transform: rotate(180deg); }
+  @media (max-width: 880px) { .collapse-btn { display: none; } }
+
+  main { transition: margin-left 0.45s cubic-bezier(.2,.7,.2,1); }
+  body.sb-collapsed main { margin-left: var(--sidebar-w-collapsed); }
+  .sidebar::before {
+    content: "";
+    position: absolute;
+    top: 32px; right: -1px;
+    width: 1px; height: calc(100% - 64px);
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--line) 0 4px,
+      transparent 4px 8px
+    );
+  }
+  .side-brand {
+    font-family: var(--hand);
+    font-weight: 700;
+    font-size: 42px;
+    color: var(--cherry);
+    line-height: 1;
+    transform: rotate(-3deg);
+    margin-bottom: 4px;
+    display: inline-block;
+  }
+  .side-brand .dot { color: var(--sage-deep); }
+  .side-tagline {
+    font-family: var(--hand);
+    font-size: 17px;
+    color: var(--brown);
+    margin-bottom: 36px;
+    transform: rotate(-1deg);
+    display: inline-block;
+  }
+  .side-divider {
+    text-align: center;
+    color: var(--strawberry);
+    font-size: 14px;
+    letter-spacing: 0.5em;
+    margin: 0 0 20px;
+  }
+  .side-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    list-style: none;
+  }
+  .side-nav a {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--brown-deep);
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .side-nav .icon {
+    font-family: var(--hand);
+    font-size: 18px;
+    color: var(--strawberry);
+    width: 18px;
+    transition: transform 0.3s ease;
+  }
+  .side-nav a:hover {
+    background: var(--cream);
+    color: var(--cherry);
+  }
+  .side-nav a:hover .icon { transform: rotate(20deg) scale(1.2); }
+  .side-nav a.active {
+    background: var(--cream-deep);
+    color: var(--cherry);
+  }
+  .side-cta {
+    margin-top: 24px;
+    background: var(--cherry);
+    color: var(--paper);
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 0 -1px var(--brown-deep);
+  }
+  .side-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 0 -1px var(--brown-deep);
+  }
+  .side-cta:active { transform: translateY(2px); box-shadow: 0 1px 0 -1px var(--brown-deep); }
+
+  .side-bottom {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line);
+  }
+  .side-bottom h6 {
+    font-family: var(--hand);
+    font-size: 16px;
+    color: var(--sage-deep);
+    margin-bottom: 8px;
+  }
+  .side-bottom ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--brown);
+  }
+  .side-bottom a:hover { color: var(--cherry); }
+
+  /* mobile sidebar toggle (hidden on desktop) */
+  .mobile-bar {
+    display: none;
+    position: sticky; top: 0; z-index: 60;
+    background: rgba(248, 232, 210, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 14px 20px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+  }
+  .mobile-bar .brand-mini {
+    font-family: var(--hand);
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--cherry);
+  }
+  .menu-toggle {
+    width: 38px; height: 38px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    display: grid; place-items: center;
+    cursor: pointer;
+  }
+  .menu-toggle span {
+    position: relative;
+    width: 18px; height: 2px;
+    background: var(--brown-deep);
+    border-radius: 1px;
+    transition: all 0.3s ease;
+  }
+  .menu-toggle span::before,
+  .menu-toggle span::after {
+    content: "";
+    position: absolute; left: 0;
+    width: 18px; height: 2px;
+    background: var(--brown-deep);
+    border-radius: 1px;
+    transition: all 0.3s ease;
+  }
+  .menu-toggle span::before { top: -6px; }
+  .menu-toggle span::after  { top: 6px;  }
+  .menu-toggle.open span { background: transparent; }
+  .menu-toggle.open span::before { top: 0; transform: rotate(45deg); }
+  .menu-toggle.open span::after  { top: 0; transform: rotate(-45deg); }
+
+  /* main content shifted to make room for sidebar */
+  main {
+    margin-left: var(--sidebar-w);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ════════════════════ HERO ════════════════════ */
+  .hero {
+    max-width: 1080px; margin: 0 auto;
+    padding: 90px 48px 100px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-eyebrow {
+    font-family: var(--hand);
+    font-size: 26px;
+    color: var(--sage-deep);
+    transform: rotate(-3deg);
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+  .hero-eyebrow::before { content: "✿ "; }
+  .hero-eyebrow::after { content: " ✿"; }
+
+  .hero h1 {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 100;
+    font-size: clamp(46px, 7vw, 96px);
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    color: var(--brown-deep);
+    margin-bottom: 28px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--cherry);
+  }
+
+  .hero-lede {
+    font-size: 18px;
+    color: var(--brown-deep);
+    max-width: 44ch;
+    margin-bottom: 32px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 0.03em;
+    transition: all 0.25s ease;
+  }
+  .btn-primary {
+    background: var(--cherry); color: var(--paper);
+    box-shadow: 0 5px 0 -1px var(--brown-deep);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 7px 0 -1px var(--brown-deep); }
+  .btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 -1px var(--brown-deep); }
+  .btn-ghost {
+    background: var(--paper); color: var(--brown-deep);
+    border: 1.5px solid var(--brown);
+  }
+  .btn-ghost:hover { background: var(--cream-deep); }
+  .arrow { transition: transform 0.25s ease; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  .hero-art {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    max-width: 460px;
+    justify-self: center;
+  }
+  .hero-art svg {
+    width: 100%; height: 100%;
+    filter: drop-shadow(0 12px 24px rgba(61, 45, 28, 0.12));
+  }
+  .floating-tag {
+    position: absolute;
+    background: var(--paper);
+    border: 1px solid var(--brown);
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-family: var(--hand);
+    font-size: 18px;
+    color: var(--brown-deep);
+    box-shadow: 0 4px 8px rgba(61, 45, 28, 0.1);
+  }
+  .floating-tag.t1 { top: 6%; left: -4%; transform: rotate(-6deg); }
+  .floating-tag.t1 b { color: var(--cherry); }
+  .floating-tag.t2 { bottom: 14%; right: -4%; transform: rotate(5deg); }
+  .floating-tag.t2 b { color: var(--sage-deep); }
+
+  .divider {
+    text-align: center;
+    padding: 24px 0;
+    color: var(--strawberry);
+    font-size: 18px;
+    letter-spacing: 1em;
+    position: relative; z-index: 2;
+  }
+
+  /* ════════════════════ SECTIONS ════════════════════ */
+  section { position: relative; z-index: 2; scroll-margin-top: 32px; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+  .section-eyebrow {
+    font-family: var(--hand);
+    font-size: 28px;
+    color: var(--sage-deep);
+    transform: rotate(-2deg);
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 90;
+    font-size: clamp(38px, 5.5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--brown-deep);
+  }
+  .section-title em { font-style: italic; color: var(--cherry); }
+
+  /* ════════════════════ MENU ════════════════════ */
+  .menu { padding: 80px 0 60px; }
+  .menu-head { text-align: center; margin-bottom: 60px; }
+  .menu-head p {
+    margin-top: 18px;
+    color: var(--brown);
+    font-size: 16px;
+    max-width: 50ch;
+    margin-left: auto; margin-right: auto;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .treat-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 22px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
+  }
+  .treat-card:nth-child(odd) { transform: rotate(-1deg); }
+  .treat-card:nth-child(even) { transform: rotate(1deg); margin-top: 24px; }
+  .treat-card:hover { transform: rotate(0) translateY(-6px) !important; }
+  .treat-illu {
+    width: 100%; height: 140px;
+    display: grid; place-items: center;
+    margin-bottom: 8px;
+  }
+  .treat-illu svg { width: 100%; height: 100%; }
+  .treat-card h3 {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 70;
+    font-size: 24px;
+    color: var(--brown-deep);
+    margin-bottom: 4px;
+  }
+  .treat-card .tagline {
+    font-family: var(--hand);
+    font-size: 18px;
+    color: var(--cherry);
+    margin-bottom: 8px;
+  }
+  .treat-card p {
+    font-size: 14px;
+    color: var(--brown);
+    line-height: 1.5;
+  }
+  .treat-card .price {
+    margin-top: 14px;
+    font-family: var(--hand);
+    font-size: 22px;
+    color: var(--brown-deep);
+  }
+  .treat-card .ribbon {
+    position: absolute;
+    top: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--strawberry);
+    color: var(--paper);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ════════════════════ ABOUT ════════════════════ */
+  .about { padding: 100px 0; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .polaroid {
+    background: var(--paper);
+    padding: 14px 14px 48px;
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 32px -12px rgba(61, 45, 28, 0.18);
+    transform: rotate(-3deg);
+    max-width: 320px;
+    position: relative;
+    transition: transform 0.4s ease;
+  }
+  .polaroid:hover { transform: rotate(-1deg); }
+  .polaroid-img {
+    aspect-ratio: 1 / 1;
+    background:
+      radial-gradient(circle at 30% 25%, var(--peach) 0%, var(--strawberry) 60%, #d97a73 100%);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    display: grid; place-items: center;
+  }
+  .polaroid-img img.mascot-photo {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+    display: block;
+    position: relative; z-index: 3;
+  }
+  /* washi-tape corners on the polaroid */
+  .polaroid::after,
+  .polaroid::before {
+    content: "";
+    position: absolute;
+    width: 56px; height: 18px;
+    background: rgba(164, 184, 148, 0.55);
+    border-radius: 1px;
+    box-shadow: 0 1px 2px rgba(61, 45, 28, 0.08);
+    z-index: 4;
+  }
+  .polaroid::before { top: -8px; left: -10px; transform: rotate(-18deg); background: rgba(244, 200, 182, 0.7); }
+  .polaroid::after { bottom: 36px; right: -10px; transform: rotate(20deg); }
+  .polaroid-caption {
+    position: absolute;
+    bottom: 12px; left: 0; right: 0;
+    text-align: center;
+    font-family: var(--hand);
+    font-size: 22px;
+    color: var(--brown-deep);
+  }
+  .polaroid-tape {
+    position: absolute;
+    top: -14px; left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 96px; height: 24px;
+    background: rgba(244, 200, 182, 0.7);
+    border-radius: 2px;
+  }
+
+  .about-text h2 {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 80;
+    font-size: clamp(34px, 4.6vw, 54px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 12px 0 24px;
+    color: var(--brown-deep);
+  }
+  .about-text h2 em { font-style: italic; color: var(--cherry); }
+  .about-text p {
+    font-size: 17px;
+    color: var(--brown-deep);
+    margin-bottom: 16px;
+    max-width: 50ch;
+    line-height: 1.65;
+  }
+  .signature-line {
+    margin-top: 28px;
+    font-family: var(--hand);
+    font-size: 32px;
+    color: var(--cherry);
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+
+  /* ════════════════════ WAITLIST ════════════════════ */
+  .waitlist { padding: 100px 0; text-align: center; }
+  .waitlist .container { max-width: 580px; }
+  .waitlist h2 {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 90;
+    font-size: clamp(40px, 5.5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 12px 0 18px;
+    color: var(--brown-deep);
+  }
+  .waitlist h2 em { font-style: italic; color: var(--cherry); }
+  .waitlist > .container > p {
+    font-size: 17px; color: var(--brown);
+    margin: 0 auto 36px;
+    max-width: 44ch;
+  }
+  .waitlist-form { display: grid; gap: 14px; text-align: left; }
+  .field { display: grid; gap: 6px; }
+  .field label {
+    font-family: var(--hand);
+    font-size: 18px;
+    color: var(--cherry);
+    padding-left: 10px;
+  }
+  .field input, .field textarea, .field select {
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font: inherit;
+    color: var(--ink);
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    outline: none;
+    border-color: var(--cherry);
+    background: var(--cream);
+  }
+  .field textarea { resize: vertical; min-height: 90px; font-family: var(--body); }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .submit-btn {
+    margin-top: 10px;
+    background: var(--cherry); color: var(--paper);
+    padding: 16px 28px; border-radius: 999px;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
+    transition: all 0.25s ease;
+    box-shadow: 0 5px 0 -1px var(--brown-deep);
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 -1px var(--brown-deep); }
+  .submit-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 -1px var(--brown-deep); }
+  .form-success {
+    display: none;
+    padding: 32px;
+    background: var(--paper);
+    border: 1px dashed var(--cherry);
+    border-radius: 18px;
+    text-align: center;
+  }
+  .form-success.show { display: block; }
+  .form-success h3 {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 28px;
+    color: var(--cherry);
+    margin-bottom: 8px;
+  }
+  .form-success p {
+    font-family: var(--hand);
+    font-size: 22px;
+    color: var(--brown-deep);
+  }
+
+  /* ════════════════════ FOOTER ════════════════════ */
+  footer {
+    background: var(--brown-deep);
+    color: var(--cream);
+    padding: 50px 0 28px;
+    margin-top: 60px;
+  }
+  .footer-inner {
+    max-width: 1080px; margin: 0 auto;
+    padding: 0 48px;
+    text-align: center;
+  }
+  .footer-inner .brand-mini {
+    font-family: var(--hand);
+    font-weight: 700;
+    font-size: 36px;
+    color: var(--peach);
+  }
+  .footer-inner .brand-mini .dot { color: var(--sage); }
+  .footer-inner p {
+    font-size: 14px;
+    opacity: 0.78;
+    max-width: 38ch;
+    margin: 12px auto;
+    line-height: 1.55;
+  }
+  .footer-bottom {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(248, 232, 210, 0.15);
+    font-size: 13px;
+    opacity: 0.6;
+  }
+
+  /* ════════════════════ REVEAL ════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ════════════════════ RESPONSIVE ════════════════════ */
+  @media (max-width: 880px) {
+    .sidebar {
+      transform: translateX(-110%);
+      width: 280px;
+      box-shadow: 8px 0 24px rgba(61, 45, 28, 0.15);
+    }
+    .sidebar.open { transform: translateX(0); }
+    main { margin-left: 0; }
+    .mobile-bar { display: flex; }
+    .hero { grid-template-columns: 1fr; padding: 56px 24px 80px; gap: 36px; }
+    .hero-art { max-width: 320px; }
+    .container { padding: 0 24px; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .treat-card:nth-child(even) { margin-top: 0; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .polaroid { margin: 0 auto; }
+    .row-2 { grid-template-columns: 1fr; }
+    .footer-inner { padding: 0 24px; }
+  }
+
+  /* sidebar overlay on mobile */
+  .sidebar-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(61, 45, 28, 0.4);
+    z-index: 90;
+    backdrop-filter: blur(2px);
+  }
+  .sidebar-overlay.show { display: block; }
+</style>
+</head>
+<body>
+
+<!-- floating petals -->
+<div class="petals" aria-hidden="true">
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+</div>
+
+<!-- ════════════════════ SIDEBAR ════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <button class="collapse-btn" id="collapseBtn" aria-label="collapse sidebar" title="tuck the menu away"></button>
+  <div class="side-brand">noosh<span class="dot">.</span></div>
+  <span class="side-tagline">small kitchen, big love ✿</span>
+
+  <div class="side-divider">✿ ✦ ✿</div>
+
+  <ul class="side-nav">
+    <li><a href="#home" data-link title="home"><span class="icon">✿</span> <span class="nav-label">home</span></a></li>
+    <li><a href="#menu" data-link title="the menu"><span class="icon">✿</span> <span class="nav-label">the menu</span></a></li>
+    <li><a href="#about" data-link title="hello, me"><span class="icon">♡</span> <span class="nav-label">hello, me</span></a></li>
+    <li><a href="#waitlist" data-link title="join the list"><span class="icon">✦</span> <span class="nav-label">join the list</span></a></li>
+  </ul>
+
+  <a href="#waitlist" class="side-cta" data-link title="pre-order"><span class="cta-label">PRE-ORDER ✿</span><span class="cta-icon" aria-hidden="true" style="display:none;">✿</span></a>
+
+  <div class="side-bottom">
+    <h6>find me</h6>
+    <ul>
+      <li><a href="https://instagram.com" target="_blank" rel="noopener">@noosh.bakes</a></li>
+      <li><a href="https://tiktok.com" target="_blank" rel="noopener">tiktok</a></li>
+      <li><a href="mailto:hello@noosh.bakes">email me ♡</a></li>
+    </ul>
+  </div>
+</aside>
+
+<div class="sidebar-overlay" id="overlay"></div>
+
+<!-- mobile top bar -->
+<div class="mobile-bar">
+  <div class="brand-mini">noosh<span style="color: var(--sage-deep);">.</span></div>
+  <button class="menu-toggle" id="menuToggle" aria-label="menu"><span></span></button>
+</div>
+
+<main>
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<section class="hero" id="home">   
+    <div>
+    <span class="hero-eyebrow">small kitchen, big love</span>
+    <h1>
+      Tiny baked<br>
+      things, made<br>
+      <em>just for you.</em>
+    </h1>
+    <p class="hero-lede">
+      Cookies, bento cakes, brownies and little surprises — handmade in tiny batches in a tiny home kitchen, picked up at my doorstep.
+    </p>
+    <div class="hero-actions">
+      <a href="#menu" class="btn btn-primary" data-link>peek the menu <span class="arrow">→</span></a>
+      <a href="#waitlist" class="btn btn-ghost" data-link>join the waitlist</a>
+    </div>
+  </div>
+
+  <div class="hero-art">
+    <!-- cake on stand with floating ingredients -->
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- soft ground shadow -->
+      <ellipse cx="200" cy="345" rx="130" ry="10" fill="#8b6f4d" opacity="0.18"/>
+
+      <!-- cake stand pedestal -->
+      <rect x="180" y="290" width="40" height="40" fill="#fbf2e0" stroke="#5c4530" stroke-width="2.5"/>
+      <ellipse cx="200" cy="335" rx="60" ry="7" fill="#fbf2e0" stroke="#5c4530" stroke-width="2.5"/>
+      <ellipse cx="200" cy="290" rx="80" ry="9" fill="#fbf2e0" stroke="#5c4530" stroke-width="2.5"/>
+
+      <!-- cake bottom layer (sponge) -->
+      <rect x="135" y="245" width="130" height="46" fill="#f4dcc0" stroke="#5c4530" stroke-width="2.5"/>
+      <ellipse cx="200" cy="245" rx="65" ry="9" fill="#f4dcc0" stroke="#5c4530" stroke-width="2.5"/>
+
+      <!-- cream layer between -->
+      <ellipse cx="200" cy="245" rx="63" ry="6" fill="#fbf2e0"/>
+
+      <!-- cake middle layer (frosting) -->
+      <rect x="135" y="225" width="130" height="22" fill="#f4c8b6" stroke="#5c4530" stroke-width="2.5"/>
+      <ellipse cx="200" cy="225" rx="65" ry="9" fill="#f4c8b6" stroke="#5c4530" stroke-width="2.5"/>
+
+      <!-- cake top layer -->
+      <rect x="135" y="185" width="130" height="40" fill="#f4dcc0" stroke="#5c4530" stroke-width="2.5"/>
+      <ellipse cx="200" cy="185" rx="65" ry="9" fill="#f4dcc0" stroke="#5c4530" stroke-width="2.5"/>
+
+      <!-- top frosting wave (drippy) -->
+      <path d="M137 185 Q142 198, 152 185 Q160 200, 170 185 Q180 198, 190 185 Q200 200, 210 185 Q220 198, 230 185 Q240 200, 250 185 Q258 198, 263 185"
+            fill="#f4c8b6" stroke="#5c4530" stroke-width="2"/>
+
+      <!-- strawberry on top -->
+      <path d="M188 165 Q188 148, 200 148 Q212 148, 212 165 Q205 178, 200 178 Q195 178, 188 165 Z"
+            fill="#e8625f" stroke="#5c4530" stroke-width="2.5"/>
+      <ellipse cx="195" cy="156" rx="3" ry="2" fill="#fbf2e0" opacity="0.7"/>
+      <circle cx="194" cy="161" r="1" fill="#5c4530"/>
+      <circle cx="200" cy="166" r="1" fill="#5c4530"/>
+      <circle cx="206" cy="161" r="1" fill="#5c4530"/>
+      <circle cx="197" cy="171" r="1" fill="#5c4530"/>
+      <circle cx="203" cy="171" r="1" fill="#5c4530"/>
+      <!-- strawberry leaf -->
+      <path d="M196 148 Q190 140, 200 136 Q210 140, 204 148 Z" fill="#87a07a" stroke="#5c4530" stroke-width="1.5"/>
+
+      <!-- piped frosting dollops on top edge -->
+      <ellipse cx="155" cy="183" rx="7" ry="5" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
+      <ellipse cx="245" cy="183" rx="7" ry="5" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
+
+      <!-- ═════ floating ingredients ═════ -->
+
+      <!-- whisk top left -->
+      <g transform="translate(50, 60) rotate(-20)">
+        <rect x="-3" y="0" width="6" height="40" rx="2" fill="#8b6f4d" stroke="#5c4530" stroke-width="1.5"/>
+        <ellipse cx="0" cy="50" rx="9" ry="13" fill="none" stroke="#5c4530" stroke-width="2"/>
+        <path d="M-7 42 Q0 65, 7 42" stroke="#5c4530" stroke-width="1.5" fill="none"/>
+        <path d="M-5 38 Q0 65, 5 38" stroke="#5c4530" stroke-width="1.5" fill="none"/>
+      </g>
+
+      <!-- egg top right -->
+      <g transform="translate(335, 80)">
+        <ellipse cx="0" cy="0" rx="22" ry="26" fill="#fbf2e0" stroke="#5c4530" stroke-width="2"/>
+        <ellipse cx="-6" cy="-8" rx="4" ry="6" fill="#fff" opacity="0.6"/>
+        <!-- shell crack -->
+        <path d="M-15 -10 L-8 -5 L-12 -2 L-5 3" stroke="#5c4530" stroke-width="1.2" fill="none"/>
+      </g>
+
+      <!-- butter stick bottom left -->
+      <g transform="translate(60, 280) rotate(-15)">
+        <rect x="-30" y="-12" width="60" height="22" rx="3" fill="#f4dcc0" stroke="#5c4530" stroke-width="2"/>
+        <rect x="-30" y="-12" width="20" height="22" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5" opacity="0.8"/>
+        <text x="-18" y="3" font-family="Caveat, cursive" font-size="11" fill="#c4615a">butter</text>
+      </g>
+
+      <!-- chocolate chunk bottom right -->
+      <g transform="translate(330, 290) rotate(15)">
+        <path d="M-15 -12 L18 -8 L20 14 L-14 16 Z" fill="#4a2e1a" stroke="#3d2d1c" stroke-width="2"/>
+        <path d="M-15 -12 L-8 -6 L18 -8" stroke="#5c4530" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <path d="M-14 16 L-6 8 L20 14" stroke="#3d2d1c" stroke-width="1" fill="none" opacity="0.4"/>
+      </g>
+
+      <!-- flour cloud / sugar sparkle middle right -->
+      <g transform="translate(310, 195)">
+        <circle cx="0" cy="0" r="3" fill="#fbf2e0" opacity="0.9"/>
+        <circle cx="8" cy="-4" r="2" fill="#fbf2e0" opacity="0.7"/>
+        <circle cx="-6" cy="6" r="2.5" fill="#fbf2e0" opacity="0.8"/>
+        <circle cx="12" cy="6" r="1.5" fill="#fbf2e0" opacity="0.6"/>
+      </g>
+
+      <!-- ═════ extra ingredients (cutely decorated) ═════ -->
+
+      <!-- sugar/flour jar — top center-left -->
+      <g transform="translate(135, 50) rotate(-6)">
+        <rect x="-14" y="0" width="28" height="34" rx="3" fill="#fbf2e0" stroke="#5c4530" stroke-width="2"/>
+        <rect x="-16" y="-4" width="32" height="6" rx="2" fill="#c4615a" stroke="#5c4530" stroke-width="1.5"/>
+        <text x="0" y="20" font-family="Caveat, cursive" font-size="9" fill="#5c4530" text-anchor="middle">sugar</text>
+        <circle cx="-6" cy="26" r="0.8" fill="#5c4530" opacity="0.5"/>
+        <circle cx="4" cy="28" r="0.6" fill="#5c4530" opacity="0.4"/>
+      </g>
+
+      <!-- vanilla pods — top right area -->
+      <g transform="translate(265, 60) rotate(35)">
+        <path d="M0 0 Q2 14, -2 28 Q-4 30, -3 32" fill="#3d2d1c" stroke="#1a0f08" stroke-width="1.5"/>
+        <path d="M5 2 Q7 16, 3 30 Q1 32, 2 34" fill="#5c4530" stroke="#1a0f08" stroke-width="1.5"/>
+      </g>
+
+      <!-- milk jug — middle left -->
+      <g transform="translate(45, 180) rotate(-8)">
+        <path d="M-12 0 L12 0 L14 28 L-14 28 Z" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.8"/>
+        <path d="M12 4 Q20 6, 18 12 L14 12" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
+        <ellipse cx="0" cy="0" rx="12" ry="3" fill="#fff" stroke="#5c4530" stroke-width="1.5"/>
+        <text x="0" y="18" font-family="Caveat, cursive" font-size="8" fill="#5577a8" text-anchor="middle">milk</text>
+      </g>
+
+      <!-- measuring spoon — bottom center -->
+      <g transform="translate(160, 320) rotate(-22)">
+        <ellipse cx="0" cy="0" rx="9" ry="6" fill="#e8c89a" stroke="#5c4530" stroke-width="1.5"/>
+        <ellipse cx="0" cy="-1" rx="6" ry="3" fill="#fbf2e0" opacity="0.8"/>
+        <rect x="-1.5" y="4" width="3" height="32" rx="1" fill="#c8a878" stroke="#5c4530" stroke-width="1.2"/>
+      </g>
+
+      <!-- mixing bowl with batter — center-right small -->
+      <g transform="translate(320, 240)">
+        <path d="M-18 0 Q-18 18, 0 18 Q18 18, 18 0 Z" fill="#a4b894" stroke="#5c4530" stroke-width="1.8"/>
+        <ellipse cx="0" cy="0" rx="18" ry="5" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
+        <ellipse cx="0" cy="-1" rx="14" ry="3" fill="#f4dcc0"/>
+        <!-- a little spoon dipping in -->
+        <rect x="6" y="-12" width="2" height="14" rx="1" fill="#8b6f4d" stroke="#5c4530" stroke-width="0.8" transform="rotate(15 7 -5)"/>
+      </g>
+
+      <!-- sprinkles scattered -->
+      <g opacity="0.85">
+        <rect x="118" y="118" width="2.5" height="6" rx="1" fill="#c4615a" transform="rotate(30 119 121)"/>
+        <rect x="270" y="130" width="2.5" height="6" rx="1" fill="#a4b894" transform="rotate(-20 271 133)"/>
+        <rect x="92" y="270" width="2.5" height="6" rx="1" fill="#ecae9a" transform="rotate(45 93 273)"/>
+        <rect x="290" y="100" width="2.5" height="6" rx="1" fill="#5577a8" transform="rotate(15 291 103)"/>
+        <rect x="155" y="120" width="2.5" height="5" rx="1" fill="#d9a85c"/>
+      </g>
+
+      <!-- tiny hearts -->
+      <text x="50" y="150" font-family="serif" font-size="14" fill="#e8a8a2" opacity="0.8">♡</text>
+      <text x="298" y="280" font-family="serif" font-size="12" fill="#c4615a" opacity="0.7">♡</text>
+
+      <!-- sparkles -->
+      <text x="100" y="160" font-family="Caveat, cursive" font-size="22" fill="#e8a8a2">✿</text>
+      <text x="290" y="195" font-family="Caveat, cursive" font-size="14" fill="#a4b894">✿</text>
+      <text x="80" y="220" font-family="Caveat, cursive" font-size="14" fill="#a4b894">✦</text>
+      <text x="270" y="100" font-family="Caveat, cursive" font-size="16" fill="#ecae9a">✦</text>
+    </svg>
+
+    <div class="floating-tag t1">made fresh <b>♡</b></div>
+    <div class="floating-tag t2">small batch <b>✿</b></div>
+  </div>
+</section>
+
+<div class="divider">✿ ✦ ✿ ✦ ✿</div>
+
+<!-- ════════════════════ MENU ════════════════════ -->
+<section class="menu" id="menu">
+  <div class="container">
+    <div class="menu-head reveal">
+      <span class="section-eyebrow">what's on the table</span>
+      <h2 class="section-title">a little <em>menu</em></h2>
+      <p>A tiny, ever-evolving selection. Made fresh, in tiny batches, with too much butter.</p>
+    </div>
+
+    <div class="menu-grid">
+
+      <!-- 1. Cookies — brown butter choc chunk -->
+      <article class="treat-card reveal">
+        <div class="treat-illu">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="125" rx="78" ry="6" fill="#5c4530" opacity="0.12"/>
+            <circle cx="78" cy="68" r="36" fill="#c8924a" stroke="#5c4530" stroke-width="2"/>
+            <circle cx="78" cy="68" r="36" fill="none" stroke="#a87938" stroke-width="2" stroke-dasharray="2 4" opacity="0.4"/>
+            <rect x="68" y="55" width="9" height="7" rx="1" fill="#3d2818" transform="rotate(15 73 58)"/>
+            <rect x="84" y="62" width="8" height="6" rx="1" fill="#3d2818" transform="rotate(-10 88 65)"/>
+            <rect x="74" y="78" width="9" height="6" rx="1" fill="#3d2818" transform="rotate(20 78 81)"/>
+            <rect x="60" y="73" width="6" height="5" rx="1" fill="#3d2818"/>
+            <ellipse cx="65" cy="55" rx="6" ry="3" fill="#e8b87a" opacity="0.6"/>
+            <circle cx="125" cy="82" r="42" fill="#c8924a" stroke="#5c4530" stroke-width="2"/>
+            <circle cx="125" cy="82" r="42" fill="none" stroke="#a87938" stroke-width="2" stroke-dasharray="2 4" opacity="0.4"/>
+            <rect x="115" y="68" width="10" height="8" rx="1.5" fill="#3d2818" transform="rotate(-12 120 72)"/>
+            <rect x="132" y="76" width="9" height="7" rx="1.5" fill="#3d2818" transform="rotate(20 136 79)"/>
+            <rect x="120" y="92" width="11" height="7" rx="1.5" fill="#3d2818" transform="rotate(-8 125 95)"/>
+            <rect x="138" y="92" width="7" height="6" rx="1" fill="#3d2818" transform="rotate(15 141 95)"/>
+            <rect x="106" y="84" width="7" height="6" rx="1" fill="#3d2818"/>
+            <ellipse cx="112" cy="70" rx="7" ry="3" fill="#e8b87a" opacity="0.6"/>
+            <circle cx="40" cy="120" r="2" fill="#8b6f4d"/>
+            <circle cx="170" cy="125" r="1.8" fill="#8b6f4d"/>
+            <circle cx="180" cy="115" r="1.3" fill="#5c4530"/>
+            <circle cx="30" cy="115" r="1.5" fill="#5c4530"/>
+          </svg>
+        </div>
+        <h3>brown butter cookies</h3>
+        <span class="tagline">soft &amp; chewy ✿</span>
+        <p>nutty brown butter, dark chocolate chunks, sea salt finish. our one and only.</p>
+        <div class="price">from $4</div>
+      </article>
+
+      <!-- 2. Bento cakes -->
+      <article class="treat-card reveal">
+        <span class="ribbon">most-loved</span>
+        <div class="treat-illu">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="125" rx="72" ry="5" fill="#5c4530" opacity="0.12"/>
+            <path d="M44 78 L156 78 L150 125 L50 125 Z" fill="#fbf2e0" stroke="#5c4530" stroke-width="2"/>
+            <path d="M40 70 L160 70 L156 80 L44 80 Z" fill="#fbf2e0" stroke="#5c4530" stroke-width="2"/>
+            <line x1="100" y1="68" x2="100" y2="125" stroke="#c4615a" stroke-width="3"/>
+            <path d="M93 70 Q100 60, 107 70 Q100 65, 93 70 Z" fill="#c4615a"/>
+            <ellipse cx="100" cy="100" rx="36" ry="6" fill="#f4dcc0" stroke="#5c4530" stroke-width="1.5"/>
+            <rect x="64" y="90" width="72" height="10" fill="#f4dcc0" stroke="#5c4530" stroke-width="1.5"/>
+            <rect x="64" y="86" width="72" height="4" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
+            <ellipse cx="100" cy="86" rx="36" ry="6" fill="#f4c8b6" stroke="#5c4530" stroke-width="1.5"/>
+            <circle cx="72" cy="84" r="3" fill="#fbf2e0" stroke="#5c4530" stroke-width="1"/>
+            <circle cx="84" cy="83" r="3" fill="#fbf2e0" stroke="#5c4530" stroke-width="1"/>
+            <circle cx="100" cy="82" r="3" fill="#fbf2e0" stroke="#5c4530" stroke-width="1"/>
+            <circle cx="116" cy="83" r="3" fill="#fbf2e0" stroke="#5c4530" stroke-width="1"/>
+            <circle cx="128" cy="84" r="3" fill="#fbf2e0" stroke="#5c4530" stroke-width="1"/>
+            <text x="92" y="88" font-family="serif" font-size="13" fill="#c4615a">♡</text>
+          </svg>
+        </div>
+        <h3>bento cakes</h3>
+        <span class="tagline">cake for one ♡</span>
+        <p>tiny lunchbox-sized cakes with a piped message — perfect for a moment.</p>
+        <div class="price">$22</div>
+      </article>
+
+      <!-- 3. Brownies -->
+      <article class="treat-card reveal">
+        <div class="treat-illu">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="128" rx="70" ry="5" fill="#5c4530" opacity="0.12"/>
+            <path d="M55 70 L62 122 L138 122 L145 70 Z" fill="#f4c8b6" stroke="#5c4530" stroke-width="2"/>
+            <line x1="70" y1="72" x2="73" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <line x1="85" y1="72" x2="86" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <line x1="100" y1="72" x2="100" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <line x1="115" y1="72" x2="114" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <line x1="130" y1="72" x2="127" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <ellipse cx="100" cy="70" rx="46" ry="9" fill="#4a2e1a" stroke="#3d2d1c" stroke-width="2"/>
+            <ellipse cx="100" cy="68" rx="42" ry="6" fill="#5c3a22"/>
+            <path d="M70 68 Q80 64, 90 68 Q100 64, 110 68 Q120 64, 130 68" stroke="#3d2d1c" stroke-width="1.2" fill="none" opacity="0.6"/>
+            <path d="M75 72 Q85 70, 95 72" stroke="#3d2d1c" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M105 72 Q115 70, 125 72" stroke="#3d2d1c" stroke-width="1" fill="none" opacity="0.5"/>
+            <ellipse cx="86" cy="65" rx="8" ry="2" fill="#8b6f4d" opacity="0.5"/>
+            <ellipse cx="115" cy="66" rx="6" ry="1.5" fill="#8b6f4d" opacity="0.4"/>
+            <rect x="83" y="62" width="6" height="5" rx="1" fill="#3d2818"/>
+            <rect x="106" y="63" width="5" height="4" rx="1" fill="#3d2818"/>
+            <rect x="92" y="40" width="2" height="22" fill="#5c4530"/>
+            <path d="M94 40 L114 40 L110 47 L114 54 L94 54 Z" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.2"/>
+            <text x="96" y="50" font-family="Caveat, cursive" font-size="9" fill="#c4615a">fudgy</text>
+          </svg>
+        </div>
+        <h3>brownies</h3>
+        <span class="tagline">fudgy &amp; rich ✿</span>
+        <p>thick fudgy brownies with crinkled tops, in cute paper cups so they're easy to grab and go.</p>
+        <div class="price">$6</div>
+      </article>
+
+      <!-- 4. Cake pops -->
+      <article class="treat-card reveal">
+        <div class="treat-illu">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="128" rx="60" ry="5" fill="#5c4530" opacity="0.12"/>
+            <line x1="62" y1="50" x2="62" y2="125" stroke="#fbf2e0" stroke-width="3.5"/>
+            <line x1="62" y1="50" x2="62" y2="125" stroke="#5c4530" stroke-width="0.8"/>
+            <circle cx="62" cy="42" r="22" fill="#e8a8a2" stroke="#5c4530" stroke-width="2"/>
+            <circle cx="55" cy="36" r="3" fill="#fbf2e0" opacity="0.7"/>
+            <rect x="54" y="40" width="3" height="6" rx="1" fill="#fbf2e0" transform="rotate(20 56 43)"/>
+            <rect x="65" y="35" width="3" height="6" rx="1" fill="#a4b894" transform="rotate(-30 66 38)"/>
+            <rect x="68" y="46" width="3" height="6" rx="1" fill="#c4615a" transform="rotate(45 70 49)"/>
+            <rect x="56" y="50" width="3" height="6" rx="1" fill="#5c4530" transform="rotate(15 58 53)"/>
+            <line x1="105" y1="68" x2="105" y2="125" stroke="#fbf2e0" stroke-width="3.5"/>
+            <line x1="105" y1="68" x2="105" y2="125" stroke="#5c4530" stroke-width="0.8"/>
+            <circle cx="105" cy="60" r="22" fill="#5c4530" stroke="#3d2d1c" stroke-width="2"/>
+            <circle cx="98" cy="54" r="3" fill="#8b6f4d" opacity="0.7"/>
+            <path d="M86 60 Q90 70, 88 78" stroke="#3d2d1c" stroke-width="2" fill="#5c4530"/>
+            <rect x="98" y="56" width="3" height="5" rx="1" fill="#d9a85c" transform="rotate(20 99 58)"/>
+            <rect x="110" y="62" width="3" height="5" rx="1" fill="#d9a85c" transform="rotate(-20 111 64)"/>
+            <line x1="148" y1="58" x2="148" y2="125" stroke="#fbf2e0" stroke-width="3.5"/>
+            <line x1="148" y1="58" x2="148" y2="125" stroke="#5c4530" stroke-width="0.8"/>
+            <circle cx="148" cy="50" r="22" fill="#a4b894" stroke="#5c4530" stroke-width="2"/>
+            <circle cx="141" cy="44" r="3" fill="#c8d6b8" opacity="0.7"/>
+            <path d="M132 48 Q145 45, 158 50" stroke="#fbf2e0" stroke-width="2" fill="none"/>
+            <path d="M135 56 Q148 54, 162 58" stroke="#fbf2e0" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <h3>cake pops</h3>
+        <span class="tagline">bite-sized joy ✦</span>
+        <p>dipped, sprinkled, ribbon-tied. great for parties or treating yourself.</p>
+        <div class="price">$3 each</div>
+      </article>
+
+      <!-- 5. Dunkers -->
+      <article class="treat-card reveal">
+        <span class="ribbon">signature</span>
+        <div class="treat-illu">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="128" rx="80" ry="5" fill="#5c4530" opacity="0.12"/>
+            <path d="M18 78 L182 78 L178 122 L22 122 Z" fill="#fbf2e0" stroke="#5c4530" stroke-width="2"/>
+            <ellipse cx="100" cy="78" rx="82" ry="6" fill="#fbf2e0" stroke="#5c4530" stroke-width="2"/>
+            <line x1="115" y1="78" x2="115" y2="122" stroke="#5c4530" stroke-width="1.5" opacity="0.4"/>
+            <rect x="123" y="82" width="22" height="32" rx="2" fill="#5c4530" stroke="#3d2d1c" stroke-width="1.5"/>
+            <ellipse cx="134" cy="82" rx="11" ry="3" fill="#3d2818" stroke="#3d2d1c" stroke-width="1.2"/>
+            <ellipse cx="130" cy="82" rx="3" ry="1" fill="#8b6f4d" opacity="0.6"/>
+            <rect x="150" y="86" width="22" height="28" rx="2" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
+            <ellipse cx="161" cy="86" rx="11" ry="3" fill="#d9a85c" stroke="#5c4530" stroke-width="1.2"/>
+            <ellipse cx="158" cy="86" rx="3" ry="1" fill="#fbf2e0" opacity="0.6"/>
+            <circle cx="40" cy="92" r="11" fill="#c8924a" stroke="#5c4530" stroke-width="1.5"/>
+            <rect x="36" y="88" width="3" height="3" rx="0.5" fill="#3d2818"/>
+            <rect x="42" y="93" width="2.5" height="2.5" rx="0.5" fill="#3d2818"/>
+            <rect x="38" y="96" width="2.5" height="2.5" rx="0.5" fill="#3d2818"/>
+            <circle cx="62" cy="100" r="11" fill="#c8924a" stroke="#5c4530" stroke-width="1.5"/>
+            <rect x="58" y="96" width="3" height="3" rx="0.5" fill="#3d2818"/>
+            <rect x="64" y="100" width="2.5" height="2.5" rx="0.5" fill="#3d2818"/>
+            <rect x="60" y="104" width="2" height="2" rx="0.5" fill="#3d2818"/>
+            <circle cx="84" cy="92" r="11" fill="#c8924a" stroke="#5c4530" stroke-width="1.5"/>
+            <rect x="80" y="88" width="3" height="3" rx="0.5" fill="#3d2818"/>
+            <rect x="86" y="92" width="2.5" height="2.5" rx="0.5" fill="#3d2818"/>
+            <rect x="82" y="97" width="2.5" height="2.5" rx="0.5" fill="#3d2818"/>
+            <circle cx="58" cy="78" r="11" fill="#c8924a" stroke="#5c4530" stroke-width="1.5"/>
+            <rect x="54" y="74" width="3" height="3" rx="0.5" fill="#3d2818"/>
+            <rect x="60" y="78" width="2.5" height="2.5" rx="0.5" fill="#3d2818"/>
+            <circle cx="98" cy="100" r="11" fill="#c8924a" stroke="#5c4530" stroke-width="1.5"/>
+            <rect x="94" y="96" width="3" height="3" rx="0.5" fill="#3d2818"/>
+            <rect x="100" y="100" width="2.5" height="2.5" rx="0.5" fill="#3d2818"/>
+          </svg>
+        </div>
+        <h3>dunkers</h3>
+        <span class="tagline">pick two pots ✿</span>
+        <p>a box of bite-sized cookies + two warm dipping pots. nutella, salted caramel, raspberry, or white chocolate.</p>
+        <div class="price">$14</div>
+      </article>
+
+      <!-- 6. Knock cake -->
+      <article class="treat-card reveal">
+        <span class="ribbon">made to order</span>
+        <div class="treat-illu">
+          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="128" rx="65" ry="5" fill="#5c4530" opacity="0.12"/>
+            <path d="M52 92 L60 122 L140 122 L148 92 Z" fill="#3d2d1c" stroke="#1a0e08" stroke-width="2"/>
+            <line x1="65" y1="94" x2="68" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <line x1="80" y1="93" x2="81" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <line x1="100" y1="93" x2="100" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <line x1="120" y1="93" x2="119" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <line x1="135" y1="94" x2="132" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
+            <path d="M52 92 A48 36 0 0 1 148 92 Z" fill="#3d2818" stroke="#1a0e08" stroke-width="2"/>
+            <ellipse cx="80" cy="76" rx="14" ry="6" fill="#fbf2e0" opacity="0.18"/>
+            <ellipse cx="78" cy="73" rx="6" ry="3" fill="#fbf2e0" opacity="0.4"/>
+            <circle cx="100" cy="68" r="4" fill="#c8924a" stroke="#5c4530" stroke-width="1"/>
+            <rect x="118" y="78" width="5" height="4" rx="1" fill="#8b6f4d" transform="rotate(20 120 80)"/>
+            <rect x="78" y="80" width="4" height="3" rx="1" fill="#8b6f4d"/>
+            <g transform="translate(170, 60) rotate(25)">
+              <ellipse cx="0" cy="0" rx="7" ry="9" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
+              <rect x="-1.5" y="6" width="3" height="40" rx="1" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
+            </g>
+            <text x="156" y="48" font-family="Caveat, cursive" font-size="14" fill="#c4615a" transform="rotate(-10 156 48)">tap!</text>
+            <path d="M155 56 Q145 65, 138 75" stroke="#c4615a" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/>
+            <path d="M137 73 L138 78 L142 75" stroke="#c4615a" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <h3>knock cake</h3>
+        <span class="tagline">tap the dome ✦</span>
+        <p>a layered cake hidden under a glossy chocolate dome — knock it, crack it, dig in. our showstopper.</p>
+        <div class="price">$28</div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider">✿ ✦ ✿ ✦ ✿</div>
+
+<!-- ════════════════════ ABOUT ════════════════════ -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="polaroid">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-img">
+            <img class="mascot-photo" src="assets/mascot.png" alt="anooshey, baking" onerror="this.style.display='none'">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute; inset:0; z-index:2;">
+              <path d="M62 88 Q56 130, 60 175 L72 195 L80 195 L78 130 Z" fill="#2a1f15" stroke="#1a0f08" stroke-width="1.5"/>
+              <path d="M138 88 Q144 130, 140 175 L128 195 L120 195 L122 130 Z" fill="#2a1f15" stroke="#1a0f08" stroke-width="1.5"/>
+              <rect x="92" y="130" width="16" height="14" fill="#f4dcc0" stroke="#3d2d1c" stroke-width="1.5"/>
+              <path d="M62 144 L138 144 L142 200 L58 200 Z" fill="#5577a8" stroke="#3d2d1c" stroke-width="2"/>
+              <path d="M85 144 L100 156 L115 144 L115 150 L100 162 L85 150 Z" fill="#3d5778" stroke="#3d2d1c" stroke-width="1.5"/>
+              <circle cx="100" cy="170" r="1.5" fill="#3d2d1c"/>
+              <circle cx="100" cy="180" r="1.5" fill="#3d2d1c"/>
+              <path d="M108 162 L122 162 L122 174 L108 174 Z" fill="none" stroke="#3d5778" stroke-width="1"/>
+              <path d="M76 152 L124 152 L130 200 L70 200 Z" fill="#e8a8a2" stroke="#3d2d1c" stroke-width="2"/>
+              <path d="M76 152 Q72 145, 78 138" stroke="#3d2d1c" stroke-width="1.5" fill="none"/>
+              <path d="M124 152 Q128 145, 122 138" stroke="#3d2d1c" stroke-width="1.5" fill="none"/>
+              <rect x="86" y="174" width="28" height="14" rx="1" fill="none" stroke="#3d2d1c" stroke-width="1.2"/>
+              <text x="100" y="184" font-family="Caveat, cursive" font-size="9" fill="#c4615a" text-anchor="middle">noosh.</text>
+              <ellipse cx="100" cy="105" rx="32" ry="36" fill="#f4dcc0" stroke="#3d2d1c" stroke-width="2"/>
+              <path d="M68 88 Q80 70, 100 72 Q120 70, 132 88 Q132 95, 128 96 Q120 84, 100 84 Q80 84, 72 96 Q68 95, 68 88 Z" fill="#2a1f15" stroke="#1a0f08" stroke-width="1.5"/>
+              <path d="M70 92 Q66 100, 68 110" stroke="#1a0f08" stroke-width="2" fill="#2a1f15"/>
+              <path d="M130 92 Q134 100, 132 110" stroke="#1a0f08" stroke-width="2" fill="#2a1f15"/>
+              <circle cx="86" cy="106" r="10" fill="none" stroke="#3d2d1c" stroke-width="2"/>
+              <circle cx="114" cy="106" r="10" fill="none" stroke="#3d2d1c" stroke-width="2"/>
+              <line x1="96" y1="106" x2="104" y2="106" stroke="#3d2d1c" stroke-width="2"/>
+              <line x1="76" y1="106" x2="72" y2="105" stroke="#3d2d1c" stroke-width="2"/>
+              <line x1="124" y1="106" x2="128" y2="105" stroke="#3d2d1c" stroke-width="2"/>
+              <path d="M81 102 Q85 99, 89 102" stroke="#fff" stroke-width="1.2" fill="none" opacity="0.7"/>
+              <path d="M109 102 Q113 99, 117 102" stroke="#fff" stroke-width="1.2" fill="none" opacity="0.7"/>
+              <circle cx="86" cy="107" r="1.6" fill="#3d2d1c"/>
+              <circle cx="114" cy="107" r="1.6" fill="#3d2d1c"/>
+              <ellipse cx="78" cy="118" rx="5" ry="3" fill="#e8a8a2" opacity="0.7"/>
+              <ellipse cx="122" cy="118" rx="5" ry="3" fill="#e8a8a2" opacity="0.7"/>
+              <path d="M93 124 Q100 128, 107 124" stroke="#3d2d1c" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <text x="148" y="80" font-family="serif" font-size="16" fill="#c4615a">♡</text>
+              <text x="40" y="100" font-family="Caveat, cursive" font-size="14" fill="#fbf2e0">✿</text>
+            </svg>
+          </div>
+          <div class="polaroid-caption">that's me, baking ✿</div>
+        </div>
+      </div>
+
+      <div class="about-text reveal">
+        <span class="section-eyebrow">say hello</span>
+        <h2>hi, i'm <em>anooshey</em>.</h2>
+        <p>
+          this is just me, my mixer, and a tiny kitchen that mostly smells like brown butter. noosh. is a soft little baking project where i make small-batch sweets with a lot of love (and a lot of taste-testing).
+        </p>
+        <p>
+          i bake to order, in limited weekly drops. everything is fresh, hand-finished, and packaged with care so you get the same little flutter of excitement opening it as i did making it.
+        </p>
+        <div class="signature-line">— anooshey ✿</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">✿ ✦ ✿ ✦ ✿</div>
+
+<!-- ════════════════════ WAITLIST ════════════════════ -->
+<section class="waitlist" id="waitlist">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-eyebrow">first dibs</span>
+      <h2>be first to <em>taste it.</em></h2>
+      <p>
+        not quite open yet — but the kitchen's warming up. drop your name and i'll send you a little note when the first batch is ready.
+      </p>
+
+      <form class="waitlist-form" id="waitlist-form">
+        <div class="row-2">
+          <div class="field">
+            <label for="name">your name</label>
+            <input type="text" id="name" name="name" required placeholder="eloise" />
+          </div>
+          <div class="field">
+            <label for="email">your email</label>
+            <input type="email" id="email" name="email" required placeholder="hello@you.com" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="treat">most excited about</label>
+          <select id="treat" name="treat">
+            <option>everything please ♡</option>
+            <option>brown butter cookies</option>
+            <option>bento cakes</option>
+            <option>brownies</option>
+            <option>cake pops</option>
+            <option>dunkers</option>
+            <option>knock cake</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="note">a little note (optional)</label>
+          <textarea id="note" name="note" placeholder="anything you'd love to see..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">SAVE MY SPOT ✿</button>
+      </form>
+
+      <div class="form-success" id="form-success">
+        <h3>you're in ♡</h3>
+        <p>a little note will land in your inbox soon. thank you, truly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="brand-mini">noosh<span class="dot">.</span></div>
+    <p>tiny baked things, made just for you. small kitchen, local pickup, lots of love.</p>
+    <div class="footer-bottom">
+      © 2026 noosh. — baked with butter &amp; love.
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<script>
+  // smooth scroll for in-page anchor links
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const menuToggle = document.getElementById("menuToggle");
+
+  document.querySelectorAll('a[data-link], a[href^="#"]').forEach(a => {
+    a.addEventListener("click", (e) => {
+      const href = a.getAttribute("href");
+      if (!href || !href.startsWith("#") || href === "#") return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+      menuToggle.classList.remove("open");
+    });
+  });
+
+  // desktop sidebar collapse (icon rail)
+  const collapseBtn = document.getElementById("collapseBtn");
+  const sidebarEl = document.getElementById("sidebar");
+  const setCollapsed = (on) => {
+    sidebarEl.classList.toggle("collapsed", on);
+    document.body.classList.toggle("sb-collapsed", on);
+    collapseBtn.setAttribute("aria-label", on ? "open sidebar" : "collapse sidebar");
+    try { localStorage.setItem("noosh.sb", on ? "1" : "0"); } catch (_) {}
+  };
+  if (collapseBtn) {
+    let saved = null;
+    try { saved = localStorage.getItem("noosh.sb"); } catch (_) {}
+    if (saved === "1") setCollapsed(true);
+    collapseBtn.addEventListener("click", () => {
+      setCollapsed(!sidebarEl.classList.contains("collapsed"));
+    });
+  }
+
+  // mobile sidebar toggle
+  menuToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+    menuToggle.classList.toggle("open");
+  });
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+    menuToggle.classList.remove("open");
+  });
+
+  // active link highlighting on scroll
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".side-nav a");
+  const updateActive = () => {
+    const scrollPos = window.scrollY + 120;
+    let current = "home";
+    sections.forEach(sec => {
+      if (sec.offsetTop <= scrollPos) current = sec.id;
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + current);
+    });
+  };
+  window.addEventListener("scroll", updateActive, { passive: true });
+  updateActive();
+
+  // form submit (placeholder)
+  const form = document.getElementById("waitlist-form");
+  const successMsg = document.getElementById("form-success");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      form.style.display = "none";
+      successMsg.classList.add("show");
+    });
+  }
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in");
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+</script>
+
+</body>
+</html>
