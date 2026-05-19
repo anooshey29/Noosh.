@@ -467,8 +467,22 @@
     width: 100%; height: 140px;
     display: grid; place-items: center;
     margin-bottom: 8px;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
   }
   .treat-illu svg { width: 100%; height: 100%; }
+  .treat-illu img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    transition: opacity 0.5s ease;
+  }
+  .treat-illu img.photo-hover { opacity: 0; }
+  .treat-card:hover .treat-illu img.photo-default { opacity: 0; }
+  .treat-card:hover .treat-illu img.photo-hover { opacity: 1; }
   .treat-card h3 {
     font-family: var(--display);
     font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 70;
@@ -982,32 +996,16 @@
       <!-- 1. Cookies — brown butter choc chunk -->
       <article class="treat-card reveal">
         <div class="treat-illu">
-          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="100" cy="125" rx="78" ry="6" fill="#5c4530" opacity="0.12"/>
-            <circle cx="78" cy="68" r="36" fill="#c8924a" stroke="#5c4530" stroke-width="2"/>
-            <circle cx="78" cy="68" r="36" fill="none" stroke="#a87938" stroke-width="2" stroke-dasharray="2 4" opacity="0.4"/>
-            <rect x="68" y="55" width="9" height="7" rx="1" fill="#3d2818" transform="rotate(15 73 58)"/>
-            <rect x="84" y="62" width="8" height="6" rx="1" fill="#3d2818" transform="rotate(-10 88 65)"/>
-            <rect x="74" y="78" width="9" height="6" rx="1" fill="#3d2818" transform="rotate(20 78 81)"/>
-            <rect x="60" y="73" width="6" height="5" rx="1" fill="#3d2818"/>
-            <ellipse cx="65" cy="55" rx="6" ry="3" fill="#e8b87a" opacity="0.6"/>
-            <circle cx="125" cy="82" r="42" fill="#c8924a" stroke="#5c4530" stroke-width="2"/>
-            <circle cx="125" cy="82" r="42" fill="none" stroke="#a87938" stroke-width="2" stroke-dasharray="2 4" opacity="0.4"/>
-            <rect x="115" y="68" width="10" height="8" rx="1.5" fill="#3d2818" transform="rotate(-12 120 72)"/>
-            <rect x="132" y="76" width="9" height="7" rx="1.5" fill="#3d2818" transform="rotate(20 136 79)"/>
-            <rect x="120" y="92" width="11" height="7" rx="1.5" fill="#3d2818" transform="rotate(-8 125 95)"/>
-            <rect x="138" y="92" width="7" height="6" rx="1" fill="#3d2818" transform="rotate(15 141 95)"/>
-            <rect x="106" y="84" width="7" height="6" rx="1" fill="#3d2818"/>
-            <ellipse cx="112" cy="70" rx="7" ry="3" fill="#e8b87a" opacity="0.6"/>
-            <circle cx="40" cy="120" r="2" fill="#8b6f4d"/>
-            <circle cx="170" cy="125" r="1.8" fill="#8b6f4d"/>
-            <circle cx="180" cy="115" r="1.3" fill="#5c4530"/>
-            <circle cx="30" cy="115" r="1.5" fill="#5c4530"/>
-          </svg>
+          <img src="images/cookie-closeup.jpg"
+               alt="Stack of brown butter chocolate chunk cookies on a white plate"
+               class="photo-default" loading="lazy">
+          <img src="images/cookies-bird-eye-view.jpg"
+               alt="" aria-hidden="true"
+               class="photo-hover" loading="lazy">
         </div>
         <h3>brown butter cookies</h3>
         <span class="tagline">soft &amp; chewy ✿</span>
-        <p>nutty brown butter, dark chocolate chunks, sea salt finish. our one and only.</p>
+        <p>Mixed by hand, browned-butter base, chocolate piled generously. The kind of cookie you eat warm, standing in the kitchen.</p>
         <div class="price">from $4</div>
       </article>
 
@@ -1042,31 +1040,16 @@
       <!-- 3. Brownies -->
       <article class="treat-card reveal">
         <div class="treat-illu">
-          <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="100" cy="128" rx="70" ry="5" fill="#5c4530" opacity="0.12"/>
-            <path d="M55 70 L62 122 L138 122 L145 70 Z" fill="#f4c8b6" stroke="#5c4530" stroke-width="2"/>
-            <line x1="70" y1="72" x2="73" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
-            <line x1="85" y1="72" x2="86" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
-            <line x1="100" y1="72" x2="100" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
-            <line x1="115" y1="72" x2="114" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
-            <line x1="130" y1="72" x2="127" y2="120" stroke="#5c4530" stroke-width="0.8" opacity="0.4"/>
-            <ellipse cx="100" cy="70" rx="46" ry="9" fill="#4a2e1a" stroke="#3d2d1c" stroke-width="2"/>
-            <ellipse cx="100" cy="68" rx="42" ry="6" fill="#5c3a22"/>
-            <path d="M70 68 Q80 64, 90 68 Q100 64, 110 68 Q120 64, 130 68" stroke="#3d2d1c" stroke-width="1.2" fill="none" opacity="0.6"/>
-            <path d="M75 72 Q85 70, 95 72" stroke="#3d2d1c" stroke-width="1" fill="none" opacity="0.5"/>
-            <path d="M105 72 Q115 70, 125 72" stroke="#3d2d1c" stroke-width="1" fill="none" opacity="0.5"/>
-            <ellipse cx="86" cy="65" rx="8" ry="2" fill="#8b6f4d" opacity="0.5"/>
-            <ellipse cx="115" cy="66" rx="6" ry="1.5" fill="#8b6f4d" opacity="0.4"/>
-            <rect x="83" y="62" width="6" height="5" rx="1" fill="#3d2818"/>
-            <rect x="106" y="63" width="5" height="4" rx="1" fill="#3d2818"/>
-            <rect x="92" y="40" width="2" height="22" fill="#5c4530"/>
-            <path d="M94 40 L114 40 L110 47 L114 54 L94 54 Z" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.2"/>
-            <text x="96" y="50" font-family="Caveat, cursive" font-size="9" fill="#c4615a">fudgy</text>
-          </svg>
+          <img src="images/brownies-upclose.jpg"
+               alt="Close-up of a fudgy brownie with crinkly top in a paper cup"
+               class="photo-default" loading="lazy">
+          <img src="images/brownies-bird-eye-view.jpg"
+               alt="" aria-hidden="true"
+               class="photo-hover" loading="lazy">
         </div>
         <h3>brownies</h3>
         <span class="tagline">fudgy &amp; rich ✿</span>
-        <p>thick fudgy brownies with crinkled tops, in cute paper cups so they're easy to grab and go.</p>
+        <p>The crinkly top shatters, the middle gives. Deep, slow chocolate that lingers long after the last bite.</p>
         <div class="price">$6</div>
       </article>
 
