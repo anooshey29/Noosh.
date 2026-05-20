@@ -383,29 +383,20 @@
 
   .hero-art {
     position: relative;
-    aspect-ratio: 1 / 1;
     max-width: 460px;
     justify-self: center;
   }
-  .hero-art svg {
-    width: 100%; height: 100%;
-    filter: drop-shadow(0 12px 24px rgba(61, 45, 28, 0.12));
+  .hero-art img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    animation: hero-bob 6s ease-in-out infinite;
   }
-  .floating-tag {
-    position: absolute;
-    background: var(--paper);
-    border: 1px solid var(--brown);
-    padding: 8px 14px;
-    border-radius: 4px;
-    font-family: var(--hand);
-    font-size: 18px;
-    color: var(--brown-deep);
-    box-shadow: 0 4px 8px rgba(61, 45, 28, 0.1);
+  @keyframes hero-bob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
   }
-  .floating-tag.t1 { top: 6%; left: -4%; transform: rotate(-6deg); }
-  .floating-tag.t1 b { color: var(--cherry); }
-  .floating-tag.t2 { bottom: 14%; right: -4%; transform: rotate(5deg); }
-  .floating-tag.t2 b { color: var(--sage-deep); }
 
   .divider {
     text-align: center;
@@ -838,154 +829,9 @@
   </div>
 
   <div class="hero-art">
-    <!-- cake on stand with floating ingredients -->
-    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- soft ground shadow -->
-      <ellipse cx="200" cy="345" rx="130" ry="10" fill="#8b6f4d" opacity="0.18"/>
-
-      <!-- cake stand pedestal -->
-      <rect x="180" y="290" width="40" height="40" fill="#fbf2e0" stroke="#5c4530" stroke-width="2.5"/>
-      <ellipse cx="200" cy="335" rx="60" ry="7" fill="#fbf2e0" stroke="#5c4530" stroke-width="2.5"/>
-      <ellipse cx="200" cy="290" rx="80" ry="9" fill="#fbf2e0" stroke="#5c4530" stroke-width="2.5"/>
-
-      <!-- cake bottom layer (sponge) -->
-      <rect x="135" y="245" width="130" height="46" fill="#f4dcc0" stroke="#5c4530" stroke-width="2.5"/>
-      <ellipse cx="200" cy="245" rx="65" ry="9" fill="#f4dcc0" stroke="#5c4530" stroke-width="2.5"/>
-
-      <!-- cream layer between -->
-      <ellipse cx="200" cy="245" rx="63" ry="6" fill="#fbf2e0"/>
-
-      <!-- cake middle layer (frosting) -->
-      <rect x="135" y="225" width="130" height="22" fill="#f4c8b6" stroke="#5c4530" stroke-width="2.5"/>
-      <ellipse cx="200" cy="225" rx="65" ry="9" fill="#f4c8b6" stroke="#5c4530" stroke-width="2.5"/>
-
-      <!-- cake top layer -->
-      <rect x="135" y="185" width="130" height="40" fill="#f4dcc0" stroke="#5c4530" stroke-width="2.5"/>
-      <ellipse cx="200" cy="185" rx="65" ry="9" fill="#f4dcc0" stroke="#5c4530" stroke-width="2.5"/>
-
-      <!-- top frosting wave (drippy) -->
-      <path d="M137 185 Q142 198, 152 185 Q160 200, 170 185 Q180 198, 190 185 Q200 200, 210 185 Q220 198, 230 185 Q240 200, 250 185 Q258 198, 263 185"
-            fill="#f4c8b6" stroke="#5c4530" stroke-width="2"/>
-
-      <!-- strawberry on top -->
-      <path d="M188 165 Q188 148, 200 148 Q212 148, 212 165 Q205 178, 200 178 Q195 178, 188 165 Z"
-            fill="#e8625f" stroke="#5c4530" stroke-width="2.5"/>
-      <ellipse cx="195" cy="156" rx="3" ry="2" fill="#fbf2e0" opacity="0.7"/>
-      <circle cx="194" cy="161" r="1" fill="#5c4530"/>
-      <circle cx="200" cy="166" r="1" fill="#5c4530"/>
-      <circle cx="206" cy="161" r="1" fill="#5c4530"/>
-      <circle cx="197" cy="171" r="1" fill="#5c4530"/>
-      <circle cx="203" cy="171" r="1" fill="#5c4530"/>
-      <!-- strawberry leaf -->
-      <path d="M196 148 Q190 140, 200 136 Q210 140, 204 148 Z" fill="#87a07a" stroke="#5c4530" stroke-width="1.5"/>
-
-      <!-- piped frosting dollops on top edge -->
-      <ellipse cx="155" cy="183" rx="7" ry="5" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
-      <ellipse cx="245" cy="183" rx="7" ry="5" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
-
-      <!-- ═════ floating ingredients ═════ -->
-
-      <!-- whisk top left -->
-      <g transform="translate(50, 60) rotate(-20)">
-        <rect x="-3" y="0" width="6" height="40" rx="2" fill="#8b6f4d" stroke="#5c4530" stroke-width="1.5"/>
-        <ellipse cx="0" cy="50" rx="9" ry="13" fill="none" stroke="#5c4530" stroke-width="2"/>
-        <path d="M-7 42 Q0 65, 7 42" stroke="#5c4530" stroke-width="1.5" fill="none"/>
-        <path d="M-5 38 Q0 65, 5 38" stroke="#5c4530" stroke-width="1.5" fill="none"/>
-      </g>
-
-      <!-- egg top right -->
-      <g transform="translate(335, 80)">
-        <ellipse cx="0" cy="0" rx="22" ry="26" fill="#fbf2e0" stroke="#5c4530" stroke-width="2"/>
-        <ellipse cx="-6" cy="-8" rx="4" ry="6" fill="#fff" opacity="0.6"/>
-        <!-- shell crack -->
-        <path d="M-15 -10 L-8 -5 L-12 -2 L-5 3" stroke="#5c4530" stroke-width="1.2" fill="none"/>
-      </g>
-
-      <!-- butter stick bottom left -->
-      <g transform="translate(60, 280) rotate(-15)">
-        <rect x="-30" y="-12" width="60" height="22" rx="3" fill="#f4dcc0" stroke="#5c4530" stroke-width="2"/>
-        <rect x="-30" y="-12" width="20" height="22" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5" opacity="0.8"/>
-        <text x="-18" y="3" font-family="Caveat, cursive" font-size="11" fill="#c4615a">butter</text>
-      </g>
-
-      <!-- chocolate chunk bottom right -->
-      <g transform="translate(330, 290) rotate(15)">
-        <path d="M-15 -12 L18 -8 L20 14 L-14 16 Z" fill="#4a2e1a" stroke="#3d2d1c" stroke-width="2"/>
-        <path d="M-15 -12 L-8 -6 L18 -8" stroke="#5c4530" stroke-width="1.5" fill="none" opacity="0.6"/>
-        <path d="M-14 16 L-6 8 L20 14" stroke="#3d2d1c" stroke-width="1" fill="none" opacity="0.4"/>
-      </g>
-
-      <!-- flour cloud / sugar sparkle middle right -->
-      <g transform="translate(310, 195)">
-        <circle cx="0" cy="0" r="3" fill="#fbf2e0" opacity="0.9"/>
-        <circle cx="8" cy="-4" r="2" fill="#fbf2e0" opacity="0.7"/>
-        <circle cx="-6" cy="6" r="2.5" fill="#fbf2e0" opacity="0.8"/>
-        <circle cx="12" cy="6" r="1.5" fill="#fbf2e0" opacity="0.6"/>
-      </g>
-
-      <!-- ═════ extra ingredients (cutely decorated) ═════ -->
-
-      <!-- sugar/flour jar — top center-left -->
-      <g transform="translate(135, 50) rotate(-6)">
-        <rect x="-14" y="0" width="28" height="34" rx="3" fill="#fbf2e0" stroke="#5c4530" stroke-width="2"/>
-        <rect x="-16" y="-4" width="32" height="6" rx="2" fill="#c4615a" stroke="#5c4530" stroke-width="1.5"/>
-        <text x="0" y="20" font-family="Caveat, cursive" font-size="9" fill="#5c4530" text-anchor="middle">sugar</text>
-        <circle cx="-6" cy="26" r="0.8" fill="#5c4530" opacity="0.5"/>
-        <circle cx="4" cy="28" r="0.6" fill="#5c4530" opacity="0.4"/>
-      </g>
-
-      <!-- vanilla pods — top right area -->
-      <g transform="translate(265, 60) rotate(35)">
-        <path d="M0 0 Q2 14, -2 28 Q-4 30, -3 32" fill="#3d2d1c" stroke="#1a0f08" stroke-width="1.5"/>
-        <path d="M5 2 Q7 16, 3 30 Q1 32, 2 34" fill="#5c4530" stroke="#1a0f08" stroke-width="1.5"/>
-      </g>
-
-      <!-- milk jug — middle left -->
-      <g transform="translate(45, 180) rotate(-8)">
-        <path d="M-12 0 L12 0 L14 28 L-14 28 Z" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.8"/>
-        <path d="M12 4 Q20 6, 18 12 L14 12" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
-        <ellipse cx="0" cy="0" rx="12" ry="3" fill="#fff" stroke="#5c4530" stroke-width="1.5"/>
-        <text x="0" y="18" font-family="Caveat, cursive" font-size="8" fill="#5577a8" text-anchor="middle">milk</text>
-      </g>
-
-      <!-- measuring spoon — bottom center -->
-      <g transform="translate(160, 320) rotate(-22)">
-        <ellipse cx="0" cy="0" rx="9" ry="6" fill="#e8c89a" stroke="#5c4530" stroke-width="1.5"/>
-        <ellipse cx="0" cy="-1" rx="6" ry="3" fill="#fbf2e0" opacity="0.8"/>
-        <rect x="-1.5" y="4" width="3" height="32" rx="1" fill="#c8a878" stroke="#5c4530" stroke-width="1.2"/>
-      </g>
-
-      <!-- mixing bowl with batter — center-right small -->
-      <g transform="translate(320, 240)">
-        <path d="M-18 0 Q-18 18, 0 18 Q18 18, 18 0 Z" fill="#a4b894" stroke="#5c4530" stroke-width="1.8"/>
-        <ellipse cx="0" cy="0" rx="18" ry="5" fill="#fbf2e0" stroke="#5c4530" stroke-width="1.5"/>
-        <ellipse cx="0" cy="-1" rx="14" ry="3" fill="#f4dcc0"/>
-        <!-- a little spoon dipping in -->
-        <rect x="6" y="-12" width="2" height="14" rx="1" fill="#8b6f4d" stroke="#5c4530" stroke-width="0.8" transform="rotate(15 7 -5)"/>
-      </g>
-
-      <!-- sprinkles scattered -->
-      <g opacity="0.85">
-        <rect x="118" y="118" width="2.5" height="6" rx="1" fill="#c4615a" transform="rotate(30 119 121)"/>
-        <rect x="270" y="130" width="2.5" height="6" rx="1" fill="#a4b894" transform="rotate(-20 271 133)"/>
-        <rect x="92" y="270" width="2.5" height="6" rx="1" fill="#ecae9a" transform="rotate(45 93 273)"/>
-        <rect x="290" y="100" width="2.5" height="6" rx="1" fill="#5577a8" transform="rotate(15 291 103)"/>
-        <rect x="155" y="120" width="2.5" height="5" rx="1" fill="#d9a85c"/>
-      </g>
-
-      <!-- tiny hearts -->
-      <text x="50" y="150" font-family="serif" font-size="14" fill="#e8a8a2" opacity="0.8">♡</text>
-      <text x="298" y="280" font-family="serif" font-size="12" fill="#c4615a" opacity="0.7">♡</text>
-
-      <!-- sparkles -->
-      <text x="100" y="160" font-family="Caveat, cursive" font-size="22" fill="#e8a8a2">✿</text>
-      <text x="290" y="195" font-family="Caveat, cursive" font-size="14" fill="#a4b894">✿</text>
-      <text x="80" y="220" font-family="Caveat, cursive" font-size="14" fill="#a4b894">✦</text>
-      <text x="270" y="100" font-family="Caveat, cursive" font-size="16" fill="#ecae9a">✦</text>
-    </svg>
-
-    <div class="floating-tag t1">made fresh <b>♡</b></div>
-    <div class="floating-tag t2">small batch <b>✿</b></div>
+    <img src="images/hero-cake.png"
+         alt="Watercolor illustration of a layered cake with strawberries and a candle, beside a recipe book, cinnamon sticks, a measuring cup of flour, eggs and a small bowl"
+         loading="eager">
   </div>
 </section>
 
