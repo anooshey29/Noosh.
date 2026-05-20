@@ -29,7 +29,6 @@
     --body: "Nunito", system-ui, sans-serif;
 
     --sidebar-w: 230px;
-    --sidebar-w-collapsed: 76px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -91,66 +90,9 @@
     padding: 32px 24px;
     display: flex;
     flex-direction: column;
-    transition: width 0.45s cubic-bezier(.2,.7,.2,1),
-                padding 0.45s cubic-bezier(.2,.7,.2,1),
-                transform 0.4s cubic-bezier(.2,.7,.2,1);
-  }
-
-  /* ── collapsible: icon-rail state ── */
-  .sidebar.collapsed { width: var(--sidebar-w-collapsed); padding: 32px 10px; }
-  .sidebar.collapsed .side-tagline,
-  .sidebar.collapsed .side-divider,
-  .sidebar.collapsed .side-bottom h6,
-  .sidebar.collapsed .side-bottom ul,
-  .sidebar.collapsed .nav-label,
-  .sidebar.collapsed .cta-label { opacity: 0; transform: translateX(-6px); pointer-events: none; }
-  .sidebar.collapsed .side-brand {
-    font-size: 28px;
-    transform: rotate(-3deg);
-    margin-bottom: 18px;
-    text-align: center;
-  }
-  .sidebar.collapsed .side-nav a { justify-content: center; padding: 12px 8px; }
-  .sidebar.collapsed .side-nav .icon { font-size: 22px; width: auto; }
-  .sidebar.collapsed .side-cta {
-    padding: 12px 8px;
-    font-size: 22px;
-    letter-spacing: 0;
-  }
-  .sidebar.collapsed .side-cta .cta-icon { display: inline !important; opacity: 1; }
-  .sidebar.collapsed .side-bottom { border-top: 1px dashed var(--line); padding-top: 16px; }
-  .side-tagline, .side-divider, .side-bottom h6, .side-bottom ul,
-  .nav-label, .cta-label {
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-
-  /* ── collapse toggle (cute little flower button) ── */
-  .collapse-btn {
-    position: absolute;
-    top: 26px; right: -14px;
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--cherry);
-    color: var(--paper);
-    box-shadow: 0 3px 0 -1px var(--brown-deep);
-    display: grid; place-items: center;
-    font-family: var(--hand);
-    font-size: 18px; font-weight: 700;
-    line-height: 1;
-    transition: transform 0.4s cubic-bezier(.2,.7,.2,1), box-shadow 0.2s ease;
-    z-index: 2;
-  }
-  .collapse-btn:hover { transform: rotate(20deg) scale(1.08); box-shadow: 0 4px 0 -1px var(--brown-deep); }
-  .collapse-btn::before {
-    content: "✿";
     transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
-    display: inline-block;
   }
-  .sidebar.collapsed .collapse-btn::before { transform: rotate(180deg); }
-  @media (max-width: 880px) { .collapse-btn { display: none; } }
 
-  main { transition: margin-left 0.45s cubic-bezier(.2,.7,.2,1); }
-  body.sb-collapsed main { margin-left: var(--sidebar-w-collapsed); }
   .sidebar::before {
     content: "";
     position: absolute;
@@ -741,21 +683,6 @@
     }
     .sidebar.open { transform: translateX(0); }
     main { margin-left: 0; }
-    body.sb-collapsed main { margin-left: 0; }
-    /* reset desktop-only collapsed state so the drawer always looks full on mobile */
-    .sidebar.collapsed { width: 280px; padding: 32px 24px; }
-    .sidebar.collapsed .side-tagline,
-    .sidebar.collapsed .side-divider,
-    .sidebar.collapsed .side-bottom h6,
-    .sidebar.collapsed .side-bottom ul,
-    .sidebar.collapsed .nav-label,
-    .sidebar.collapsed .cta-label { opacity: 1; transform: none; pointer-events: auto; }
-    .sidebar.collapsed .side-brand { font-size: 42px; transform: rotate(-3deg); margin-bottom: 4px; text-align: left; }
-    .sidebar.collapsed .side-nav a { justify-content: flex-start; padding: 10px 14px; }
-    .sidebar.collapsed .side-nav .icon { font-size: 18px; width: 18px; }
-    .sidebar.collapsed .side-cta { padding: 14px 18px; font-size: 14px; letter-spacing: 0.06em; }
-    .sidebar.collapsed .side-cta .cta-icon { display: none !important; }
-    .sidebar.collapsed .side-bottom { border-top: 1px dashed var(--line); padding-top: 24px; }
     .mobile-bar { display: flex; }
     .hero { grid-template-columns: 1fr; padding: 56px 24px 80px; gap: 36px; }
     .hero-art { max-width: 320px; }
@@ -794,7 +721,6 @@
 
 <!-- ════════════════════ SIDEBAR ════════════════════ -->
 <aside class="sidebar" id="sidebar">
-  <button class="collapse-btn" id="collapseBtn" aria-label="collapse sidebar" title="tuck the menu away"></button>
   <div class="side-brand">noosh<span class="dot">.</span></div>
   <span class="side-tagline">small kitchen, big love ✿</span>
 
@@ -1331,24 +1257,6 @@
       document.body.style.overflow = "";
     });
   });
-
-  // desktop sidebar collapse (icon rail)
-  const collapseBtn = document.getElementById("collapseBtn");
-  const sidebarEl = document.getElementById("sidebar");
-  const setCollapsed = (on) => {
-    sidebarEl.classList.toggle("collapsed", on);
-    document.body.classList.toggle("sb-collapsed", on);
-    collapseBtn.setAttribute("aria-label", on ? "open sidebar" : "collapse sidebar");
-    try { localStorage.setItem("noosh.sb", on ? "1" : "0"); } catch (_) {}
-  };
-  if (collapseBtn) {
-    let saved = null;
-    try { saved = localStorage.getItem("noosh.sb"); } catch (_) {}
-    if (saved === "1") setCollapsed(true);
-    collapseBtn.addEventListener("click", () => {
-      setCollapsed(!sidebarEl.classList.contains("collapsed"));
-    });
-  }
 
   // mobile sidebar toggle
   menuToggle.addEventListener("click", () => {
