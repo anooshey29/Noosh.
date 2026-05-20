@@ -90,8 +90,68 @@
     padding: 32px 24px;
     display: flex;
     flex-direction: column;
-    transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
+    transition: transform 350ms cubic-bezier(0.4, 0.0, 0.2, 1);
   }
+
+  /* ── desktop close button ── */
+  .desk-close-btn {
+    position: absolute;
+    top: 18px; right: 18px;
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+    border-radius: 8px;
+    color: #8b6f4d;
+    opacity: 0.6;
+    transition: opacity 0.2s ease, background 0.2s ease;
+  }
+  .desk-close-btn::before {
+    content: "";
+    display: block;
+    width: 7px; height: 7px;
+    border-left: 2px solid #8b6f4d;
+    border-bottom: 2px solid #8b6f4d;
+    transform: rotate(45deg) translate(1px, -1px);
+  }
+  .desk-close-btn:hover { opacity: 1; background: rgba(139, 111, 77, 0.1); }
+
+  /* ── sidebar hidden state (desktop only) ── */
+  @media (min-width: 881px) {
+    body.sb-closed .sidebar { transform: translateX(-100%); }
+    body.sb-closed main { margin-left: 0; }
+  }
+
+  /* ── reopen tab ── */
+  .sb-reopen-tab {
+    position: fixed;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 36px; height: 56px;
+    background: #f4c8b6;
+    border-radius: 0 12px 12px 0;
+    display: grid; place-items: center;
+    z-index: 101;
+    box-shadow: 0 4px 12px rgba(196, 97, 90, 0.18);
+    cursor: pointer;
+    font-size: 20px;
+    color: #c4615a;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 350ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+  @media (min-width: 881px) {
+    body.sb-closed .sb-reopen-tab { opacity: 1; pointer-events: auto; animation: sb-pulse 2s ease-in-out infinite; }
+  }
+  @keyframes sb-pulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50%       { transform: translateY(-50%) scale(1.05); }
+  }
+  @media (max-width: 880px) {
+    .desk-close-btn { display: none; }
+    .sb-reopen-tab  { display: none; }
+  }
+
+  /* ── petal breeze on reopen ── */
+  .petals.breeze .petal { animation-duration: 7s; }
 
   .sidebar::before {
     content: "";
@@ -254,6 +314,7 @@
     margin-left: var(--sidebar-w);
     position: relative;
     z-index: 2;
+    transition: margin-left 350ms cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
   /* ════════════════════ HERO ════════════════════ */
@@ -721,6 +782,7 @@
 
 <!-- ════════════════════ SIDEBAR ════════════════════ -->
 <aside class="sidebar" id="sidebar">
+  <button class="desk-close-btn" id="deskCloseBtn" aria-label="close sidebar"></button>
   <div class="side-brand">noosh<span class="dot">.</span></div>
   <span class="side-tagline">small kitchen, big love ✿</span>
 
@@ -744,6 +806,8 @@
     </ul>
   </div>
 </aside>
+
+<button class="sb-reopen-tab" id="sbReopenTab" aria-label="open sidebar">✿</button>
 
 <div class="sidebar-overlay" id="overlay"></div>
 
@@ -1257,6 +1321,28 @@
       document.body.style.overflow = "";
     });
   });
+
+  // desktop sidebar slide-away
+  const deskCloseBtn = document.getElementById("deskCloseBtn");
+  const sbReopenTab  = document.getElementById("sbReopenTab");
+  const petalsEl     = document.querySelector(".petals");
+
+  function triggerPetalBreeze() {
+    petalsEl.classList.add("breeze");
+    setTimeout(() => petalsEl.classList.remove("breeze"), 1500);
+  }
+
+  deskCloseBtn.addEventListener("click", () => {
+    if (window.innerWidth <= 880) return;
+    document.body.classList.add("sb-closed");
+  });
+  sbReopenTab.addEventListener("click", () => {
+    document.body.classList.remove("sb-closed");
+    triggerPetalBreeze();
+  });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth <= 880) document.body.classList.remove("sb-closed");
+  }, { passive: true });
 
   // mobile sidebar toggle
   menuToggle.addEventListener("click", () => {
