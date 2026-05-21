@@ -741,6 +741,55 @@
   .step-card p { font-size: 14px; color: var(--brown); line-height: 1.55; }
   .how-cta { text-align: center; }
 
+  /* ════ magic banner ════ */
+  .magic-section {
+    background: #c4615a;
+    padding: 96px 48px;
+    text-align: center;
+    position: relative; z-index: 2;
+  }
+  .magic-section h2 {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 90;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #f8e8d2;
+    margin-bottom: 10px;
+  }
+  .magic-subhead {
+    font-family: var(--hand);
+    font-style: italic;
+    font-size: 26px;
+    color: #f4c8b6;
+    margin-bottom: 52px;
+    display: block;
+  }
+  .magic-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 780px;
+    margin: 0 auto 52px;
+  }
+  .magic-photos img {
+    width: 100%; height: 320px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(61, 45, 28, 0.28);
+    display: block;
+  }
+  .magic-story {
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 17px;
+    color: #f8e8d2;
+    line-height: 1.72;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.92;
+  }
+
   /* ─── bag toast ─── */
   .bag-toast {
     position: fixed;
@@ -783,6 +832,9 @@
       gap: 36px;
     }
     .product-photo-outer { max-width: 400px; margin: 0 auto; }
+    .magic-section { padding: 64px 24px; }
+    .magic-photos { grid-template-columns: 1fr; }
+    .magic-photos img { height: 260px; }
     .box-grid { grid-template-columns: 1fr; }
     .box-grid .box-card:nth-child(even) { margin-top: 0; }
     .flavours-grid { grid-template-columns: 1fr; }
@@ -952,6 +1004,25 @@
 
     </div>
   </div>
+</section>
+
+<!-- ════════════════════ MAGIC BANNER ════════════════════ -->
+<section class="magic-section reveal">
+  <h2>the magic behind the crumbs</h2>
+  <span class="magic-subhead">the good stuff inside ♡</span>
+
+  <div class="magic-photos">
+    <img src="../images/butter.jpeg"
+         alt="Golden brown butter bubbling in a pan"
+         loading="lazy">
+    <img src="../images/cookies-bird-eye-view.jpg"
+         alt="Brown butter chocolate chunk cookies from above"
+         loading="lazy">
+  </div>
+
+  <p class="magic-story">
+    three things make these cookies — real butter browned slow until it smells like toffee, dark chocolate broken by hand, and a little patience. no shortcuts, no mixes, just the good stuff.
+  </p>
 </section>
 
 <div class="divider">✿ ✦ ✿ ✦ ✿</div>
