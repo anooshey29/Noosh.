@@ -335,28 +335,6 @@
   }
   .section-title em { font-style: italic; color: var(--cherry); }
 
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 26px;
-    border-radius: 999px;
-    font-size: 14px; font-weight: 700;
-    letter-spacing: 0.03em;
-    transition: all 0.25s ease;
-  }
-  .btn-primary {
-    background: var(--cherry); color: var(--paper);
-    box-shadow: 0 5px 0 -1px var(--brown-deep);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 7px 0 -1px var(--brown-deep); }
-  .btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 -1px var(--brown-deep); }
-  .btn-ghost {
-    background: var(--paper); color: var(--brown-deep);
-    border: 1.5px solid var(--brown);
-  }
-  .btn-ghost:hover { background: var(--cream-deep); }
-  .arrow { transition: transform 0.25s ease; }
-  .btn:hover .arrow { transform: translateX(4px); }
-
   /* ─── reveal ─── */
   .reveal {
     opacity: 0;
@@ -437,52 +415,9 @@
 
   /* product hero */
   .product-hero {
-    max-width: 1080px; margin: 0 auto;
+    max-width: 700px; margin: 0 auto;
     padding: 44px 48px 80px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
     position: relative; z-index: 2;
-  }
-
-  .product-photo-outer {
-    transform: rotate(-1.5deg);
-    transition: transform 0.5s cubic-bezier(.2,.7,.2,1);
-  }
-  .product-photo-outer:hover { transform: rotate(0deg); }
-
-  .product-photo-wrap {
-    position: relative;
-    border-radius: 28px;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    box-shadow: 0 20px 52px -12px rgba(61, 45, 28, 0.22);
-  }
-  .product-photo-wrap img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    border-radius: 28px;
-    transition: opacity 0.6s ease;
-  }
-  .product-photo-wrap img.photo-hover { opacity: 0; }
-  .product-photo-wrap:hover img.photo-default { opacity: 0; }
-  .product-photo-wrap:hover img.photo-hover { opacity: 1; }
-
-  /* washi tape strip across the top of the photo */
-  .product-photo-outer::before {
-    content: "";
-    position: absolute;
-    top: -10px; left: 50%;
-    transform: translateX(-50%) rotate(-2deg);
-    width: 110px; height: 22px;
-    background: rgba(244, 200, 182, 0.65);
-    border-radius: 2px;
-    z-index: 2;
-    pointer-events: none;
   }
 
   .product-info .prod-eyebrow {
@@ -514,13 +449,7 @@
     color: var(--brown-deep);
     line-height: 1.72;
     margin-bottom: 14px;
-    max-width: 46ch;
   }
-  .product-actions {
-    display: flex; gap: 12px; flex-wrap: wrap;
-    margin-top: 28px;
-  }
-
   /* ════ choose your box ════ */
   .box-section { padding: 64px 0 80px; }
 
@@ -817,18 +746,6 @@
 <!-- ════════════════════ PRODUCT HERO ════════════════════ -->
 <div class="product-hero reveal">
 
-  <!-- photo -->
-  <div class="product-photo-outer">
-    <div class="product-photo-wrap">
-      <img src="../images/cookie-closeup.jpg"
-           alt="Stack of golden brown butter chocolate chunk cookies with crisp edges and gooey middles"
-           class="photo-default">
-      <img src="../images/cookies-bird-eye-view.jpg"
-           alt="" aria-hidden="true"
-           class="photo-hover">
-    </div>
-  </div>
-
   <!-- text -->
   <div class="product-info">
     <span class="prod-eyebrow">✿ the signature treat</span>
@@ -842,10 +759,6 @@
       edges crisp, middles soft, finished with a pinch of sea salt. the kind of cookie you eat warm, standing in the kitchen, before they've had a chance to cool.
     </p>
 
-    <div class="product-actions">
-      <a href="../index.html#waitlist" class="btn btn-primary">join the waitlist <span class="arrow">→</span></a>
-      <a href="../index.html#menu" class="btn btn-ghost">← the full menu</a>
-    </div>
   </div>
 
 </div>
