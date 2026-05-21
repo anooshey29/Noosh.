@@ -741,6 +741,29 @@
   .step-card p { font-size: 14px; color: var(--brown); line-height: 1.55; }
   .how-cta { text-align: center; }
 
+  /* ─── bag toast ─── */
+  .bag-toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 22px;
+    font-family: var(--hand);
+    font-size: 19px;
+    color: #c4615a;
+    box-shadow: 0 8px 28px rgba(61, 45, 28, 0.14);
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+  }
+  .bag-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* ════════════════════ RESPONSIVE ════════════════════ */
   @media (max-width: 880px) {
     .sidebar {
@@ -888,7 +911,10 @@
         <span class="box-name-badge">box of 4</span>
         <div class="box-price">$16.95</div>
         <p class="box-caption">a sweet little stash</p>
-        <button class="add-btn">add to ingredients list ♡</button>
+        <button class="add-btn"
+          data-id="cookies-box-4"
+          data-name="brown butter cookies — box of 4"
+          data-price="16.95">add to ingredients list ♡</button>
       </article>
 
       <!-- Box of 8 -->
@@ -902,7 +928,10 @@
         <span class="box-name-badge">box of 8</span>
         <div class="box-price">$26.95</div>
         <p class="box-caption">the sharing size</p>
-        <button class="add-btn">add to ingredients list ♡</button>
+        <button class="add-btn"
+          data-id="cookies-box-8"
+          data-name="brown butter cookies — box of 8"
+          data-price="26.95">add to ingredients list ♡</button>
       </article>
 
       <!-- Box of 12 -->
@@ -915,7 +944,10 @@
         <span class="box-name-badge">box of 12</span>
         <div class="box-price">$38.95</div>
         <p class="box-caption">for serious cookie energy</p>
-        <button class="add-btn">add to ingredients list ♡</button>
+        <button class="add-btn"
+          data-id="cookies-box-12"
+          data-name="brown butter cookies — box of 12"
+          data-price="38.95">add to ingredients list ♡</button>
       </article>
 
     </div>
@@ -1139,6 +1171,48 @@
     });
   }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+</script>
+
+<!-- bag toast element -->
+<div class="bag-toast" id="bagToast" aria-live="polite">added to your ingredients list ♡</div>
+
+<script>
+  const BAG_KEY = "noosh_bag";
+  let toastTimer = null;
+
+  function getBag() {
+    try { return JSON.parse(localStorage.getItem(BAG_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveBag(bag) {
+    localStorage.setItem(BAG_KEY, JSON.stringify(bag));
+  }
+
+  function addToBag(id, name, price) {
+    const bag = getBag();
+    const existing = bag.find(item => item.id === id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      bag.push({ id, name, price: parseFloat(price), quantity: 1 });
+    }
+    saveBag(bag);
+    showToast();
+  }
+
+  function showToast() {
+    const toast = document.getElementById("bagToast");
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+  }
+
+  document.querySelectorAll(".add-btn[data-id]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      addToBag(btn.dataset.id, btn.dataset.name, btn.dataset.price);
+    });
+  });
 </script>
 
 </body>
