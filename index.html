@@ -489,11 +489,13 @@
     padding: 22px;
     text-align: center;
     position: relative;
-    transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
+    transition: transform 0.4s cubic-bezier(.2,.7,.2,1), box-shadow 250ms ease;
   }
-  .treat-card:nth-child(odd) { transform: rotate(-1deg); }
-  .treat-card:nth-child(even) { transform: rotate(1deg); margin-top: 24px; }
-  .treat-card:hover { transform: rotate(0) translateY(-6px) !important; }
+  .treat-card-link { display: block; text-decoration: none; color: inherit; }
+  .treat-card-link:nth-child(odd) .treat-card { transform: rotate(-1deg); }
+  .treat-card-link:nth-child(even) { margin-top: 24px; }
+  .treat-card-link:nth-child(even) .treat-card { transform: rotate(1deg); }
+  .treat-card:hover { transform: rotate(0) translateY(-6px) !important; box-shadow: 0 12px 32px rgba(196, 97, 90, 0.18); }
   .treat-illu {
     width: 100%; height: 280px;
     display: grid; place-items: center;
@@ -791,7 +793,7 @@
     .hero-art { max-width: 320px; }
     .container { padding: 0 24px; }
     .menu-grid { grid-template-columns: 1fr; }
-    .treat-card:nth-child(even) { margin-top: 0; }
+    .treat-card-link:nth-child(even) { margin-top: 0; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
     .polaroid { margin: 0 auto; }
     .row-2 { grid-template-columns: 1fr; }
@@ -905,6 +907,7 @@
     <div class="menu-grid">
 
       <!-- 1. Cookies — brown butter choc chunk -->
+      <a class="treat-card-link" href="/products/cookies.html">
       <article class="treat-card photo-card reveal">
         <div class="treat-illu">
           <img src="images/cookie-closeup.jpg"
@@ -917,10 +920,12 @@
         <h3>brown butter cookies</h3>
         <span class="tagline">soft &amp; chewy ✿</span>
         <p>Mixed by hand, browned-butter base, chocolate piled generously. The kind of cookie you eat warm, standing in the kitchen.</p>
-        <a href="#" class="view-options-link">view options →</a>
+        <span class="view-options-link">view options →</span>
       </article>
+      </a>
 
       <!-- 2. Bento cakes -->
+      <a class="treat-card-link" href="/products/bento-cakes.html">
       <article class="treat-card reveal">
         <div class="treat-illu">
           <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
@@ -944,10 +949,12 @@
         <h3>bento cakes</h3>
         <span class="tagline">cake for one ♡</span>
         <p>tiny lunchbox-sized cakes with a piped message — perfect for a moment.</p>
-        <a href="#" class="view-options-link">view options →</a>
+        <span class="view-options-link">view options →</span>
       </article>
+      </a>
 
       <!-- 3. Brownies -->
+      <a class="treat-card-link" href="/products/brownies.html">
       <article class="treat-card photo-card reveal">
         <span class="ribbon">most-loved</span>
         <div class="treat-illu">
@@ -961,10 +968,12 @@
         <h3>brownies</h3>
         <span class="tagline">fudgy &amp; rich ✿</span>
         <p>The crinkly top shatters, the middle gives. Deep, slow chocolate that lingers long after the last bite.</p>
-        <a href="#" class="view-options-link">view options →</a>
+        <span class="view-options-link">view options →</span>
       </article>
+      </a>
 
       <!-- 4. Cake pops -->
+      <a class="treat-card-link" href="/products/cake-pops.html">
       <article class="treat-card reveal">
         <div class="treat-illu">
           <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
@@ -995,10 +1004,12 @@
         <h3>cake pops</h3>
         <span class="tagline">bite-sized joy ✦</span>
         <p>dipped, sprinkled, ribbon-tied. great for parties or treating yourself.</p>
-        <a href="#" class="view-options-link">view options →</a>
+        <span class="view-options-link">view options →</span>
       </article>
+      </a>
 
       <!-- 5. Dunkers -->
+      <a class="treat-card-link" href="/products/dunkers.html">
       <article class="treat-card reveal">
         <span class="ribbon">signature</span>
         <div class="treat-illu">
@@ -1036,10 +1047,12 @@
         <h3>dunkers</h3>
         <span class="tagline">pick two pots ✿</span>
         <p>a box of bite-sized cookies + two warm dipping pots. nutella, salted caramel, raspberry, or white chocolate.</p>
-        <a href="#" class="view-options-link">view options →</a>
+        <span class="view-options-link">view options →</span>
       </article>
+      </a>
 
       <!-- 6. Knock cake -->
+      <a class="treat-card-link" href="/products/knock-cake.html">
       <article class="treat-card reveal">
         <span class="ribbon">made to order</span>
         <div class="treat-illu">
@@ -1069,8 +1082,9 @@
         <h3>knock cake</h3>
         <span class="tagline">tap the dome ✦</span>
         <p>a layered cake hidden under a glossy chocolate dome — knock it, crack it, dig in. our showstopper.</p>
-        <a href="#" class="view-options-link">view options →</a>
+        <span class="view-options-link">view options →</span>
       </article>
+      </a>
 
     </div>
   </div>
