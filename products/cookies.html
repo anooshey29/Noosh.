@@ -523,92 +523,118 @@
 
   /* ════ choose your box ════ */
   .box-section { padding: 64px 0 80px; }
-  .box-head { text-align: center; margin-bottom: 52px; }
 
-  .box-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .box-card {
+  .box-single-card {
+    max-width: 880px;
+    margin: 0 auto;
     background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    padding: 22px;
-    text-align: center;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.4s cubic-bezier(.2,.7,.2,1), box-shadow 250ms ease;
-  }
-  .box-grid .box-card:nth-child(odd)  { transform: rotate(-1deg); }
-  .box-grid .box-card:nth-child(even) { transform: rotate(1deg); margin-top: 20px; }
-  .box-card:hover {
-    transform: rotate(0) translateY(-6px) !important;
-    box-shadow: 0 12px 32px rgba(196, 97, 90, 0.18);
-  }
-  .box-card .ribbon {
-    position: absolute;
-    top: -12px; left: 50%;
-    transform: translateX(-50%);
-    background: var(--strawberry); color: var(--paper);
-    padding: 4px 14px; border-radius: 999px;
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;
-  }
-  .box-photo {
-    width: 100%; height: 200px;
     border-radius: 16px;
+    box-shadow: 0 12px 40px -8px rgba(61, 45, 28, 0.16);
+    transform: rotate(-1deg);
+    display: grid;
+    grid-template-columns: 45% 1fr;
     overflow: hidden;
-    margin-bottom: 16px;
   }
-  .box-photo img {
+  .box-card-photo { position: relative; overflow: hidden; }
+  .box-card-photo img {
     width: 100%; height: 100%;
     object-fit: cover;
-    border-radius: 16px;
     display: block;
+    min-height: 420px;
   }
-  .box-name-badge {
-    display: inline-block;
-    font-family: var(--hand);
-    font-size: 22px;
-    color: #c4615a;
-    border: 1.5px solid #c4615a;
-    border-radius: 999px;
-    background: var(--paper);
-    padding: 4px 20px;
-    margin-bottom: 12px;
+  .box-card-ui {
+    padding: 36px 40px;
+    display: flex;
+    flex-direction: column;
   }
-  .box-price {
-    font-family: var(--display);
-    font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 60;
-    font-size: 24px;
-    color: #3d2d1c;
-    margin-bottom: 6px;
-  }
-  .box-caption {
-    font-family: var(--body);
-    font-style: italic;
-    font-size: 14px;
-    color: #8b6f4d;
-    margin-bottom: 20px;
-  }
-  .add-btn {
-    display: inline-block;
+  .box-size-label {
     font-family: var(--hand);
     font-size: 18px;
-    color: #c4615a;
-    background: var(--paper);
-    border: 1.5px solid #c4615a;
-    border-radius: 999px;
-    padding: 8px 20px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-    text-decoration: none;
+    color: #a4b894;
+    margin-bottom: 8px;
+    display: block;
   }
-  .add-btn:hover {
+  .box-heading {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 90;
+    font-size: clamp(26px, 3.2vw, 40px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--brown-deep);
+    margin-bottom: 28px;
+  }
+  .size-pills {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+    align-items: flex-end;
+  }
+  .size-pill-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .size-pill-most-pop {
+    font-family: var(--hand);
+    font-size: 14px;
+    color: #c4615a;
+    transform: rotate(-5deg);
+    display: block;
+    white-space: nowrap;
+    height: 20px;
+    line-height: 20px;
+  }
+  .size-pill-spacer { display: block; height: 20px; }
+  .size-pill {
+    height: 48px;
+    padding: 0 28px;
+    font-family: var(--hand);
+    font-size: 22px;
+    border-radius: 999px;
+    border: 1.5px solid #c4615a;
+    background: #f8e8d2;
+    color: #c4615a;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .size-pill.selected {
+    background: #c4615a;
+    color: #f8e8d2;
+  }
+  .box-live-price {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 60;
+    font-size: 32px;
+    color: #3d2d1c;
+    margin-bottom: 4px;
+  }
+  .box-live-caption {
+    font-family: var(--hand);
+    font-style: italic;
+    font-size: 18px;
+    color: #8b6f4d;
+    display: block;
+    margin-bottom: 28px;
+  }
+  .box-add-btn {
+    display: inline-block;
+    font-family: var(--hand);
+    font-size: 20px;
+    color: #f8e8d2;
+    background: #c4615a;
+    border: none;
+    border-radius: 999px;
+    padding: 14px 32px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(196, 97, 90, 0.28);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    align-self: flex-start;
+    margin-top: auto;
+  }
+  .box-add-btn:hover {
     transform: translateY(-2px);
-    background: var(--cream);
-    box-shadow: 0 4px 14px rgba(196, 97, 90, 0.16);
+    box-shadow: 0 7px 20px rgba(196, 97, 90, 0.32);
   }
 
   /* ════ tasting note ════ */
@@ -720,8 +746,8 @@
     .magic-section { padding: 64px 24px; }
     .magic-photos { grid-template-columns: 1fr; }
     .magic-photos img { height: 260px; }
-    .box-grid { grid-template-columns: 1fr; }
-    .box-grid .box-card:nth-child(even) { margin-top: 0; }
+    .box-single-card { grid-template-columns: 1fr; transform: none; }
+    .box-card-photo img { min-height: 260px; }
     .footer-inner { padding: 0 24px; }
   }
 </style>
@@ -821,62 +847,40 @@
 <!-- ════════════════════ CHOOSE YOUR BOX ════════════════════ -->
 <section class="box-section">
   <div class="container">
+    <div class="box-single-card reveal">
 
-    <div class="box-head reveal">
-      <span class="section-eyebrow">pick your size</span>
-      <h2 class="section-title">choose your <em>box</em></h2>
-    </div>
+      <!-- photo -->
+      <div class="box-card-photo">
+        <img src="../images/cookie-closeup.jpg"
+             alt="Brown butter chocolate chunk cookies, close up"
+             loading="lazy">
+      </div>
 
-    <div class="box-grid">
+      <!-- selection UI -->
+      <div class="box-card-ui">
+        <span class="box-size-label">pick your size</span>
+        <h2 class="box-heading">choose your box</h2>
 
-      <!-- Box of 4 -->
-      <article class="box-card reveal">
-        <div class="box-photo">
-          <img src="../images/cookie-closeup.jpg"
-               alt="Box of 4 brown butter chocolate chunk cookies"
-               loading="lazy">
+        <div class="size-pills">
+          <div class="size-pill-wrap">
+            <span class="size-pill-spacer"></span>
+            <button class="size-pill" data-size="4">4</button>
+          </div>
+          <div class="size-pill-wrap">
+            <span class="size-pill-most-pop">most popular ♡</span>
+            <button class="size-pill selected" data-size="8">8</button>
+          </div>
+          <div class="size-pill-wrap">
+            <span class="size-pill-spacer"></span>
+            <button class="size-pill" data-size="12">12</button>
+          </div>
         </div>
-        <span class="box-name-badge">box of 4</span>
-        <div class="box-price">$16.95</div>
-        <p class="box-caption">a sweet little stash</p>
-        <button class="add-btn"
-          data-id="cookies-box-4"
-          data-name="brown butter cookies — box of 4"
-          data-price="16.95">add to ingredients list ♡</button>
-      </article>
 
-      <!-- Box of 8 -->
-      <article class="box-card reveal">
-        <span class="ribbon">most popular</span>
-        <div class="box-photo">
-          <img src="../images/cookies-bird-eye-view.jpg"
-               alt="Box of 8 brown butter chocolate chunk cookies, bird's eye view"
-               loading="lazy">
-        </div>
-        <span class="box-name-badge">box of 8</span>
-        <div class="box-price">$26.95</div>
-        <p class="box-caption">the sharing size</p>
-        <button class="add-btn"
-          data-id="cookies-box-8"
-          data-name="brown butter cookies — box of 8"
-          data-price="26.95">add to ingredients list ♡</button>
-      </article>
+        <div class="box-live-price" id="boxPrice">$26.95</div>
+        <span class="box-live-caption" id="boxCaption">the sharing size</span>
 
-      <!-- Box of 12 -->
-      <article class="box-card reveal">
-        <div class="box-photo">
-          <img src="../images/cookie-closeup.jpg"
-               alt="Box of 12 brown butter chocolate chunk cookies"
-               loading="lazy">
-        </div>
-        <span class="box-name-badge">box of 12</span>
-        <div class="box-price">$38.95</div>
-        <p class="box-caption">for serious cookie energy</p>
-        <button class="add-btn"
-          data-id="cookies-box-12"
-          data-name="brown butter cookies — box of 12"
-          data-price="38.95">add to ingredients list ♡</button>
-      </article>
+        <button class="box-add-btn" id="boxAddBtn">add to ingredients list ♡</button>
+      </div>
 
     </div>
   </div>
@@ -1005,10 +1009,36 @@
     toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
   }
 
-  document.querySelectorAll(".add-btn[data-id]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      addToBag(btn.dataset.id, btn.dataset.name, btn.dataset.price);
+  // box size selection
+  const sizeData = {
+    4:  { price: 16.95, caption: "a sweet little stash" },
+    8:  { price: 26.95, caption: "the sharing size" },
+    12: { price: 38.95, caption: "for serious cookie energy" },
+  };
+  let selectedSize = 8;
+
+  const priceEl   = document.getElementById("boxPrice");
+  const captionEl = document.getElementById("boxCaption");
+  const addBtn    = document.getElementById("boxAddBtn");
+
+  document.querySelectorAll(".size-pill").forEach(pill => {
+    pill.addEventListener("click", () => {
+      document.querySelectorAll(".size-pill").forEach(p => p.classList.remove("selected"));
+      pill.classList.add("selected");
+      selectedSize = parseInt(pill.dataset.size, 10);
+      const { price, caption } = sizeData[selectedSize];
+      priceEl.textContent = "$" + price.toFixed(2);
+      captionEl.textContent = caption;
     });
+  });
+
+  addBtn.addEventListener("click", () => {
+    const { price } = sizeData[selectedSize];
+    addToBag(
+      "cookies-box-" + selectedSize,
+      "brown butter cookies — box of " + selectedSize,
+      price
+    );
   });
 </script>
 
