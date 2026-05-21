@@ -534,6 +534,96 @@
     margin-top: 28px;
   }
 
+  /* ════ choose your box ════ */
+  .box-section { padding: 64px 0 80px; }
+  .box-head { text-align: center; margin-bottom: 52px; }
+
+  .box-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .box-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 22px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(.2,.7,.2,1), box-shadow 250ms ease;
+  }
+  .box-grid .box-card:nth-child(odd)  { transform: rotate(-1deg); }
+  .box-grid .box-card:nth-child(even) { transform: rotate(1deg); margin-top: 20px; }
+  .box-card:hover {
+    transform: rotate(0) translateY(-6px) !important;
+    box-shadow: 0 12px 32px rgba(196, 97, 90, 0.18);
+  }
+  .box-card .ribbon {
+    position: absolute;
+    top: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--strawberry); color: var(--paper);
+    padding: 4px 14px; border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;
+  }
+  .box-photo {
+    width: 100%; height: 200px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .box-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
+  }
+  .box-name-badge {
+    display: inline-block;
+    font-family: var(--hand);
+    font-size: 22px;
+    color: #c4615a;
+    border: 1.5px solid #c4615a;
+    border-radius: 999px;
+    background: var(--paper);
+    padding: 4px 20px;
+    margin-bottom: 12px;
+  }
+  .box-price {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 60, "wght" 500, "SOFT" 60;
+    font-size: 24px;
+    color: #3d2d1c;
+    margin-bottom: 6px;
+  }
+  .box-caption {
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 14px;
+    color: #8b6f4d;
+    margin-bottom: 20px;
+  }
+  .add-btn {
+    display: inline-block;
+    font-family: var(--hand);
+    font-size: 18px;
+    color: #c4615a;
+    background: var(--paper);
+    border: 1.5px solid #c4615a;
+    border-radius: 999px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+  }
+  .add-btn:hover {
+    transform: translateY(-2px);
+    background: var(--cream);
+    box-shadow: 0 4px 14px rgba(196, 97, 90, 0.16);
+  }
+
   /* flavours section */
   .flavours-section { padding: 64px 0 80px; }
   .flavours-head { text-align: center; margin-bottom: 52px; }
@@ -670,6 +760,8 @@
       gap: 36px;
     }
     .product-photo-outer { max-width: 400px; margin: 0 auto; }
+    .box-grid { grid-template-columns: 1fr; }
+    .box-grid .box-card:nth-child(even) { margin-top: 0; }
     .flavours-grid { grid-template-columns: 1fr; }
     .flavours-grid .flavour-card:nth-child(even) { margin-top: 0; }
     .steps-grid { grid-template-columns: 1fr; }
@@ -774,6 +866,61 @@
   </div>
 
 </div>
+
+<!-- ════════════════════ CHOOSE YOUR BOX ════════════════════ -->
+<section class="box-section">
+  <div class="container">
+
+    <div class="box-head reveal">
+      <span class="section-eyebrow">pick your size</span>
+      <h2 class="section-title">choose your <em>box</em></h2>
+    </div>
+
+    <div class="box-grid">
+
+      <!-- Box of 4 -->
+      <article class="box-card reveal">
+        <div class="box-photo">
+          <img src="../images/cookie-closeup.jpg"
+               alt="Box of 4 brown butter chocolate chunk cookies"
+               loading="lazy">
+        </div>
+        <span class="box-name-badge">box of 4</span>
+        <div class="box-price">$16.95</div>
+        <p class="box-caption">a sweet little stash</p>
+        <button class="add-btn">add to ingredients list ♡</button>
+      </article>
+
+      <!-- Box of 8 -->
+      <article class="box-card reveal">
+        <span class="ribbon">most popular</span>
+        <div class="box-photo">
+          <img src="../images/cookies-bird-eye-view.jpg"
+               alt="Box of 8 brown butter chocolate chunk cookies, bird's eye view"
+               loading="lazy">
+        </div>
+        <span class="box-name-badge">box of 8</span>
+        <div class="box-price">$26.95</div>
+        <p class="box-caption">the sharing size</p>
+        <button class="add-btn">add to ingredients list ♡</button>
+      </article>
+
+      <!-- Box of 12 -->
+      <article class="box-card reveal">
+        <div class="box-photo">
+          <img src="../images/cookie-closeup.jpg"
+               alt="Box of 12 brown butter chocolate chunk cookies"
+               loading="lazy">
+        </div>
+        <span class="box-name-badge">box of 12</span>
+        <div class="box-price">$38.95</div>
+        <p class="box-caption">for serious cookie energy</p>
+        <button class="add-btn">add to ingredients list ♡</button>
+      </article>
+
+    </div>
+  </div>
+</section>
 
 <div class="divider">✿ ✦ ✿ ✦ ✿</div>
 
