@@ -421,12 +421,17 @@
   }
   .back-link {
     font-family: var(--hand);
-    font-size: 19px;
-    color: var(--brown);
+    font-size: 20px;
+    color: #8b6f4d;
     display: inline-flex; align-items: center; gap: 5px;
     transition: color 0.2s ease;
   }
-  .back-link:hover { color: var(--cherry); }
+  .back-link:hover {
+    color: #8b6f4d;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(139, 111, 77, 0.5);
+  }
   .back-arrow { display: inline-block; transition: transform 0.2s ease; }
   .back-link:hover .back-arrow { transform: translateX(-3px); }
 
@@ -494,7 +499,7 @@
     font-size: clamp(40px, 5.5vw, 70px);
     line-height: 0.96;
     letter-spacing: -0.025em;
-    color: var(--brown-deep);
+    color: var(--ink);
     margin-bottom: 12px;
   }
   .product-tagline {
@@ -747,7 +752,7 @@
   <div class="product-info">
     <span class="prod-eyebrow">✿ the signature treat</span>
     <h1>brown butter<br>cookies</h1>
-    <span class="product-tagline">soft &amp; chewy ✿</span>
+    <span class="product-tagline">crinkled tops, gooey middles ♡</span>
 
     <div class="product-chips">
       <span class="chip">✦ small-batch only</span>
