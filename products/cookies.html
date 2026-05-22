@@ -422,11 +422,17 @@
     max-width: 800px;
     margin: 0 auto;
     box-sizing: border-box;
-    background: transparent !important;
-    background-color: transparent !important;
-    border: 90px solid transparent;
-    border-image: url('../images/frame.png') 364 445 364 445 / 1 / 0 round;
-    padding: 35px 45px;
+    position: relative;
+    padding: 60px;
+  }
+  .frame-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+    z-index: 0;
   }
   @media (max-width: 880px) {
     .hero-frame {
@@ -445,6 +451,8 @@
   .product-desc {
     background: transparent !important;
     background-color: transparent !important;
+    position: relative;
+    z-index: 1;
   }
   .product-info .prod-eyebrow {
     font-family: var(--hand);
@@ -767,6 +775,7 @@
 
   <!-- text -->
   <div class="hero-frame">
+    <img src="../images/frame.png" class="frame-overlay" alt="">
     <div class="product-info">
       <span class="prod-eyebrow">✿ the signature treat</span>
       <h1>brown butter<br>cookies</h1>
