@@ -416,34 +416,36 @@
   .product-hero {
     padding: 44px 24px 80px;
     position: relative; z-index: 2;
-    background: transparent;
+    background: transparent !important;
   }
   .hero-frame {
     max-width: 800px;
     margin: 0 auto;
     box-sizing: border-box;
-    background-color: transparent;
-    background-image:
-      radial-gradient(ellipse at 15% 10%, rgba(244, 200, 182, 0.45), transparent 50%),
-      radial-gradient(ellipse at 85% 25%, rgba(232, 168, 162, 0.28), transparent 45%),
-      radial-gradient(ellipse at 75% 80%, rgba(164, 184, 148, 0.22), transparent 50%),
-      radial-gradient(ellipse at 10% 90%, rgba(244, 220, 192, 0.5),  transparent 45%);
-    background-attachment: fixed;
-    border: 100px solid transparent;
-    border-image: url('../images/frame.png') 334 415 334 415 / 1 / 0 round;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 90px solid transparent;
+    border-image: url('../images/frame.png') 364 445 364 445 / 1 / 0 round;
     padding: 35px 45px;
   }
   @media (max-width: 880px) {
     .hero-frame {
-      border-width: 60px;
-      border-image: url('../images/frame.png') 334 415 334 415 / 1 / 0 round;
+      border-width: 50px;
+      border-image: url('../images/frame.png') 364 445 364 445 / 1 / 0 round;
       padding: 25px 30px;
       margin: 0 16px;
       max-width: none;
     }
   }
 
-  .product-info { background: transparent; }
+  .product-info,
+  .product-info .prod-eyebrow,
+  .product-info h1,
+  .product-tagline,
+  .product-desc {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
   .product-info .prod-eyebrow {
     font-family: var(--hand);
     font-size: 22px;
