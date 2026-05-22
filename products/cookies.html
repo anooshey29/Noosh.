@@ -416,6 +416,7 @@
   .product-hero {
     padding: 44px 24px 80px;
     position: relative; z-index: 2;
+    background: transparent;
   }
   .hero-frame {
     max-width: 800px;
@@ -424,18 +425,19 @@
     background: transparent;
     border: 100px solid transparent;
     border-image: url('../images/frame.png') 334 415 334 415 / 1 / 0 round;
-    padding: 50px 60px;
+    padding: 35px 45px;
   }
   @media (max-width: 880px) {
     .hero-frame {
       border-width: 60px;
       border-image: url('../images/frame.png') 334 415 334 415 / 1 / 0 round;
-      padding: 30px 35px;
+      padding: 25px 30px;
       margin: 0 16px;
       max-width: none;
     }
   }
 
+  .product-info { background: transparent; }
   .product-info .prod-eyebrow {
     font-family: var(--hand);
     font-size: 22px;
