@@ -424,7 +424,7 @@
     box-sizing: border-box;
     position: relative;
     height: auto;
-    padding: 200px 130px 160px 150px;
+    padding: 220px 130px 160px 220px;
   }
   .frame-overlay {
     position: absolute;
@@ -434,6 +434,14 @@
     object-fit: fill;
     pointer-events: none;
     z-index: 0;
+  }
+  .vine-overlay {
+    position: absolute;
+    top: -60px;
+    left: -60px;
+    width: 420px;
+    pointer-events: none;
+    z-index: 2;
   }
   @media (max-width: 880px) {
     .hero-frame {
@@ -777,6 +785,7 @@
   <!-- text -->
   <div class="hero-frame">
     <img src="../images/frame.png" class="frame-overlay" alt="">
+    <img src="../images/vine-corner.png" class="vine-overlay" alt="">
     <div class="product-info">
       <h1>brown butter<br>cookies</h1>
       <span class="product-tagline">crinkled tops, gooey middles ♡</span>
