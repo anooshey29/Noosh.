@@ -419,13 +419,14 @@
     background: transparent !important;
   }
   .hero-frame {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     box-sizing: border-box;
     position: relative;
     height: auto;
-    padding: 220px 130px 160px 220px;
+    padding: 120px 80px 60px 160px;
     overflow: visible;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='hf'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' seed='3'/><feColorMatrix values='0 0 0 0 0.24 0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23hf)'/></svg>");
   }
   .frame-overlay {
     position: absolute;
@@ -438,11 +439,11 @@
   }
   .vine-overlay {
     position: absolute;
-    top: 80px;
-    left: 0px;
+    top: 0;
+    left: 80px;
     width: 750px;
     pointer-events: none;
-    z-index: 2;
+    z-index: 3;
   }
   @media (max-width: 880px) {
     .hero-frame {
@@ -454,6 +455,10 @@
     }
   }
 
+  .product-info {
+    text-align: left;
+    padding-left: 2.5rem;
+  }
   .product-info,
   .product-info .prod-eyebrow,
   .product-info h1,
@@ -475,7 +480,8 @@
   .product-info h1 {
     font-family: var(--display);
     font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 100;
-    font-size: clamp(40px, 5.5vw, 70px);
+    font-size: 3rem;
+    text-align: left;
     line-height: 0.96;
     letter-spacing: -0.025em;
     color: var(--ink);
@@ -487,11 +493,13 @@
     color: var(--cherry);
     display: block;
     margin-bottom: 14px;
+    text-align: left;
   }
   .product-desc {
     font-size: 16px;
     color: var(--brown-deep);
     line-height: 1.72;
+    text-align: left;
     margin-bottom: 14px;
   }
   /* ════ choose your box ════ */
@@ -789,7 +797,7 @@
     <img src="../images/vine-corner.png" class="vine-overlay" alt="">
     <div class="product-info">
       <h1>brown butter<br>cookies</h1>
-      <span class="product-tagline">crinkled tops, gooey middles ♡</span>
+      <span class="product-tagline">crinkled tops, gooey middles</span>
 
       <p class="product-desc">
         the butter goes in the pan first. it spits, foams, turns amber — that's when it gets good. mixed by hand into a dough that's half cookie, half caramel memory, then packed with chocolate chunks so generously it's almost rude.
