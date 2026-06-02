@@ -447,11 +447,10 @@
   }
   @media (max-width: 880px) {
     .hero-frame {
-      border-width: 50px;
-      border-image: url('../images/frame.png') 364 445 364 445 / 1 / 0 round;
-      padding: 25px 30px;
-      margin: 0 16px;
+      width: 100%;
       max-width: none;
+      padding: 1.5rem;
+      margin: 0;
     }
   }
 
@@ -718,9 +717,21 @@
     .breadcrumb { padding: 20px 24px 0; }
     .product-hero {
       grid-template-columns: 1fr;
-      padding: 32px 24px 56px;
+      padding: 32px 16px 16px;
       gap: 36px;
     }
+    .vine-overlay {
+      width: 110px;
+      height: auto;
+      top: 10px;
+      left: 8px;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .product-info { padding-left: 0; }
+    .product-info h1 { font-size: 2rem; }
+    .product-tagline { font-size: 1.1rem; }
+    .product-desc { font-size: 15px; line-height: 1.6; }
     .product-photo-outer { max-width: 400px; margin: 0 auto; }
     .magic-heading { font-size: 26px; padding: 0 24px; }
     .magic-inner-banner { padding: 20px 0; }
