@@ -739,8 +739,8 @@
     .magic-photo-grid { grid-template-columns: 1fr; padding: 0 16px; }
     .magic-photo-grid img { height: 220px; }
     .box-single-card { grid-template-columns: 46% 1fr; transform: none; }
-    .box-card-photo { box-shadow: 0 6px 20px rgba(92, 69, 48, 0.15); }
-    .box-card-photo img { min-height: 180px; max-height: none; }
+    .box-card-photo { aspect-ratio: 1 / 1; align-self: start; box-shadow: 0 6px 20px rgba(92, 69, 48, 0.15); }
+    .box-card-photo img { min-height: 0; max-height: none; object-position: center; }
     .box-card-ui { padding: 18px 14px; }
     .box-size-label { font-size: 14px; margin-bottom: 4px; }
     .box-heading { font-size: 20px; margin-bottom: 14px; }
