@@ -419,7 +419,7 @@
     background: transparent !important;
   }
   .hero-frame {
-    max-width: 720px;
+    max-width: 880px;
     margin: 0 auto;
     box-sizing: border-box;
     position: relative;
@@ -438,7 +438,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 260px;
+    width: 46%;
     height: auto;
     pointer-events: none;
     z-index: 1;
@@ -456,8 +456,9 @@
   .product-info {
     position: absolute;
     inset: 0;
+    z-index: 2;
     text-align: left;
-    padding: 80px 90px 72px;
+    padding: 24% 21% 21% 22%;
   }
   .product-info .prod-eyebrow,
   .product-info h1,
@@ -479,7 +480,7 @@
   .product-info h1 {
     font-family: var(--display);
     font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 100;
-    font-size: 3rem;
+    font-size: 2.5rem;
     text-align: left;
     line-height: 0.96;
     letter-spacing: -0.025em;
@@ -495,7 +496,7 @@
     text-align: left;
   }
   .product-desc {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--brown-deep);
     line-height: 1.72;
     text-align: left;
@@ -720,26 +721,17 @@
       padding: 32px 6px 16px;
       gap: 36px;
     }
-    .frame-overlay {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-      display: block;
-    }
     .vine-overlay {
-      width: 120px;
+      width: 46%;
       height: auto;
       top: 0;
       left: 0;
       pointer-events: none;
       z-index: 1;
     }
-    .product-info { position: relative; inset: auto; padding: 36px 34px 28px; z-index: 2; }
-    .product-info h1 { font-size: 1.5rem; }
-    .product-tagline { font-size: 0.95rem; }
-    .product-desc { font-size: 13px; line-height: 1.65; }
+    .product-info h1 { font-size: 2rem; }
+    .product-tagline { font-size: 22px; }
+    .product-desc { font-size: 14px; line-height: 1.65; }
     .product-photo-outer { max-width: 400px; margin: 0 auto; }
     .magic-heading { font-size: 26px; padding: 0 24px; }
     .magic-inner-banner { padding: 20px 0; }
@@ -759,6 +751,28 @@
     .box-live-caption { font-size: 14px; margin-bottom: 14px; }
     .box-add-btn { font-size: 0.95rem; padding: 0.75rem 1.5rem; align-self: center; margin-top: 16px; }
     .footer-inner { padding: 0 24px; }
+  }
+
+  /* ─── mobile: hide frame & vine, simple card ─── */
+  @media (max-width: 600px) {
+    .frame-overlay { display: none; }
+    .vine-overlay  { display: none; }
+    .hero-frame {
+      max-width: 95vw;
+      background: var(--paper);
+      border-radius: 16px;
+      border: 1.5px solid var(--peach-deep);
+      box-shadow: 0 4px 16px rgba(92, 69, 48, 0.12);
+    }
+    .product-info {
+      position: relative;
+      inset: auto;
+      padding: 28px 24px 24px;
+      z-index: 2;
+    }
+    .product-info h1 { font-size: 1.75rem; }
+    .product-tagline { font-size: 20px; }
+    .product-desc { font-size: 13px; line-height: 1.6; }
   }
 </style>
 </head>
