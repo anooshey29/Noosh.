@@ -440,8 +440,8 @@
   }
   .vine-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
+    left: 7.4%;
+    top: 14%;
     width: 46%;
     height: auto;
     pointer-events: none;
@@ -540,9 +540,11 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.24 0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
   .box-size-label {
-    font-family: var(--hand);
-    font-size: 18px;
-    color: #a4b894;
+    font-family: var(--body);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
     margin-bottom: 8px;
     display: block;
   }
@@ -603,10 +605,12 @@
     margin-bottom: 4px;
   }
   .box-live-caption {
-    font-family: var(--hand);
-    font-style: italic;
-    font-size: 18px;
-    color: #8b6f4d;
+    font-family: var(--body);
+    font-size: 12px;
+    font-style: normal;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
     display: block;
     margin-bottom: 28px;
   }
@@ -730,8 +734,8 @@
     .vine-overlay {
       width: 46%;
       height: auto;
-      top: 0;
-      left: 0;
+      top: 14%;
+      left: 7.4%;
       pointer-events: none;
       z-index: 1;
     }
@@ -747,14 +751,14 @@
     .box-card-photo { aspect-ratio: 1 / 1; align-self: start; box-shadow: 0 6px 20px rgba(92, 69, 48, 0.15); }
     .box-card-photo img { min-height: 0; max-height: none; object-position: center; }
     .box-card-ui { padding: 18px 14px; }
-    .box-size-label { font-size: 14px; margin-bottom: 4px; }
+    .box-size-label { margin-bottom: 4px; }
     .box-heading { font-size: 20px; margin-bottom: 14px; }
     .size-pills { gap: 6px; margin-bottom: 14px; }
     .size-pill-most-pop { display: none; }
     .size-pill-spacer { display: none; }
     .size-pill { height: 38px; padding: 0 12px; font-size: 18px; }
     .box-live-price { font-size: 24px; margin-bottom: 2px; }
-    .box-live-caption { font-size: 14px; margin-bottom: 14px; }
+    .box-live-caption { margin-bottom: 14px; }
     .box-add-btn { font-size: 0.95rem; padding: 0.75rem 1.5rem; align-self: center; margin-top: 16px; }
     .footer-inner { padding: 0 24px; }
   }
