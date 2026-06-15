@@ -122,21 +122,23 @@
 
   .sb-reopen-tab {
     position: fixed;
-    left: 0; top: 50%;
+    left: 12px; top: 50%;
     transform: translateY(-50%);
-    width: 36px; height: 56px;
-    background: #f4c8b6;
-    border-radius: 0 12px 12px 0;
+    width: 44px; height: 44px;
+    background: var(--paper);
+    border: 1.5px solid var(--peach-deep);
+    border-radius: 50%;
     display: grid; place-items: center;
     z-index: 101;
-    box-shadow: 0 4px 12px rgba(196, 97, 90, 0.18);
+    box-shadow: 0 4px 14px rgba(196, 97, 90, 0.28);
     cursor: pointer;
     font-size: 20px;
-    color: #c4615a;
+    color: var(--cherry);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 350ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: opacity 350ms cubic-bezier(0.4, 0.0, 0.2, 1), background 0.2s ease;
   }
+  .sb-reopen-tab:hover { background: var(--cream); }
   @media (min-width: 881px) {
     body.sb-closed .sb-reopen-tab { opacity: 1; pointer-events: auto; animation: sb-pulse 2s ease-in-out infinite; }
   }
@@ -393,12 +395,12 @@
   /* breadcrumb */
   .breadcrumb {
     max-width: 1080px; margin: 0 auto;
-    padding: 32px 48px 0;
+    padding: 32px 48px 0 24px;
     position: relative; z-index: 2;
   }
   .back-link {
     font-family: var(--hand);
-    font-size: 20px;
+    font-size: 24px;
     color: #8b6f4d;
     display: inline-flex; align-items: center; gap: 5px;
     transition: color 0.2s ease;
@@ -564,10 +566,11 @@
     gap: 4px;
   }
   .size-pill-most-pop {
-    font-family: var(--hand);
-    font-size: 14px;
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: #c4615a;
-    transform: rotate(-5deg);
     display: block;
     white-space: nowrap;
     height: 20px;
@@ -716,6 +719,7 @@
     .mobile-bar { display: flex; }
     .container { padding: 0 24px; }
     .breadcrumb { padding: 20px 24px 0; }
+    .back-link { font-size: 20px; }
     .product-hero {
       grid-template-columns: 1fr;
       padding: 32px 6px 16px;
@@ -777,6 +781,7 @@
 </style>
 </head>
 <body>
+<script>(function(){try{if(localStorage.getItem('noosh_sb')==='closed'&&window.innerWidth>880)document.body.classList.add('sb-closed');}catch(e){}})();</script>
 
 <!-- floating petals -->
 <div class="petals" aria-hidden="true">
@@ -877,7 +882,7 @@
             <button class="size-pill" data-size="4">4</button>
           </div>
           <div class="size-pill-wrap">
-            <span class="size-pill-most-pop">most popular ♡</span>
+            <span class="size-pill-most-pop">most popular</span>
             <button class="size-pill selected" data-size="8">8</button>
           </div>
           <div class="size-pill-wrap">
@@ -949,9 +954,11 @@
   deskCloseBtn.addEventListener("click", () => {
     if (window.innerWidth <= 880) return;
     document.body.classList.add("sb-closed");
+    try { localStorage.setItem("noosh_sb", "closed"); } catch(e) {}
   });
   sbReopenTab.addEventListener("click", () => {
     document.body.classList.remove("sb-closed");
+    try { localStorage.setItem("noosh_sb", "open"); } catch(e) {}
     triggerPetalBreeze();
   });
   window.addEventListener("resize", () => {
