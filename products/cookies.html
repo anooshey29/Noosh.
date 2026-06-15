@@ -419,12 +419,11 @@
     background: transparent !important;
   }
   .hero-frame {
-    max-width: 900px;
+    max-width: 540px;
     margin: 0 auto;
     box-sizing: border-box;
     position: relative;
     height: auto;
-    padding: 120px 80px 60px 160px;
     overflow: visible;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='hf'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' seed='3'/><feColorMatrix values='0 0 0 0 0.24 0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23hf)'/></svg>");
   }
@@ -439,25 +438,25 @@
   }
   .vine-overlay {
     position: absolute;
-    top: 0;
-    left: 80px;
-    width: 750px;
+    top: -18px;
+    left: -18px;
+    width: 120px;
     pointer-events: none;
-    z-index: 3;
+    z-index: 1;
   }
   @media (max-width: 880px) {
     .hero-frame {
       width: 100%;
-      max-width: none;
-      padding: 1.5rem 1.5rem 2rem;
-      margin: 0;
+      max-width: 95vw;
+      padding: 0;
+      margin: 0 auto;
       filter: drop-shadow(0 4px 12px rgba(92, 69, 48, 0.12));
     }
   }
 
   .product-info {
     text-align: left;
-    padding-left: 2.5rem;
+    padding: 56px 52px 48px;
   }
   .product-info,
   .product-info .prod-eyebrow,
@@ -467,7 +466,7 @@
     background: transparent !important;
     background-color: transparent !important;
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
   .product-info .prod-eyebrow {
     font-family: var(--hand);
@@ -722,14 +721,14 @@
       gap: 36px;
     }
     .vine-overlay {
-      width: 264px;
+      width: 90px;
       height: auto;
-      top: 0;
-      left: 30px;
+      top: -12px;
+      left: -12px;
       pointer-events: none;
       z-index: 1;
     }
-    .product-info { padding: 0 1.75rem; z-index: 2; }
+    .product-info { padding: 40px 28px 36px; z-index: 2; }
     .product-info h1 { font-size: 1.5rem; }
     .product-tagline { font-size: 0.95rem; }
     .product-desc { font-size: 13px; line-height: 1.65; }
