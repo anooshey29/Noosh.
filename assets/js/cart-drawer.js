@@ -1,0 +1,460 @@
+(function () {
+
+  // ── helpers ─────────────────────────────────────────────────────────────────
+
+  const PRODUCT_IMAGES = {
+    'cookies-box': '/images/cookie-closeup.jpg',
+  };
+
+  function getProductImage(id) {
+    for (const [prefix, src] of Object.entries(PRODUCT_IMAGES)) {
+      if (id.startsWith(prefix)) return src;
+    }
+    return null;
+  }
+
+  function formatPrice(cents) {
+    return '$' + (cents / 100).toFixed(2);
+  }
+
+  // ── styles ───────────────────────────────────────────────────────────────────
+
+  const GRAIN = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='cd'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7'/><feColorMatrix values='0 0 0 0 0.24 0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23cd)'/></svg>\")";
+
+  function injectStyles() {
+    const el = document.createElement('style');
+    el.textContent = `
+      /* ── backdrop ── */
+      #cart-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(61, 45, 28, 0.42);
+        z-index: 950;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 300ms ease-out;
+      }
+      #cart-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* ── drawer panel ── */
+      #cart-drawer {
+        position: fixed;
+        top: 0; right: 0; bottom: 0;
+        width: 400px;
+        background: #fbf2e0;
+        background-image: ${GRAIN};
+        z-index: 960;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 300ms ease-out;
+        box-shadow: -6px 0 32px rgba(61, 45, 28, 0.14);
+      }
+      #cart-drawer.open {
+        transform: translateX(0);
+      }
+
+      /* ── header ── */
+      .cd-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 24px 18px;
+        border-bottom: 1px dashed #d4b896;
+        flex-shrink: 0;
+      }
+      .cd-title {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        font-style: italic;
+        color: #3d2d1c;
+        margin: 0;
+      }
+      .cd-close {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 18px;
+        color: #8b6f4d;
+        display: flex; align-items: center; justify-content: center;
+        transition: background 0.15s, color 0.15s;
+        flex-shrink: 0;
+      }
+      .cd-close:hover { background: #f4dcc0; color: #3d2d1c; }
+
+      /* ── body (scrollable) ── */
+      .cd-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 24px 4px;
+      }
+      .cd-body::-webkit-scrollbar { width: 4px; }
+      .cd-body::-webkit-scrollbar-track { background: transparent; }
+      .cd-body::-webkit-scrollbar-thumb { background: #d4b896; border-radius: 4px; }
+
+      /* ── cart item ── */
+      .cd-item {
+        display: flex;
+        gap: 14px;
+        padding: 16px 0;
+        border-bottom: 1px dashed rgba(61, 45, 28, 0.1);
+      }
+      .cd-item:last-child { border-bottom: none; }
+
+      .cd-item-img {
+        width: 66px; height: 66px;
+        border-radius: 12px;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: #f4dcc0;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .cd-item-img img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .cd-item-details {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .cd-item-name {
+        font-family: "Nunito", system-ui, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #3d2d1c;
+        line-height: 1.35;
+      }
+      .cd-item-price {
+        font-family: "Nunito", system-ui, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #c4615a;
+      }
+      .cd-item-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 6px;
+      }
+      .cd-qty-btn {
+        width: 28px; height: 28px;
+        border-radius: 8px;
+        border: 1.5px solid #c8ad92;
+        background: transparent;
+        cursor: pointer;
+        font-size: 17px;
+        font-family: "Nunito", system-ui, sans-serif;
+        color: #5c4530;
+        display: flex; align-items: center; justify-content: center;
+        transition: background 0.15s, border-color 0.15s;
+        line-height: 1;
+        padding: 0 0 1px;
+        flex-shrink: 0;
+      }
+      .cd-qty-btn:hover { background: #f4dcc0; border-color: #8b6f4d; }
+      .cd-qty-count {
+        font-family: "Nunito", system-ui, sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #3d2d1c;
+        min-width: 20px;
+        text-align: center;
+      }
+      .cd-remove {
+        font-family: "Caveat", cursive;
+        font-size: 15px;
+        color: #87a07a;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin-left: auto;
+        transition: color 0.15s;
+        line-height: 1;
+      }
+      .cd-remove:hover { color: #5c4530; }
+
+      /* ── empty state ── */
+      .cd-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 56px 24px;
+        gap: 18px;
+        text-align: center;
+      }
+      .cd-empty-msg {
+        font-family: "Caveat", cursive;
+        font-size: 20px;
+        color: #8b6f4d;
+        line-height: 1.45;
+      }
+
+      /* ── footer ── */
+      .cd-footer {
+        padding: 16px 24px 28px;
+        border-top: 1px dashed #d4b896;
+        flex-shrink: 0;
+        background: #fbf2e0;
+      }
+      .cd-subtotal-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 16px;
+      }
+      .cd-subtotal-label {
+        font-family: "Nunito", system-ui, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #8b6f4d;
+      }
+      .cd-subtotal-amount {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-size: 1.65rem;
+        font-weight: 600;
+        color: #3d2d1c;
+      }
+      .cd-checkout-btn {
+        width: 100%;
+        background: #c4615a;
+        color: #fbf2e0;
+        font-family: "Nunito", system-ui, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 14px;
+        padding: 15px;
+        cursor: pointer;
+        box-shadow: 0 4px 0 -1px #5c4530;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin-bottom: 10px;
+      }
+      .cd-checkout-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 0 -1px #5c4530;
+      }
+      .cd-checkout-btn:active:not(:disabled) {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 -1px #5c4530;
+      }
+      .cd-checkout-btn:disabled {
+        background: #c4b09a;
+        cursor: default;
+        box-shadow: none;
+      }
+      .cd-checkout-note {
+        font-family: "Caveat", cursive;
+        font-size: 14px;
+        color: #c4b09a;
+        text-align: center;
+        margin: 0;
+      }
+
+      /* ── mobile ── */
+      @media (max-width: 600px) {
+        #cart-drawer { width: 100%; }
+      }
+    `;
+    document.head.appendChild(el);
+  }
+
+  // ── DOM ──────────────────────────────────────────────────────────────────────
+
+  let backdrop, drawer, cdBody, cdFooter, subtotalEl, checkoutBtn;
+
+  function buildDOM() {
+    backdrop = document.createElement('div');
+    backdrop.id = 'cart-backdrop';
+
+    drawer = document.createElement('aside');
+    drawer.id = 'cart-drawer';
+    drawer.setAttribute('aria-label', 'shopping cart');
+    drawer.setAttribute('role', 'dialog');
+    drawer.setAttribute('aria-modal', 'true');
+    drawer.innerHTML = `
+      <div class="cd-header">
+        <h2 class="cd-title">your sugar rush list</h2>
+        <button class="cd-close" id="cd-close-btn" aria-label="close cart">✕</button>
+      </div>
+      <div class="cd-body" id="cd-body"></div>
+      <div class="cd-footer" id="cd-footer" style="display:none">
+        <div class="cd-subtotal-row">
+          <span class="cd-subtotal-label">subtotal</span>
+          <span class="cd-subtotal-amount" id="cd-subtotal">$0.00</span>
+        </div>
+        <button class="cd-checkout-btn" id="cd-checkout-btn">checkout</button>
+        <p class="cd-checkout-note">you'll be redirected to secure checkout</p>
+      </div>
+    `;
+
+    document.body.appendChild(backdrop);
+    document.body.appendChild(drawer);
+
+    cdBody      = document.getElementById('cd-body');
+    cdFooter    = document.getElementById('cd-footer');
+    subtotalEl  = document.getElementById('cd-subtotal');
+    checkoutBtn = document.getElementById('cd-checkout-btn');
+  }
+
+  // ── open / close ─────────────────────────────────────────────────────────────
+
+  function openDrawer() {
+    backdrop.classList.add('open');
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('cd-close-btn').focus();
+  }
+
+  function closeDrawer() {
+    backdrop.classList.remove('open');
+    drawer.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── render ───────────────────────────────────────────────────────────────────
+
+  function renderCart() {
+    const cart = window.NooshCart ? window.NooshCart.getCart() : [];
+
+    if (cart.length === 0) {
+      cdBody.innerHTML = emptyHTML();
+      cdFooter.style.display = 'none';
+      return;
+    }
+
+    cdFooter.style.display = '';
+    cdBody.innerHTML = cart.map(itemHTML).join('');
+    subtotalEl.textContent = formatPrice(window.NooshCart.getCartTotal());
+
+    cdBody.querySelectorAll('.cd-qty-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const delta = btn.dataset.action === 'dec' ? -1 : 1;
+        const item = window.NooshCart.getCart().find(i => i.id === id);
+        if (item) window.NooshCart.updateQuantity(id, item.quantity + delta);
+      });
+    });
+
+    cdBody.querySelectorAll('.cd-remove').forEach(btn => {
+      btn.addEventListener('click', () => window.NooshCart.removeFromCart(btn.dataset.id));
+    });
+  }
+
+  function itemHTML(item) {
+    const imgSrc = getProductImage(item.id);
+    const imgBlock = imgSrc
+      ? `<img src="${imgSrc}" alt="" loading="lazy">`
+      : `<svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+           <circle cx="19" cy="19" r="14" stroke="#c4b09a" stroke-width="1.5" stroke-dasharray="4 3"/>
+           <path d="M12 19 Q16 13 19 19 Q22 25 26 19" stroke="#c4b09a" stroke-width="1.5" stroke-linecap="round"/>
+         </svg>`;
+
+    return `
+      <div class="cd-item">
+        <div class="cd-item-img">${imgBlock}</div>
+        <div class="cd-item-details">
+          <div class="cd-item-name">${item.name}</div>
+          <div class="cd-item-price">${formatPrice(item.price)}</div>
+          <div class="cd-item-controls">
+            <button class="cd-qty-btn" data-action="dec" data-id="${item.id}" aria-label="decrease quantity">−</button>
+            <span class="cd-qty-count">${item.quantity}</span>
+            <button class="cd-qty-btn" data-action="inc" data-id="${item.id}" aria-label="increase quantity">+</button>
+            <button class="cd-remove" data-id="${item.id}">remove</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function emptyHTML() {
+    return `
+      <div class="cd-empty">
+        <svg width="88" height="88" viewBox="0 0 88 88" fill="none" aria-hidden="true">
+          <circle cx="44" cy="44" r="36" stroke="#c4b09a" stroke-width="2" stroke-dasharray="6 4"/>
+          <circle cx="44" cy="44" r="18" stroke="#d4c4a8" stroke-width="1.5" stroke-dasharray="3 3"/>
+        </svg>
+        <p class="cd-empty-msg">your list is empty —<br>go pick some treats!</p>
+      </div>`;
+  }
+
+  // ── checkout ─────────────────────────────────────────────────────────────────
+
+  async function handleCheckout() {
+    const cart = window.NooshCart ? window.NooshCart.getCart() : [];
+    if (!cart.length) return;
+
+    checkoutBtn.disabled = true;
+    checkoutBtn.textContent = 'redirecting...';
+
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cart.map(item => ({
+            name: item.name,
+            price: item.price / 100,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'checkout failed');
+      }
+
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch (err) {
+      console.error('Checkout error:', err);
+      checkoutBtn.disabled = false;
+      checkoutBtn.textContent = 'checkout';
+    }
+  }
+
+  // ── events ───────────────────────────────────────────────────────────────────
+
+  function wireEvents() {
+    document.addEventListener('cartIconClick', openDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+    document.getElementById('cd-close-btn').addEventListener('click', closeDrawer);
+    checkoutBtn.addEventListener('click', handleCheckout);
+    document.addEventListener('cartUpdated', renderCart);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+    });
+  }
+
+  // ── boot ─────────────────────────────────────────────────────────────────────
+
+  function init() {
+    injectStyles();
+    buildDOM();
+    wireEvents();
+    renderCart();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
