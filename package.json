@@ -1,0 +1,11 @@
+{
+  "name": "noosh",
+  "version": "1.0.0",
+  "description": "Noosh. — small-batch home bakery",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "stripe": "^16.0.0"
+  }
+}
