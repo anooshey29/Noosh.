@@ -267,6 +267,21 @@
         margin: 0;
       }
 
+      /* ── error banner ── */
+      .cd-error {
+        display: none;
+        padding: 10px 24px;
+        background: #fdf0ee;
+        color: #c4615a;
+        font-family: "Nunito", system-ui, sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        border-bottom: 1px dashed #ecae9a;
+        flex-shrink: 0;
+      }
+      .cd-error.visible { display: block; }
+
       /* ── mobile ── */
       @media (max-width: 600px) {
         #cart-drawer { width: 100%; }
@@ -277,7 +292,7 @@
 
   // ── DOM ──────────────────────────────────────────────────────────────────────
 
-  let backdrop, drawer, cdBody, cdFooter, subtotalEl, checkoutBtn;
+  let backdrop, drawer, cdBody, cdFooter, errorEl, subtotalEl, checkoutBtn;
 
   function buildDOM() {
     backdrop = document.createElement('div');
@@ -293,6 +308,7 @@
         <h2 class="cd-title">your sugar rush list</h2>
         <button class="cd-close" id="cd-close-btn" aria-label="close cart">✕</button>
       </div>
+      <div class="cd-error" id="cd-error">something went wrong — please try again</div>
       <div class="cd-body" id="cd-body"></div>
       <div class="cd-footer" id="cd-footer" style="display:none">
         <div class="cd-subtotal-row">
@@ -309,6 +325,7 @@
 
     cdBody      = document.getElementById('cd-body');
     cdFooter    = document.getElementById('cd-footer');
+    errorEl     = document.getElementById('cd-error');
     subtotalEl  = document.getElementById('cd-subtotal');
     checkoutBtn = document.getElementById('cd-checkout-btn');
   }
@@ -399,8 +416,9 @@
     const cart = window.NooshCart ? window.NooshCart.getCart() : [];
     if (!cart.length) return;
 
+    errorEl.classList.remove('visible');
     checkoutBtn.disabled = true;
-    checkoutBtn.textContent = 'redirecting...';
+    checkoutBtn.textContent = 'preparing your treats...';
 
     try {
       const res = await fetch('/api/create-checkout-session', {
@@ -426,6 +444,7 @@
       console.error('Checkout error:', err);
       checkoutBtn.disabled = false;
       checkoutBtn.textContent = 'checkout';
+      errorEl.classList.add('visible');
     }
   }
 
