@@ -900,7 +900,10 @@
         <div class="box-live-price" id="boxPrice">$26.95</div>
         <span class="box-live-caption" id="boxCaption">the sharing size</span>
 
-        <button class="box-add-btn" id="boxAddBtn">add to ingredients list ♡</button>
+        <button class="box-add-btn" id="boxAddBtn"
+                data-product-id="cookies-box-8"
+                data-product-name="brown butter cookies — box of 8"
+                data-product-price="2695">add to sugar rush ♡</button>
       </div>
 
     </div>
@@ -1050,6 +1053,9 @@
       const { price, caption } = sizeData[selectedSize];
       priceEl.textContent = "$" + price.toFixed(2);
       captionEl.textContent = caption;
+      addBtn.dataset.productId    = "cookies-box-" + selectedSize;
+      addBtn.dataset.productName  = "brown butter cookies — box of " + selectedSize;
+      addBtn.dataset.productPrice = Math.round(price * 100);
     });
   });
 
