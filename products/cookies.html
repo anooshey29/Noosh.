@@ -900,7 +900,7 @@
         <div class="box-live-price" id="boxPrice">$26.95</div>
         <span class="box-live-caption" id="boxCaption">the sharing size</span>
 
-        <button class="box-add-btn" id="boxAddBtn"
+        <button class="box-add-btn add-to-sugar-rush" id="boxAddBtn"
                 data-product-id="cookies-box-8"
                 data-product-name="brown butter cookies — box of 8"
                 data-product-price="2695">add to sugar rush ♡</button>
@@ -999,41 +999,10 @@
 </script>
 
 <!-- bag toast element -->
-<div class="bag-toast" id="bagToast" aria-live="polite">added to your ingredients list ♡</div>
+<div class="bag-toast" id="bagToast" aria-live="polite">added to your sugar rush ♡</div>
 
 <script>
-  const BAG_KEY = "noosh_bag";
-  let toastTimer = null;
-
-  function getBag() {
-    try { return JSON.parse(localStorage.getItem(BAG_KEY)) || []; }
-    catch { return []; }
-  }
-
-  function saveBag(bag) {
-    localStorage.setItem(BAG_KEY, JSON.stringify(bag));
-  }
-
-  function addToBag(id, name, price) {
-    const bag = getBag();
-    const existing = bag.find(item => item.id === id);
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      bag.push({ id, name, price: parseFloat(price), quantity: 1 });
-    }
-    saveBag(bag);
-    showToast();
-  }
-
-  function showToast() {
-    const toast = document.getElementById("bagToast");
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
-  }
-
-  // box size selection
+  // box size selection — updates data attributes read by cart.js
   const sizeData = {
     4:  { price: 16.95, caption: "a sweet little stash" },
     8:  { price: 26.95, caption: "the sharing size" },
@@ -1057,15 +1026,6 @@
       addBtn.dataset.productName  = "brown butter cookies — box of " + selectedSize;
       addBtn.dataset.productPrice = Math.round(price * 100);
     });
-  });
-
-  addBtn.addEventListener("click", () => {
-    const { price } = sizeData[selectedSize];
-    addToBag(
-      "cookies-box-" + selectedSize,
-      "brown butter cookies — box of " + selectedSize,
-      price
-    );
   });
 </script>
 

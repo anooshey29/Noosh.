@@ -55,4 +55,36 @@
     getCartCount,
     clearCart,
   };
+
+  // ── toast helper ─────────────────────────────────────────────────────────────
+  let _toastTimer;
+  function showBagToast() {
+    const toast = document.getElementById('bagToast');
+    if (!toast) return;
+    toast.classList.add('show');
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  // ── wire .add-to-sugar-rush buttons ─────────────────────────────────────────
+  function wireAddButtons() {
+    document.querySelectorAll('.add-to-sugar-rush').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const id    = btn.dataset.productId;
+        const name  = btn.dataset.productName;
+        const price = parseInt(btn.dataset.productPrice, 10);
+        if (!id || !name || !price) return;
+        addToCart(id, name, price);
+        console.log('Added:', name);
+        showBagToast();
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wireAddButtons);
+  } else {
+    wireAddButtons();
+  }
+
 })();
