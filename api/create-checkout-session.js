@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
       payment_method_types: ['card'],
       line_items: items.map(item => ({
         price_data: {
-          currency: 'usd',
+          currency: 'aud',
           product_data: {
             name: item.name,
             ...(item.description && { description: item.description }),
