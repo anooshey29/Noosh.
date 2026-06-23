@@ -11,13 +11,13 @@
     document.dispatchEvent(new CustomEvent('cartUpdated', { detail: { cart } }));
   }
 
-  function addToCart(id, name, price) {
+  function addToCart(id, name, price, image) {
     const cart = getCart();
     const existing = cart.find(item => item.id === id);
     if (existing) {
       existing.quantity += 1;
     } else {
-      cart.push({ id, name, price: Math.round(Number(price)), quantity: 1 });
+      cart.push({ id, name, price: Math.round(Number(price)), quantity: 1, image: image || '' });
     }
     saveCart(cart);
   }
@@ -73,8 +73,9 @@
         const id    = btn.dataset.productId;
         const name  = btn.dataset.productName;
         const price = parseInt(btn.dataset.productPrice, 10);
+        const image = btn.dataset.productImage || '';
         if (!id || !name || !price) return;
-        addToCart(id, name, price);
+        addToCart(id, name, price, image);
         console.log('Added:', name);
         showBagToast();
       });

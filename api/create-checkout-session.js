@@ -38,6 +38,7 @@ module.exports = async (req, res) => {
           product_data: {
             name: item.name,
             ...(item.description && { description: item.description }),
+            ...(item.image && { images: [item.image] }),
           },
           unit_amount: Math.round(item.price * 100),
         },

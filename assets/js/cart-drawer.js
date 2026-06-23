@@ -375,7 +375,7 @@
   }
 
   function itemHTML(item) {
-    const imgSrc = getProductImage(item.id);
+    const imgSrc = item.image || getProductImage(item.id);
     const imgBlock = imgSrc
       ? `<img src="${imgSrc}" alt="" loading="lazy">`
       : `<svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
@@ -429,6 +429,7 @@
             name: item.name,
             price: item.price / 100,
             quantity: item.quantity,
+            ...(item.image && { image: item.image }),
           })),
         }),
       });
