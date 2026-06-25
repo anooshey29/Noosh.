@@ -44,6 +44,35 @@ module.exports = async (req, res) => {
         },
         quantity: item.quantity,
       })),
+      custom_fields: [
+        {
+          key: 'pickup_date',
+          label: { type: 'custom', custom: 'preferred pickup date' },
+          type: 'text',
+          text: { minimum_length: 3, maximum_length: 50 },
+          optional: false,
+        },
+        {
+          key: 'pickup_time',
+          label: { type: 'custom', custom: 'preferred pickup time' },
+          type: 'dropdown',
+          dropdown: {
+            options: [
+              { label: 'morning (9am – 12pm)',   value: 'morning'   },
+              { label: 'afternoon (12pm – 4pm)', value: 'afternoon' },
+              { label: 'evening (4pm – 7pm)',    value: 'evening'   },
+            ],
+          },
+          optional: false,
+        },
+        {
+          key: 'notes',
+          label: { type: 'custom', custom: 'any allergies or notes?' },
+          type: 'text',
+          text: { maximum_length: 200 },
+          optional: true,
+        },
+      ],
       mode: 'payment',
       success_url: `${baseUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/index.html`,
