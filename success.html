@@ -123,6 +123,14 @@
       margin-bottom: 12px;
     }
 
+    .pickup-confirm {
+      font-family: var(--hand);
+      font-size: 17px;
+      font-style: italic;
+      color: var(--sage-deep);
+      margin-bottom: 14px;
+    }
+
     .note {
       font-family: var(--hand);
       font-size: 17px;
@@ -203,9 +211,28 @@
       thank you so much for your order — it means the world. anooshey will be in touch soon to confirm your pickup or delivery details.
     </p>
 
+    <p class="pickup-confirm" id="pickup-confirm" style="display:none"></p>
+
     <p class="note">baked with love, just for you ✿</p>
 
     <a href="index.html" class="back-btn">back to the menu</a>
   </div>
+
+  <script>
+    (function () {
+      try {
+        var pickup = JSON.parse(localStorage.getItem('noosh_pickup'));
+        if (pickup && pickup.display) {
+          var el = document.getElementById('pickup-confirm');
+          if (el) {
+            el.textContent = "we’ll see you on " + pickup.display + " 🌸";
+            el.style.display = 'block';
+          }
+        }
+      } catch (e) {}
+      try { localStorage.removeItem('noosh_pickup'); } catch (e) {}
+      try { localStorage.removeItem('noosh_cart'); } catch (e) {}
+    })();
+  </script>
 </body>
 </html>
