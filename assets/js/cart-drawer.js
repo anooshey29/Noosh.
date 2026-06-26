@@ -488,12 +488,17 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          items: cart.map(item => ({
-            name: item.name,
-            price: item.price / 100,
-            quantity: item.quantity,
-            ...(item.image && { image: item.image }),
-          })),
+          items: cart.map(item => {
+            const imageUrl = item.image
+              ? (item.image.startsWith('/') ? window.location.origin + item.image : item.image)
+              : null;
+            return {
+              name: item.name,
+              price: item.price / 100,
+              quantity: item.quantity,
+              ...(imageUrl && { image: imageUrl }),
+            };
+          }),
           pickup: pickupData ? {
             date:    pickupData.date,
             time:    pickupData.time,
