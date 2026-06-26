@@ -494,6 +494,11 @@
             quantity: item.quantity,
             ...(item.image && { image: item.image }),
           })),
+          pickup: pickupData ? {
+            date:    pickupData.date,
+            time:    pickupData.time,
+            display: (pickupData.dateLabel || '').replace(/ \d{4}$/, '') + ' at ' + (pickupData.timeLabel || ''),
+          } : null,
         }),
       });
 
