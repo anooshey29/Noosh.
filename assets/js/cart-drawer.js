@@ -255,9 +255,10 @@
         box-shadow: 0 2px 0 -1px #5c4530;
       }
       .cd-checkout-btn:disabled {
-        background: #c4b09a;
-        cursor: default;
+        opacity: 0.45;
+        cursor: not-allowed;
         box-shadow: none;
+        transform: none;
       }
       .cd-checkout-note {
         font-family: "Caveat", cursive;
@@ -282,6 +283,29 @@
       }
       .cd-error.visible { display: block; }
 
+      /* ── pickup section ── */
+      .cd-pickup {
+        padding: 16px 24px 16px;
+        border-top: 1px dashed #d4b896;
+        flex-shrink: 0;
+      }
+      .cd-pickup-title {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-size: 1rem;
+        font-weight: 600;
+        font-style: italic;
+        color: #3d2d1c;
+        margin: 0 0 12px;
+      }
+      .cd-pickup-confirm {
+        font-family: "Caveat", cursive;
+        font-size: 16px;
+        margin: 12px 0 0;
+        line-height: 1.4;
+      }
+      .cd-pickup-done       { color: #87a07a; }
+      .cd-pickup-incomplete { color: #c4b09a; }
+
       /* ── mobile ── */
       @media (max-width: 600px) {
         #cart-drawer { width: 100%; }
@@ -292,7 +316,8 @@
 
   // ── DOM ──────────────────────────────────────────────────────────────────────
 
-  let backdrop, drawer, cdBody, cdFooter, errorEl, subtotalEl, checkoutBtn;
+  let backdrop, drawer, cdBody, cdPickup, cdFooter, pickupConfirmEl, errorEl, subtotalEl, checkoutBtn;
+  let pickupData = null;
 
   function buildDOM() {
     backdrop = document.createElement('div');
@@ -310,6 +335,11 @@
       </div>
       <div class="cd-error" id="cd-error">something went wrong — please try again</div>
       <div class="cd-body" id="cd-body"></div>
+      <div class="cd-pickup" id="cd-pickup" style="display:none">
+        <h3 class="cd-pickup-title">when would you like to pick up?</h3>
+        <div id="cd-pickup-mount"></div>
+        <p class="cd-pickup-confirm cd-pickup-incomplete" id="cd-pickup-confirm">please choose a pickup date and time</p>
+      </div>
       <div class="cd-footer" id="cd-footer" style="display:none">
         <div class="cd-subtotal-row">
           <span class="cd-subtotal-label">subtotal</span>
@@ -323,11 +353,13 @@
     document.body.appendChild(backdrop);
     document.body.appendChild(drawer);
 
-    cdBody      = document.getElementById('cd-body');
-    cdFooter    = document.getElementById('cd-footer');
-    errorEl     = document.getElementById('cd-error');
-    subtotalEl  = document.getElementById('cd-subtotal');
-    checkoutBtn = document.getElementById('cd-checkout-btn');
+    cdBody          = document.getElementById('cd-body');
+    cdPickup        = document.getElementById('cd-pickup');
+    cdFooter        = document.getElementById('cd-footer');
+    pickupConfirmEl = document.getElementById('cd-pickup-confirm');
+    errorEl         = document.getElementById('cd-error');
+    subtotalEl      = document.getElementById('cd-subtotal');
+    checkoutBtn     = document.getElementById('cd-checkout-btn');
   }
 
   // ── open / close ─────────────────────────────────────────────────────────────
@@ -345,6 +377,32 @@
     document.body.style.overflow = '';
   }
 
+  // ── pickup state ─────────────────────────────────────────────────────────────
+
+  function loadPickupData() {
+    try {
+      pickupData = JSON.parse(localStorage.getItem('noosh_pickup')) || null;
+    } catch (e) { pickupData = null; }
+  }
+
+  function updatePickupConfirm() {
+    if (!pickupConfirmEl) return;
+    if (pickupData && pickupData.date && pickupData.time) {
+      const label = (pickupData.dateLabel || '').replace(/ \d{4}$/, ''); // strip year
+      pickupConfirmEl.textContent = `📅 pickup: ${label} at ${pickupData.timeLabel}`;
+      pickupConfirmEl.className = 'cd-pickup-confirm cd-pickup-done';
+    } else {
+      pickupConfirmEl.textContent = 'please choose a pickup date and time';
+      pickupConfirmEl.className = 'cd-pickup-confirm cd-pickup-incomplete';
+    }
+  }
+
+  function updateCheckoutState() {
+    const cart = window.NooshCart ? window.NooshCart.getCart() : [];
+    const ready = cart.length > 0 && !!(pickupData && pickupData.date && pickupData.time);
+    checkoutBtn.disabled = !ready;
+  }
+
   // ── render ───────────────────────────────────────────────────────────────────
 
   function renderCart() {
@@ -352,13 +410,18 @@
 
     if (cart.length === 0) {
       cdBody.innerHTML = emptyHTML();
+      cdPickup.style.display = 'none';
       cdFooter.style.display = 'none';
+      updateCheckoutState();
       return;
     }
 
+    cdPickup.style.display = '';
     cdFooter.style.display = '';
     cdBody.innerHTML = cart.map(itemHTML).join('');
     subtotalEl.textContent = formatPrice(window.NooshCart.getCartTotal());
+    updatePickupConfirm();
+    updateCheckoutState();
 
     cdBody.querySelectorAll('.cd-qty-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -457,6 +520,11 @@
     document.getElementById('cd-close-btn').addEventListener('click', closeDrawer);
     checkoutBtn.addEventListener('click', handleCheckout);
     document.addEventListener('cartUpdated', renderCart);
+    document.addEventListener('pickupUpdated', e => {
+      pickupData = e.detail;
+      updatePickupConfirm();
+      updateCheckoutState();
+    });
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
     });
@@ -467,6 +535,7 @@
   function init() {
     injectStyles();
     buildDOM();
+    loadPickupData();
     wireEvents();
     renderCart();
   }

@@ -95,26 +95,6 @@
   // ── styles ─────────────────────────────────────────────────────────────────
 
   const CSS = `
-    #pickup-picker {
-      padding: 0 24px 16px;
-      border-top: 1px dashed #d4b896;
-      flex-shrink: 0;
-      display: none;
-    }
-    #pickup-picker.pp-on { display: block; }
-
-    .pp-lbl {
-      display: block;
-      font-family: "Nunito", system-ui, sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #8b6f4d;
-      padding-top: 14px;
-      margin-bottom: 10px;
-    }
-
     /* month navigation */
     .pp-month-row {
       display: flex;
@@ -273,10 +253,7 @@
 
   function render() {
     if (!pickerEl) return;
-    pickerEl.innerHTML =
-      `<span class="pp-lbl">when would you like to pick up?</span>` +
-      buildCalendar() +
-      buildTimePicker();
+    pickerEl.innerHTML = buildCalendar() + buildTimePicker();
     bindEvents();
   }
 
@@ -316,13 +293,6 @@
     });
   }
 
-  // ── visibility sync ────────────────────────────────────────────────────────
-
-  function syncVis(cart) {
-    if (!pickerEl) return;
-    pickerEl.classList.toggle('pp-on', !!(cart && cart.length > 0));
-  }
-
   // ── boot ───────────────────────────────────────────────────────────────────
 
   function init() {
@@ -332,19 +302,14 @@
 
     loadSaved();
 
-    const footer = document.getElementById('cd-footer');
-    if (!footer) return;
+    const mount = document.getElementById('cd-pickup-mount');
+    if (!mount) return;
 
     pickerEl = document.createElement('div');
     pickerEl.id = 'pickup-picker';
-    footer.parentNode.insertBefore(pickerEl, footer);
+    mount.appendChild(pickerEl);
 
     render();
-
-    const initCart = window.NooshCart ? window.NooshCart.getCart() : [];
-    syncVis(initCart);
-
-    document.addEventListener('cartUpdated', e => syncVis(e.detail.cart));
   }
 
   if (document.readyState === 'loading') {
