@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { items } = req.body || {};
+  const { items, pickup } = req.body || {};
 
   if (!items || !Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: 'No items provided' });
@@ -46,26 +46,6 @@ module.exports = async (req, res) => {
       })),
       custom_fields: [
         {
-          key: 'pickup_date',
-          label: { type: 'custom', custom: 'preferred pickup date' },
-          type: 'text',
-          text: { minimum_length: 3, maximum_length: 50 },
-          optional: false,
-        },
-        {
-          key: 'pickup_time',
-          label: { type: 'custom', custom: 'preferred pickup time' },
-          type: 'dropdown',
-          dropdown: {
-            options: [
-              { label: 'morning (9am – 12pm)',   value: 'morning'   },
-              { label: 'afternoon (12pm – 4pm)', value: 'afternoon' },
-              { label: 'evening (4pm – 7pm)',    value: 'evening'   },
-            ],
-          },
-          optional: false,
-        },
-        {
           key: 'notes',
           label: { type: 'custom', custom: 'any allergies or notes?' },
           type: 'text',
@@ -73,6 +53,11 @@ module.exports = async (req, res) => {
           optional: true,
         },
       ],
+      metadata: pickup ? {
+        pickup_date:    pickup.date    || '',
+        pickup_time:    pickup.time    || '',
+        pickup_display: pickup.display || '',
+      } : {},
       mode: 'payment',
       success_url: `${baseUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/index.html`,
