@@ -306,9 +306,11 @@
       .cd-pickup-done       { color: #87a07a; }
       .cd-pickup-incomplete { color: #c4b09a; }
 
-      /* toggle + edit: hidden on desktop, shown by mobile rules below */
+      /* toggle + edit + card + delight: hidden on desktop, shown by mobile JS below */
       .cd-pickup-toggle { display: none; }
       .cd-pickup-edit   { display: none; }
+      .cd-pickup-card   { display: none; }
+      .cd-delight       { display: none; }
 
       /* ── mobile pickup collapsible ── */
       @media (max-width: 767px) {
@@ -354,6 +356,96 @@
           max-height: 700px;
           opacity: 1;
         }
+
+        /* softer section dividers on mobile */
+        .cd-header { border-bottom-color: rgba(196, 97, 90, 0.35); }
+        .cd-pickup { border-top-color:    rgba(196, 97, 90, 0.35); }
+        .cd-footer { border-top-color:    rgba(196, 97, 90, 0.35); }
+
+        /* tighten pickup section padding so card sits 16px from drawer edge */
+        .cd-pickup { padding: 16px; }
+
+        /* hide the text confirm on mobile — card shows the date instead */
+        .cd-pickup-confirm { display: none; }
+
+        /* ── collapsed-selection card ── */
+        .cd-pickup-card {
+          width: 100%;
+          text-align: left;
+          background: rgba(244, 200, 182, 0.18);
+          border: 1px solid rgba(196, 97, 90, 0.18);
+          border-radius: 14px;
+          padding: 18px;
+          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(196, 97, 90, 0.05);
+          transition: background 200ms ease;
+          margin-bottom: 12px;
+        }
+        .cd-pickup-card:active { background: rgba(244, 200, 182, 0.3); }
+        .cd-pickup-card-top {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 6px;
+        }
+        .cd-pickup-card-label {
+          font-family: "Nunito", system-ui, sans-serif;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #a4b894;
+        }
+        .cd-pickup-card-date {
+          font-family: "Caveat", cursive;
+          font-size: 18px;
+          color: #c4615a;
+        }
+        .cd-pickup-card-divider {
+          border: none;
+          border-top: 1px solid rgba(244, 200, 182, 0.3);
+          margin: 12px 0 10px;
+        }
+        .cd-pickup-card-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .cd-pickup-card-change {
+          font-family: "Caveat", cursive;
+          font-size: 14px;
+          color: #a4b894;
+        }
+        .cd-pickup-card-chevron {
+          font-family: "Nunito", system-ui, sans-serif;
+          font-size: 16px;
+          color: #c4615a;
+          display: inline-block;
+          transition: transform 200ms ease;
+        }
+        .cd-pickup-card[aria-expanded="true"] .cd-pickup-card-chevron {
+          transform: rotate(90deg);
+        }
+
+        /* make cd-body a flex column so .cd-delight can use margin:auto to center */
+        .cd-body { display: flex; flex-direction: column; }
+        .cd-empty { flex: 1; }
+
+        /* fix: single-item border when .cd-delight follows the item */
+        #cd-body[data-single="true"] .cd-item { border-bottom: none; }
+
+        /* ── single-item decorative note ── */
+        .cd-delight {
+          margin: auto;
+          text-align: center;
+          font-family: "Caveat", cursive;
+          font-size: 16px;
+          font-style: italic;
+          color: #a4b894;
+          opacity: 0.7;
+          pointer-events: none;
+          padding: 0 8px;
+        }
       }
 
       /* ── mobile ── */
@@ -368,6 +460,7 @@
 
   let backdrop, drawer, cdBody, cdPickup, cdFooter, pickupConfirmEl, errorEl, subtotalEl, checkoutBtn;
   let cdPickupToggle, cdPickupToggleText, cdPickupCollapsible, cdPickupEditBtn;
+  let cdPickupCard, cdPickupCardDate;
   let pickupData = null;
   let pickerExpanded = false;
 
@@ -398,6 +491,18 @@
         </div>
         <p class="cd-pickup-confirm cd-pickup-incomplete" id="cd-pickup-confirm">please choose a pickup date and time</p>
         <button class="cd-pickup-edit" id="cd-pickup-edit">edit</button>
+        <button class="cd-pickup-card" id="cd-pickup-card" aria-expanded="false">
+          <div class="cd-pickup-card-top">
+            <span aria-hidden="true">📅</span>
+            <span class="cd-pickup-card-label">pickup</span>
+          </div>
+          <div class="cd-pickup-card-date" id="cd-pickup-card-date"></div>
+          <hr class="cd-pickup-card-divider">
+          <div class="cd-pickup-card-footer">
+            <span class="cd-pickup-card-change">✎ change pickup</span>
+            <span class="cd-pickup-card-chevron" aria-hidden="true">›</span>
+          </div>
+        </button>
       </div>
       <div class="cd-footer" id="cd-footer" style="display:none">
         <div class="cd-subtotal-row">
@@ -420,6 +525,8 @@
     cdPickupToggleText  = document.getElementById('cd-pickup-toggle-text');
     cdPickupCollapsible = document.getElementById('cd-pickup-collapsible');
     cdPickupEditBtn     = document.getElementById('cd-pickup-edit');
+    cdPickupCard        = document.getElementById('cd-pickup-card');
+    cdPickupCardDate    = document.getElementById('cd-pickup-card-date');
     errorEl             = document.getElementById('cd-error');
     subtotalEl          = document.getElementById('cd-subtotal');
     checkoutBtn         = document.getElementById('cd-checkout-btn');
@@ -437,6 +544,7 @@
       cdPickupCollapsible.classList.remove('open');
       cdPickupToggle.setAttribute('aria-expanded', 'false');
       updatePickupMobileState();
+      updateDelightState();
     }
   }
 
@@ -457,6 +565,7 @@
     cdPickupCollapsible.classList.add('open');
     cdPickupToggle.setAttribute('aria-expanded', 'true');
     updatePickupMobileState();
+    updateDelightState();
   }
 
   function closePicker() {
@@ -464,24 +573,26 @@
     cdPickupCollapsible.classList.remove('open');
     cdPickupToggle.setAttribute('aria-expanded', 'false');
     updatePickupMobileState();
+    updateDelightState();
   }
 
   function updatePickupMobileState() {
     if (!isMobile()) return;
     const hasSelection = !!(pickupData && pickupData.date && pickupData.time);
-    // When selection is complete + collapsed → hide toggle, show edit button
-    // Otherwise → show toggle, hide edit button
-    const hideToggle = hasSelection && !pickerExpanded;
-    cdPickupToggle.style.display = hideToggle ? 'none' : 'flex';
-    cdPickupEditBtn.style.display = hideToggle ? 'inline' : 'none';
-    // Update toggle label
-    if (!hideToggle) {
-      if (hasSelection) {
-        const label = (pickupData.dateLabel || '').replace(/ \d{4}$/, '');
-        cdPickupToggleText.textContent = `📅 ${label} · ${pickupData.timeLabel}`;
-      } else {
-        cdPickupToggleText.textContent = '📅 choose pickup date & time';
-      }
+    if (hasSelection) {
+      // Card is the persistent control when a date is chosen
+      cdPickupToggle.style.display = 'none';
+      cdPickupEditBtn.style.display = 'none';
+      cdPickupCard.style.display = 'block';
+      cdPickupCard.setAttribute('aria-expanded', pickerExpanded ? 'true' : 'false');
+      const label = (pickupData.dateLabel || '').replace(/ \d{4}$/, '').toLowerCase();
+      cdPickupCardDate.textContent = `${label} · ${pickupData.timeLabel}`;
+    } else {
+      // No selection yet — show the choose-date toggle
+      cdPickupCard.style.display = 'none';
+      cdPickupEditBtn.style.display = 'none';
+      cdPickupToggle.style.display = 'flex';
+      cdPickupToggleText.textContent = '📅 choose pickup date & time';
     }
   }
 
@@ -527,7 +638,9 @@
 
     cdPickup.style.display = '';
     cdFooter.style.display = '';
-    cdBody.innerHTML = cart.map(itemHTML).join('');
+    cdBody.dataset.single = cart.length === 1 ? 'true' : 'false';
+    cdBody.innerHTML = cart.map(itemHTML).join('') + delightHTML(cart);
+    updateDelightState();
     subtotalEl.textContent = formatPrice(window.NooshCart.getCartTotal());
     updatePickupConfirm();
     updateCheckoutState();
@@ -580,6 +693,18 @@
         </svg>
         <p class="cd-empty-msg">your list is empty —<br>go pick some treats!</p>
       </div>`;
+  }
+
+  function delightHTML(cart) {
+    if (cart.length !== 1) return '';
+    return `<p class="cd-delight" id="cd-delight">small kitchen, big love ✿</p>`;
+  }
+
+  function updateDelightState() {
+    const el = document.getElementById('cd-delight');
+    if (!el) return;
+    const cart = window.NooshCart ? window.NooshCart.getCart() : [];
+    el.style.display = (isMobile() && cart.length === 1 && !pickerExpanded) ? 'block' : 'none';
   }
 
   // ── checkout ─────────────────────────────────────────────────────────────────
@@ -642,6 +767,9 @@
       if (pickerExpanded) closePicker(); else openPicker();
     });
     cdPickupEditBtn.addEventListener('click', openPicker);
+    cdPickupCard.addEventListener('click', () => {
+      if (pickerExpanded) closePicker(); else openPicker();
+    });
     document.addEventListener('cartUpdated', renderCart);
     document.addEventListener('pickupUpdated', e => {
       pickupData = e.detail;

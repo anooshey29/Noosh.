@@ -193,6 +193,18 @@
       color: #c4b09a;
       margin: 0;
     }
+    @media (max-width: 767px) {
+      .pp-grid { row-gap: 6px; }
+      .pp-day {
+        width: min(44px, 100%);
+        aspect-ratio: 1 / 1;
+        height: auto;
+        margin: 0 auto;
+      }
+      .pp-day.pp-off { opacity: 0.4; color: #3d2d1c; }
+      .pp-day:active:not(.pp-off):not(.pp-sel) { background: #f4c8b6; }
+      .pp-time-sel { font-size: 16px; }
+    }
   `;
 
   // ── render ─────────────────────────────────────────────────────────────────
