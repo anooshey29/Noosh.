@@ -306,6 +306,56 @@
       .cd-pickup-done       { color: #87a07a; }
       .cd-pickup-incomplete { color: #c4b09a; }
 
+      /* toggle + edit: hidden on desktop, shown by mobile rules below */
+      .cd-pickup-toggle { display: none; }
+      .cd-pickup-edit   { display: none; }
+
+      /* ── mobile pickup collapsible ── */
+      @media (max-width: 767px) {
+        .cd-pickup-title { display: none; }
+
+        .cd-pickup-toggle {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+          width: 100%;
+          background: #f4dcc0;
+          border: 1.5px solid #d4b896;
+          border-radius: 12px;
+          padding: 10px 14px;
+          font-family: "Caveat", cursive;
+          font-size: 17px;
+          color: #3d2d1c;
+          cursor: pointer;
+          text-align: left;
+          margin-bottom: 10px;
+          transition: background 0.15s;
+        }
+        .cd-pickup-toggle:hover { background: #eacfaa; }
+        .cd-pickup-chevron {
+          font-size: 14px;
+          color: #8b6f4d;
+          flex-shrink: 0;
+          display: inline-block;
+          transition: transform 250ms ease;
+        }
+        .cd-pickup-toggle[aria-expanded="true"] .cd-pickup-chevron {
+          transform: rotate(180deg);
+        }
+
+        .cd-pickup-collapsible {
+          overflow: hidden;
+          max-height: 0;
+          opacity: 0;
+          transition: max-height 300ms ease, opacity 250ms ease;
+        }
+        .cd-pickup-collapsible.open {
+          max-height: 700px;
+          opacity: 1;
+        }
+      }
+
       /* ── mobile ── */
       @media (max-width: 600px) {
         #cart-drawer { width: 100%; }
@@ -317,7 +367,9 @@
   // ── DOM ──────────────────────────────────────────────────────────────────────
 
   let backdrop, drawer, cdBody, cdPickup, cdFooter, pickupConfirmEl, errorEl, subtotalEl, checkoutBtn;
+  let cdPickupToggle, cdPickupToggleText, cdPickupCollapsible, cdPickupEditBtn;
   let pickupData = null;
+  let pickerExpanded = false;
 
   function buildDOM() {
     backdrop = document.createElement('div');
@@ -337,8 +389,15 @@
       <div class="cd-body" id="cd-body"></div>
       <div class="cd-pickup" id="cd-pickup" style="display:none">
         <h3 class="cd-pickup-title">when would you like to pick up?</h3>
-        <div id="cd-pickup-mount"></div>
+        <button class="cd-pickup-toggle" id="cd-pickup-toggle" aria-expanded="false">
+          <span id="cd-pickup-toggle-text">📅 choose pickup date &amp; time</span>
+          <span class="cd-pickup-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="cd-pickup-collapsible" id="cd-pickup-collapsible">
+          <div id="cd-pickup-mount"></div>
+        </div>
         <p class="cd-pickup-confirm cd-pickup-incomplete" id="cd-pickup-confirm">please choose a pickup date and time</p>
+        <button class="cd-pickup-edit" id="cd-pickup-edit">edit</button>
       </div>
       <div class="cd-footer" id="cd-footer" style="display:none">
         <div class="cd-subtotal-row">
@@ -353,13 +412,17 @@
     document.body.appendChild(backdrop);
     document.body.appendChild(drawer);
 
-    cdBody          = document.getElementById('cd-body');
-    cdPickup        = document.getElementById('cd-pickup');
-    cdFooter        = document.getElementById('cd-footer');
-    pickupConfirmEl = document.getElementById('cd-pickup-confirm');
-    errorEl         = document.getElementById('cd-error');
-    subtotalEl      = document.getElementById('cd-subtotal');
-    checkoutBtn     = document.getElementById('cd-checkout-btn');
+    cdBody              = document.getElementById('cd-body');
+    cdPickup            = document.getElementById('cd-pickup');
+    cdFooter            = document.getElementById('cd-footer');
+    pickupConfirmEl     = document.getElementById('cd-pickup-confirm');
+    cdPickupToggle      = document.getElementById('cd-pickup-toggle');
+    cdPickupToggleText  = document.getElementById('cd-pickup-toggle-text');
+    cdPickupCollapsible = document.getElementById('cd-pickup-collapsible');
+    cdPickupEditBtn     = document.getElementById('cd-pickup-edit');
+    errorEl             = document.getElementById('cd-error');
+    subtotalEl          = document.getElementById('cd-subtotal');
+    checkoutBtn         = document.getElementById('cd-checkout-btn');
   }
 
   // ── open / close ─────────────────────────────────────────────────────────────
@@ -369,12 +432,57 @@
     drawer.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.getElementById('cd-close-btn').focus();
+    if (isMobile()) {
+      pickerExpanded = false;
+      cdPickupCollapsible.classList.remove('open');
+      cdPickupToggle.setAttribute('aria-expanded', 'false');
+      updatePickupMobileState();
+    }
   }
 
   function closeDrawer() {
     backdrop.classList.remove('open');
     drawer.classList.remove('open');
     document.body.style.overflow = '';
+  }
+
+  // ── mobile picker ────────────────────────────────────────────────────────────
+
+  function isMobile() {
+    return window.matchMedia('(max-width: 767px)').matches;
+  }
+
+  function openPicker() {
+    pickerExpanded = true;
+    cdPickupCollapsible.classList.add('open');
+    cdPickupToggle.setAttribute('aria-expanded', 'true');
+    updatePickupMobileState();
+  }
+
+  function closePicker() {
+    pickerExpanded = false;
+    cdPickupCollapsible.classList.remove('open');
+    cdPickupToggle.setAttribute('aria-expanded', 'false');
+    updatePickupMobileState();
+  }
+
+  function updatePickupMobileState() {
+    if (!isMobile()) return;
+    const hasSelection = !!(pickupData && pickupData.date && pickupData.time);
+    // When selection is complete + collapsed → hide toggle, show edit button
+    // Otherwise → show toggle, hide edit button
+    const hideToggle = hasSelection && !pickerExpanded;
+    cdPickupToggle.style.display = hideToggle ? 'none' : 'flex';
+    cdPickupEditBtn.style.display = hideToggle ? 'inline' : 'none';
+    // Update toggle label
+    if (!hideToggle) {
+      if (hasSelection) {
+        const label = (pickupData.dateLabel || '').replace(/ \d{4}$/, '');
+        cdPickupToggleText.textContent = `📅 ${label} · ${pickupData.timeLabel}`;
+      } else {
+        cdPickupToggleText.textContent = '📅 choose pickup date & time';
+      }
+    }
   }
 
   // ── pickup state ─────────────────────────────────────────────────────────────
@@ -395,6 +503,7 @@
       pickupConfirmEl.textContent = 'please choose a pickup date and time';
       pickupConfirmEl.className = 'cd-pickup-confirm cd-pickup-incomplete';
     }
+    updatePickupMobileState();
   }
 
   function updateCheckoutState() {
@@ -529,11 +638,18 @@
     backdrop.addEventListener('click', closeDrawer);
     document.getElementById('cd-close-btn').addEventListener('click', closeDrawer);
     checkoutBtn.addEventListener('click', handleCheckout);
+    cdPickupToggle.addEventListener('click', () => {
+      if (pickerExpanded) closePicker(); else openPicker();
+    });
+    cdPickupEditBtn.addEventListener('click', openPicker);
     document.addEventListener('cartUpdated', renderCart);
     document.addEventListener('pickupUpdated', e => {
       pickupData = e.detail;
       updatePickupConfirm();
       updateCheckoutState();
+      if (isMobile() && pickupData && pickupData.date && pickupData.time) {
+        closePicker();
+      }
     });
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
