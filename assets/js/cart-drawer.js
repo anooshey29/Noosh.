@@ -360,10 +360,10 @@
         /* softer section dividers on mobile */
         .cd-header { border-bottom-color: rgba(196, 97, 90, 0.35); }
         .cd-pickup { border-top-color:    rgba(196, 97, 90, 0.35); }
-        .cd-footer { border-top-color:    rgba(196, 97, 90, 0.35); }
+        .cd-footer { border-top-color:    rgba(196, 97, 90, 0.35); padding-top: 12px; }
 
         /* tighten pickup section padding so card sits 16px from drawer edge */
-        .cd-pickup { padding: 16px; }
+        .cd-pickup { padding: 16px 16px 8px; }
 
         /* hide the text confirm on mobile — card shows the date instead */
         .cd-pickup-confirm { display: none; }
@@ -379,7 +379,7 @@
           cursor: pointer;
           box-shadow: 0 2px 8px rgba(196, 97, 90, 0.05);
           transition: background 200ms ease;
-          margin-bottom: 12px;
+          margin-bottom: 0;
         }
         .cd-pickup-card:active { background: rgba(244, 200, 182, 0.3); }
         .cd-pickup-card-top {

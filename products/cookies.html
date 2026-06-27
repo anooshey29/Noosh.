@@ -508,6 +508,32 @@
     text-align: left;
     margin-bottom: 14px;
   }
+  .prod-ingredients-label {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #a4b894;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+  .prod-ingredients {
+    font-family: var(--body);
+    font-size: 15px;
+    color: rgba(61, 45, 28, 0.7);
+    line-height: 1.6;
+    text-align: left;
+  }
+  .prod-ingredients-divider {
+    border: none;
+    border-top: 1px solid rgba(244, 200, 182, 0.5);
+    margin: 20px auto;
+    width: 60%;
+  }
+  @media (max-width: 767px) {
+    .prod-ingredients { font-size: 14px; }
+  }
   /* ════ choose your box ════ */
   .box-section { padding: 4px 0 80px; }
 
@@ -758,31 +784,98 @@
   }
 
   @media (max-width: 767px) {
-    main { padding-bottom: 80px; }
+    /* ── section reorder: box-photo first, then text frame ── */
+    main {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 80px;
+    }
+    .breadcrumb    { order: 0; }
+    .box-section   { order: 1; padding-bottom: 20px; }
+    .product-hero  { order: 2; padding-left: 16px; padding-right: 16px; padding-top: 0; }
+    .magic-section { order: 3; }
+    footer         { order: 4; }
+
+    /* ── stack photo above size UI inside the card ── */
+    .box-single-card {
+      grid-template-columns: unset;
+      display: flex;
+      flex-direction: column;
+      transform: none;
+      border-radius: 16px;
+      overflow: visible;
+    }
+    .box-card-photo {
+      width: calc(100% - 40px);
+      margin: 20px auto 24px;
+      aspect-ratio: 4 / 3;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: none;
+    }
+    .box-card-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      object-fit: cover;
+    }
+    .box-card-ui { padding: 20px 20px 24px; }
+
     .menu-toggle { width: 44px; height: 44px; }
-    .size-pill { min-height: 44px; }
-    .box-add-btn { min-height: 44px; }
-    .product-hero { padding-left: 16px; padding-right: 16px; }
+    .size-pill   { min-height: 44px; }
+
+    /* ── mobile CTA: full-width add button ── */
+    .box-add-btn {
+      width: 100%;
+      align-self: stretch;
+      min-height: 52px;
+      border-radius: 28px;
+      font-size: 20px;
+      padding: 0 24px;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px rgba(196, 97, 90, 0.2);
+    }
+    .box-add-btn:active {
+      background: #b5564f;
+      transform: none;
+      box-shadow: 0 2px 6px rgba(196, 97, 90, 0.15);
+    }
   }
 
-  /* ─── mobile: hide frame & vine, simple card ─── */
-  @media (max-width: 600px) {
+  /* ─── mobile: simplified frame card ─── */
+  @media (max-width: 767px) {
     .frame-overlay { display: none; }
-    .vine-overlay  { display: none; }
     .hero-frame {
-      max-width: 95vw;
+      max-width: 100%;
+      filter: none;
       background: var(--paper);
-      border-radius: 16px;
-      border: 1.5px solid var(--peach-deep);
-      box-shadow: 0 4px 16px rgba(92, 69, 48, 0.12);
+      border-radius: 24px;
+      border: 2px solid rgba(196, 97, 90, 0.25);
+      box-shadow:
+        0 4px 20px rgba(196, 97, 90, 0.08),
+        inset 0 0 0 1px rgba(244, 200, 182, 0.4);
+      overflow: visible;
+    }
+    .vine-overlay {
+      display: block;
+      width: 35%;
+      top: -10px;
+      left: -10px;
+      z-index: 2;
     }
     .product-info {
       position: relative;
       inset: auto;
-      padding: 28px 24px 24px;
+      padding: 20px;
       z-index: 2;
     }
-    .product-info h1 { font-size: 1.75rem; }
+    .product-info h1 {
+      font-size: 32px;
+      line-height: 1.1;
+      margin-top: 8px;
+      margin-bottom: 12px;
+    }
     .product-tagline { font-size: 20px; }
     .product-desc { font-size: 13px; line-height: 1.6; }
   }
@@ -862,6 +955,10 @@
       <p class="product-desc">
         edges crisp, middles soft, finished with a pinch of sea salt. the kind of cookie you eat warm, standing in the kitchen, before they've had a chance to cool.
       </p>
+
+      <p class="prod-ingredients-label">✿ ingredients</p>
+      <p class="prod-ingredients">flour · butter · brown sugar · eggs · vanilla · dark chocolate · sea salt</p>
+      <hr class="prod-ingredients-divider">
     </div>
   </div>
 
