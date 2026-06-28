@@ -61,9 +61,15 @@
   function showBagToast() {
     const toast = document.getElementById('bagToast');
     if (!toast) return;
+    toast.classList.remove('hiding');
     toast.classList.add('show');
     clearTimeout(_toastTimer);
-    _toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    _toastTimer = setTimeout(() => {
+      toast.classList.add('hiding');
+      setTimeout(() => {
+        toast.classList.remove('show', 'hiding');
+      }, 200);
+    }, 2300);
   }
 
   // ── wire .add-to-sugar-rush buttons ─────────────────────────────────────────
