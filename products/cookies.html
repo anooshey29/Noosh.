@@ -571,24 +571,18 @@
     background-color: var(--paper);
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.24 0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
-  .box-size-label {
-    font-family: var(--body);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--sage-deep);
-    margin-bottom: 8px;
-    display: block;
-  }
+  .box-size-label { display: none; }
   .box-heading {
     font-family: var(--display);
-    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 90;
-    font-size: clamp(26px, 3.2vw, 40px);
-    line-height: 1;
-    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 100;
+    font-style: italic;
+    font-size: 26px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
     color: var(--brown-deep);
     margin-bottom: 28px;
   }
+  .box-heading-flower { color: #a4b894; font-style: normal; }
   .size-pills {
     display: flex;
     gap: 10px;
@@ -637,11 +631,11 @@
     margin-bottom: 4px;
   }
   .box-live-caption {
-    font-family: var(--body);
-    font-size: 12px;
+    font-family: var(--hand);
+    font-size: 18px;
     font-style: normal;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: normal;
+    text-transform: none;
     color: var(--sage-deep);
     display: block;
     margin-bottom: 28px;
@@ -1025,7 +1019,6 @@
     .box-card-photo { align-self: start; box-shadow: 0 6px 20px rgba(92, 69, 48, 0.15); }
     .box-card-photo img { min-height: 0; max-height: none; object-position: center; }
     .box-card-ui { padding: 18px 14px; }
-    .box-size-label { margin-bottom: 4px; }
     .box-heading { font-size: 20px; margin-bottom: 14px; }
     .size-pills { gap: 6px; margin-bottom: 14px; }
     .size-pill-most-pop { display: none; }
@@ -1081,6 +1074,8 @@
     }
     .box-card-ui { padding: 20px 20px 24px; }
 
+    .box-heading       { font-size: 22px; }
+    .box-live-caption  { font-size: 16px; }
     .menu-toggle { width: 44px; height: 44px; }
     .size-pill   { min-height: 44px; }
 
@@ -1253,8 +1248,7 @@
 
       <!-- selection UI -->
       <div class="box-card-ui">
-        <span class="box-size-label">pick your size</span>
-        <h2 class="box-heading">choose your box</h2>
+        <h2 class="box-heading">choose your box <span class="box-heading-flower">✿</span></h2>
 
         <div class="size-pills">
           <div class="size-pill-wrap">
@@ -1272,7 +1266,7 @@
         </div>
 
         <div class="box-live-price" id="boxPrice">$26.95</div>
-        <span class="box-live-caption" id="boxCaption">the sharing size</span>
+        <span class="box-live-caption" id="boxCaption">the share</span>
 
         <button class="box-add-btn add-to-sugar-rush" id="boxAddBtn"
                 data-product-id="cookies-box-8"
@@ -1379,9 +1373,9 @@
 <script>
   // box size selection — updates data attributes read by cart.js
   const sizeData = {
-    4:  { price: 16.95, caption: "a sweet little stash" },
-    8:  { price: 26.95, caption: "the sharing size" },
-    12: { price: 38.95, caption: "for serious cookie energy" },
+    4:  { price: 16.95, caption: "the starter" },
+    8:  { price: 26.95, caption: "the share" },
+    12: { price: 38.95, caption: "the stash" },
   };
   let selectedSize = 8;
 
