@@ -797,13 +797,19 @@
     footer         { order: 4; }
 
     /* ── stack photo above size UI inside the card ── */
+    .box-section .container { padding: 0 16px; }
     .box-single-card {
       grid-template-columns: unset;
       display: flex;
       flex-direction: column;
       transform: none;
-      border-radius: 16px;
+      background: var(--paper);
+      border: 2px solid rgba(196, 97, 90, 0.25);
+      border-radius: 24px;
       overflow: visible;
+      box-shadow:
+        0 4px 20px rgba(196, 97, 90, 0.08),
+        inset 0 0 0 1px rgba(244, 200, 182, 0.4);
     }
     .box-card-photo {
       width: calc(100% - 40px);
@@ -909,7 +915,7 @@
   <ul class="side-nav">
     <li><a href="../index.html#home" title="home"><span class="icon">✿</span> <span class="nav-label">home</span></a></li>
     <li><a href="../index.html#menu" class="active" title="the menu"><span class="icon">✿</span> <span class="nav-label">the menu</span></a></li>
-    <li><a href="../index.html#about" title="hello, me"><span class="icon">♡</span> <span class="nav-label">hello, me</span></a></li>
+    <li><a href="../index.html#about" title="hello, me"><span class="icon"></span> <span class="nav-label">hello, me</span></a></li>
     <li><a href="../index.html#waitlist" title="join the list"><span class="icon">✦</span> <span class="nav-label">join the list</span></a></li>
   </ul>
 
@@ -920,7 +926,7 @@
     <ul>
       <li><a href="https://instagram.com" target="_blank" rel="noopener">@noosh.bakes</a></li>
       <li><a href="https://tiktok.com" target="_blank" rel="noopener">tiktok</a></li>
-      <li><a href="mailto:hello@noosh.bakes">email me ♡</a></li>
+      <li><a href="mailto:hello@noosh.bakes">email me</a></li>
     </ul>
   </div>
 </aside>
@@ -1008,7 +1014,7 @@
                 data-product-id="cookies-box-8"
                 data-product-name="brown butter cookies — box of 8"
                 data-product-price="2695"
-                data-product-image="/images/cookie-closeup.jpg">add to sugar rush ♡</button>
+                data-product-image="/images/cookie-closeup.jpg">add to sugar rush</button>
       </div>
 
     </div>
@@ -1018,7 +1024,7 @@
 <!-- ════════════════════ MAGIC BANNER ════════════════════ -->
 <section class="magic-section reveal">
   <h2 class="magic-heading">the magic behind the crumbs</h2>
-  <span class="magic-subhead">the good stuff inside ♡</span>
+  <span class="magic-subhead">the good stuff inside</span>
 
   <div class="magic-inner-banner">
     <div class="magic-photo-grid">
@@ -1104,7 +1110,7 @@
 </script>
 
 <!-- bag toast element -->
-<div class="bag-toast" id="bagToast" aria-live="polite">added to your sugar rush ♡</div>
+<div class="bag-toast" id="bagToast" aria-live="polite">added to your sugar rush</div>
 
 <script>
   // box size selection — updates data attributes read by cart.js
