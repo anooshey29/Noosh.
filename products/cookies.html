@@ -631,11 +631,12 @@
     margin-bottom: 4px;
   }
   .box-live-caption {
-    font-family: var(--hand);
-    font-size: 18px;
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
     font-style: normal;
-    letter-spacing: normal;
-    text-transform: none;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
     color: var(--sage-deep);
     display: block;
     margin-bottom: 28px;
@@ -1083,7 +1084,6 @@
     .box-card-ui { padding: 20px 20px 24px; }
 
     .box-heading       { font-size: 22px; }
-    .box-live-caption  { font-size: 16px; }
     .menu-toggle { width: 44px; height: 44px; }
     .size-pill   { min-height: 44px; }
 
@@ -1274,7 +1274,7 @@
         </div>
 
         <div class="box-live-price" id="boxPrice">$26.95</div>
-        <span class="box-live-caption" id="boxCaption">the share</span>
+        <span class="box-live-caption" id="boxCaption">the perfect batch</span>
 
         <button class="box-add-btn add-to-sugar-rush" id="boxAddBtn"
                 data-product-id="cookies-box-8"
@@ -1381,9 +1381,9 @@
 <script>
   // box size selection — updates data attributes read by cart.js
   const sizeData = {
-    4:  { price: 16.95, caption: "the starter" },
-    8:  { price: 26.95, caption: "the share" },
-    12: { price: 38.95, caption: "the stash" },
+    4:  { price: 16.95, caption: "a sweet little stash" },
+    8:  { price: 26.95, caption: "the perfect batch" },
+    12: { price: 38.95, caption: "the sharing size" },
   };
   let selectedSize = 8;
 
