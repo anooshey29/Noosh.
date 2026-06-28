@@ -553,6 +553,10 @@
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(92, 69, 48, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5ede0;
   }
   .box-card-photo img {
     width: 100%; height: 100%;
@@ -740,6 +744,246 @@
     transform: translateY(0);
   }
 
+  /* ════ recipe gallery ════ */
+
+  /* gallery host — fills the photo column */
+  .rg-host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 28px 16px 20px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    background: #f5ede0;
+  }
+
+  /* "tap to flip" hint above stack — fades after 3s */
+  .rg-flip-hint {
+    font-family: var(--hand);
+    font-size: 13px;
+    color: #c4615a;
+    opacity: 0.7;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 1s ease;
+    margin: 0;
+  }
+  .rg-flip-hint.fade { opacity: 0; }
+
+  /* stage — recipe book stack */
+  .rg-stage {
+    position: relative;
+    width: 240px;
+    height: 320px;
+    flex-shrink: 0;
+  }
+
+  /* decorative paper layers behind pages */
+  .rg-dec {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    pointer-events: none;
+  }
+  .rg-dec-1 {
+    background: #fbf2e0;
+    border: 1px solid rgba(196, 97, 90, 0.18);
+    transform: rotate(1.5deg) translate(1px, 3px);
+    z-index: 1;
+  }
+  .rg-dec-2 {
+    background: #f8e8d2;
+    border: 1px solid rgba(196, 97, 90, 0.14);
+    transform: rotate(2.5deg) translate(2px, 6px);
+    z-index: 0;
+  }
+
+  /* interactive page stack */
+  .rg-stack {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    perspective: 1200px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+
+  /* each recipe page */
+  .rg-page {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .rg-page[data-depth="2"] { transform: rotate(-1deg);   z-index: 1; }
+  .rg-page[data-depth="1"] { transform: rotate(-0.5deg); z-index: 2; }
+  .rg-page[data-depth="0"] { transform: none;            z-index: 3; }
+
+  /* flip animation */
+  .rg-page.is-flipping {
+    transition: transform 580ms ease-in-out;
+    transform: rotateY(-180deg) translateZ(22px) !important;
+    z-index: 10 !important;
+  }
+
+  /* front and back faces */
+  .rg-front,
+  .rg-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .rg-front {
+    background: #fbf2e0;
+    border: 1px solid rgba(196, 97, 90, 0.22);
+    box-shadow: 0 8px 24px rgba(196, 97, 90, 0.12);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .rg-back {
+    transform: rotateY(180deg);
+    background: #fbf2e0;
+    border: 1px solid rgba(196, 97, 90, 0.18);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='rg'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='9'/><feColorMatrix values='0 0 0 0 0.24 0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0.03 0'/></filter><rect width='100%25' height='100%25' filter='url(%23rg)'/></svg>");
+  }
+
+  /* ribbon bookmark */
+  .rg-ribbon {
+    position: absolute;
+    top: 0; right: 16px;
+    width: 28px; height: 60px;
+    background: rgba(196, 97, 90, 0.85);
+    border-radius: 0 0 4px 4px;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .rg-ribbon::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 50%;
+    transform: translateX(-50%);
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 8px solid rgba(196, 97, 90, 0.85);
+  }
+
+  /* page header */
+  .rg-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+  }
+  .rg-num {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    font-style: italic;
+    letter-spacing: 1.5px;
+    color: rgba(196, 97, 90, 0.5);
+  }
+  .rg-ref {
+    font-family: var(--hand);
+    font-size: 12px;
+    color: #a4b894;
+    font-style: italic;
+    text-align: right;
+    line-height: 1.3;
+    max-width: 55%;
+  }
+
+  /* photo area */
+  .rg-photo {
+    flex: 1;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    background: #f4dcc0;
+    min-height: 0;
+  }
+  .rg-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* caption */
+  .rg-caption {
+    font-family: var(--hand);
+    font-size: 13px;
+    color: rgba(107, 85, 68, 1);
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1.3;
+    font-style: italic;
+  }
+
+  /* desktop hover arrows */
+  .rg-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(251, 242, 224, 0.94);
+    border: 1px solid rgba(196, 97, 90, 0.18);
+    box-shadow: 0 2px 8px rgba(61, 45, 28, 0.1);
+    color: #c4615a;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.15s;
+    z-index: 5;
+    padding: 0;
+    line-height: 1;
+  }
+  .rg-prev { left: -20px; }
+  .rg-next { right: -20px; }
+  .rg-stage:hover .rg-arrow { opacity: 1; }
+  .rg-arrow:hover { background: #fff8f0; }
+
+  /* "turn the page" hint below dots — fades after first flip */
+  .rg-turn-hint {
+    font-family: var(--hand);
+    font-size: 14px;
+    color: #a4b894;
+    opacity: 0.75;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    margin: 0;
+  }
+  .rg-turn-hint.fade { opacity: 0; }
+
+  /* pagination dots */
+  .rg-dots { display: flex; gap: 8px; align-items: center; }
+  .rg-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid #f4c8b6;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s, transform 0.2s, border-color 0.2s;
+  }
+  .rg-dot.active { background: #c4615a; border-color: #c4615a; transform: scale(1.2); }
+
+  @media (max-width: 767px) {
+    .rg-stage { width: min(240px, 85%); height: auto; aspect-ratio: 3 / 4; }
+    .rg-arrow { display: none; }
+    .rg-flip-hint { font-size: 12px; }
+  }
+
   /* ════════════════════ RESPONSIVE ════════════════════ */
   @media (max-width: 880px) {
     .sidebar {
@@ -768,7 +1012,7 @@
     .magic-photo-grid { grid-template-columns: 1fr; padding: 0 16px; }
     .magic-photo-grid img { height: 220px; }
     .box-single-card { grid-template-columns: 46% 1fr; transform: none; }
-    .box-card-photo { aspect-ratio: 1 / 1; align-self: start; box-shadow: 0 6px 20px rgba(92, 69, 48, 0.15); }
+    .box-card-photo { align-self: start; box-shadow: 0 6px 20px rgba(92, 69, 48, 0.15); }
     .box-card-photo img { min-height: 0; max-height: none; object-position: center; }
     .box-card-ui { padding: 18px 14px; }
     .box-size-label { margin-bottom: 4px; }
@@ -814,9 +1058,8 @@
     .box-card-photo {
       width: calc(100% - 40px);
       margin: 20px auto 24px;
-      aspect-ratio: 4 / 3;
       border-radius: 18px;
-      overflow: hidden;
+      overflow: visible;
       box-shadow: none;
     }
     .box-card-photo img {
@@ -980,11 +1223,22 @@
   <div class="container">
     <div class="box-single-card reveal">
 
-      <!-- photo -->
+      <!-- recipe book gallery -->
       <div class="box-card-photo">
-        <img src="../images/cookie-closeup.jpg"
-             alt="Brown butter chocolate chunk cookies, close up"
-             loading="lazy">
+        <div class="rg-host">
+          <p class="rg-flip-hint" id="rgFlipHint">tap to flip · or swipe</p>
+          <div class="rg-stage">
+            <div class="rg-dec rg-dec-2"></div>
+            <div class="rg-dec rg-dec-1"></div>
+            <div class="rg-stack" id="rgStack">
+              <!-- pages injected by JS -->
+            </div>
+            <button class="rg-arrow rg-prev" id="rgPrev" aria-label="previous photo">&#8249;</button>
+            <button class="rg-arrow rg-next" id="rgNext" aria-label="next photo">&#8250;</button>
+          </div>
+          <div class="rg-dots" id="rgDots"></div>
+          <p class="rg-turn-hint" id="rgTurnHint">✿ turn the page ✿</p>
+        </div>
       </div>
 
       <!-- selection UI -->
@@ -1144,6 +1398,185 @@
 <script src="../assets/js/cart-icon.js"></script>
 <script src="../assets/js/cart-drawer.js"></script>
 <script src="../assets/js/pickup-picker.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  var PHOTOS = [
+    {
+      src:     '../images/cookies-bird-eye-view.jpg',
+      num:     'no. 01',
+      ref:     'brown butter<br>cookies',
+      caption: 'warm from the oven, seen from above'
+    },
+    {
+      src:     '../images/cookie-closeup.jpg',
+      num:     'no. 02',
+      ref:     'brown butter<br>cookies',
+      caption: 'crinkled tops, gooey middles'
+    },
+    {
+      src:     '../images/chocolate.jpg',
+      num:     'no. 03',
+      ref:     'brown butter<br>cookies',
+      caption: 'dark chocolate, broken by hand'
+    }
+  ];
+
+  var current       = 0;
+  var isAnimating   = false;
+  var hintFaded     = false;
+  var txStart       = 0;
+  var tyStart       = 0;
+  var swipeDetected = false;
+
+  function buildPage(photo, index) {
+    var page = document.createElement('div');
+    page.className = 'rg-page';
+    page.dataset.index = index;
+    page.innerHTML =
+      '<div class="rg-front">' +
+        '<div class="rg-ribbon"></div>' +
+        '<div class="rg-page-header">' +
+          '<span class="rg-num">' + photo.num + '</span>' +
+          '<span class="rg-ref">' + photo.ref + '</span>' +
+        '</div>' +
+        '<div class="rg-photo">' +
+          '<img src="' + photo.src + '" alt="' + photo.caption + '" loading="' + (index === 0 ? 'eager' : 'lazy') + '">' +
+        '</div>' +
+        '<p class="rg-caption">' + photo.caption + '</p>' +
+      '</div>' +
+      '<div class="rg-back"></div>';
+    return page;
+  }
+
+  function updateStack() {
+    var n     = PHOTOS.length;
+    var pages = document.querySelectorAll('.rg-page');
+    var dots  = document.querySelectorAll('.rg-dot');
+    pages.forEach(function (page) {
+      var idx   = parseInt(page.dataset.index, 10);
+      var depth = (idx - current + n) % n;
+      page.dataset.depth = depth;
+    });
+    dots.forEach(function (dot, i) {
+      dot.classList.toggle('active', i === current);
+    });
+  }
+
+  function advance() {
+    if (isAnimating) return;
+    isAnimating = true;
+    fadeHint();
+
+    var pages = Array.from(document.querySelectorAll('.rg-page'));
+    var front = pages.find(function (p) { return parseInt(p.dataset.depth, 10) === 0; });
+    if (!front) { isAnimating = false; return; }
+
+    front.classList.add('is-flipping');
+
+    function onEnd() {
+      front.removeEventListener('transitionend', onEnd);
+      front.style.opacity = '0';
+      front.classList.remove('is-flipping');
+      current = (current + 1) % PHOTOS.length;
+      updateStack();
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          front.style.opacity = '';
+          isAnimating = false;
+        });
+      });
+    }
+    front.addEventListener('transitionend', onEnd);
+  }
+
+  function retreat() {
+    if (isAnimating) return;
+    current = (current - 1 + PHOTOS.length) % PHOTOS.length;
+    updateStack();
+  }
+
+  function fadeHint() {
+    if (hintFaded) return;
+    hintFaded = true;
+    var hint = document.getElementById('rgTurnHint');
+    if (hint) hint.classList.add('fade');
+  }
+
+  function init() {
+    var stack     = document.getElementById('rgStack');
+    var dotsEl    = document.getElementById('rgDots');
+    var flipHint  = document.getElementById('rgFlipHint');
+    var prevBtn   = document.getElementById('rgPrev');
+    var nextBtn   = document.getElementById('rgNext');
+    if (!stack || !dotsEl) return;
+
+    PHOTOS.forEach(function (photo, i) {
+      stack.appendChild(buildPage(photo, i));
+    });
+
+    PHOTOS.forEach(function (_, i) {
+      var dot = document.createElement('button');
+      dot.className = 'rg-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'photo ' + (i + 1) + ' of ' + PHOTOS.length);
+      dot.addEventListener('click', function (e) { e.stopPropagation(); advance(); });
+      dotsEl.appendChild(dot);
+    });
+
+    updateStack();
+
+    // click advances
+    stack.addEventListener('click', function () {
+      if (swipeDetected) return;
+      advance();
+    });
+
+    // swipe
+    stack.addEventListener('touchstart', function (e) {
+      txStart = e.touches[0].clientX;
+      tyStart = e.touches[0].clientY;
+      swipeDetected = false;
+    }, { passive: true });
+
+    stack.addEventListener('touchmove', function (e) {
+      if (Math.abs(e.touches[0].clientX - txStart) > 8) swipeDetected = true;
+    }, { passive: true });
+
+    stack.addEventListener('touchend', function (e) {
+      var dx = e.changedTouches[0].clientX - txStart;
+      var dy = e.changedTouches[0].clientY - tyStart;
+      if (swipeDetected && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+        if (dx < 0) advance(); else retreat();
+      }
+      setTimeout(function () { swipeDetected = false; }, 50);
+    }, { passive: true });
+
+    // keyboard
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') advance();
+      if (e.key === 'ArrowLeft')  retreat();
+    });
+
+    // desktop arrows
+    if (prevBtn) prevBtn.addEventListener('click', function (e) { e.stopPropagation(); retreat(); });
+    if (nextBtn) nextBtn.addEventListener('click', function (e) { e.stopPropagation(); advance(); });
+
+    // fade the flip hint after 3s
+    if (flipHint) {
+      setTimeout(function () { flipHint.classList.add('fade'); }, 3000);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
 
