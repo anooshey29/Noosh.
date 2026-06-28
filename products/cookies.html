@@ -1132,6 +1132,26 @@
 
     /* ribbon proportionally larger */
     .rg-ribbon { width: 32px; height: 72px; }
+
+    /* ── right column: distribute content down the full gallery height ── */
+    .box-card-ui {
+      padding: 52px 44px;
+      justify-content: space-between;
+    }
+    /* Remove fixed bottom margins — space-between handles the gaps */
+    .box-heading      { margin-bottom: 0; }
+    .size-pills       { margin-bottom: 0; }
+    /* Keep price + caption as a single visual unit */
+    .box-price-group  { display: flex; flex-direction: column; gap: 6px; }
+    .box-live-caption { margin-bottom: 0; }
+    /* Full-width CTA fills the column; slightly taller tap target */
+    .box-add-btn {
+      margin-top: 0;
+      align-self: stretch;
+      text-align: center;
+      min-height: 56px;
+      font-size: 22px;
+    }
   }
 
   /* ─── below 1024px: simplified frame card ─── */
@@ -1302,8 +1322,10 @@
           </div>
         </div>
 
-        <div class="box-live-price" id="boxPrice">$26.95</div>
-        <span class="box-live-caption" id="boxCaption">the perfect batch</span>
+        <div class="box-price-group">
+          <div class="box-live-price" id="boxPrice">$26.95</div>
+          <span class="box-live-caption" id="boxCaption">the perfect batch</span>
+        </div>
 
         <button class="box-add-btn add-to-sugar-rush" id="boxAddBtn"
                 data-product-id="cookies-box-8"
