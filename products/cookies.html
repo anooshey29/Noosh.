@@ -1108,6 +1108,32 @@
     }
   }
 
+  /* ─── desktop gallery: large recipe-book card ─── */
+  @media (min-width: 1024px) {
+    /* widen the gallery column (45% → 58%) so the recipe book has room */
+    .box-single-card { grid-template-columns: 58% 1fr; }
+
+    /* let the host grow to fit the stage instead of being capped at min-height */
+    .rg-host { height: auto; min-height: 0; padding: 20px; gap: 10px; }
+
+    /* stage fills the full column width (minus host padding) */
+    .rg-stage { width: 100%; }
+
+    /* generous inner padding on the recipe page */
+    .rg-front { padding: 16px; }
+
+    /* show the full cookie photo without cropping; cream bg fills any letterbox */
+    .rg-photo img { object-fit: contain; }
+
+    /* larger type to match the bigger card */
+    .rg-num     { font-size: 13px; }
+    .rg-ref     { font-size: 14px; }
+    .rg-caption { font-size: 16px; }
+
+    /* ribbon proportionally larger */
+    .rg-ribbon { width: 32px; height: 72px; }
+  }
+
   /* ─── below 1024px: simplified frame card ─── */
   @media (max-width: 1023px) {
     .frame-overlay { display: none; }
