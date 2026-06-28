@@ -784,8 +784,9 @@
   /* stage — recipe book stack */
   .rg-stage {
     position: relative;
-    width: 240px;
-    height: 320px;
+    width: min(88%, 300px);
+    height: auto;
+    aspect-ratio: 3 / 4;
     flex-shrink: 0;
   }
 
@@ -993,7 +994,7 @@
   }
   .rg-dot.active { background: #c4615a; border-color: #c4615a; transform: scale(1.2); }
 
-  @media (max-width: 767px) {
+  @media (max-width: 880px) {
     .rg-stage { width: min(240px, 85%); height: auto; aspect-ratio: 3 / 4; }
     .rg-arrow { display: none; }
     .rg-flip-hint { font-size: 12px; }
@@ -1041,7 +1042,7 @@
     .footer-inner { padding: 0 24px; }
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 880px) {
     /* ── section reorder: box-photo first, then text frame ── */
     main {
       display: flex;
@@ -1107,8 +1108,8 @@
     }
   }
 
-  /* ─── mobile: simplified frame card ─── */
-  @media (max-width: 767px) {
+  /* ─── below 880px: simplified frame card ─── */
+  @media (max-width: 880px) {
     .frame-overlay { display: none; }
     .hero-frame {
       max-width: 100%;
