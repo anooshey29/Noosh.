@@ -117,7 +117,7 @@
   }
   .desk-close-btn:hover { opacity: 1; background: rgba(139, 111, 77, 0.1); }
 
-  @media (min-width: 881px) {
+  @media (min-width: 1024px) {
     body.sb-closed .sidebar { transform: translateX(-100%); }
     body.sb-closed main { margin-left: 0; }
   }
@@ -143,14 +143,14 @@
     transform: translateY(-50%) scale(1.05);
     box-shadow: 0 6px 14px rgba(61, 45, 28, 0.18);
   }
-  @media (min-width: 881px) {
+  @media (min-width: 1024px) {
     body.sb-closed .sb-reopen-tab { opacity: 1; pointer-events: auto; animation: sb-pulse 2s ease-in-out infinite; }
   }
   @keyframes sb-pulse {
     0%, 100% { transform: translateY(-50%) scale(1); }
     50%       { transform: translateY(-50%) scale(1.05); }
   }
-  @media (max-width: 880px) {
+  @media (max-width: 1023px) {
     .desk-close-btn { display: none; }
     .sb-reopen-tab  { display: none; }
   }
@@ -452,7 +452,7 @@
     pointer-events: none;
     z-index: 1;
   }
-  @media (max-width: 880px) {
+  @media (max-width: 1023px) {
     .hero-frame {
       width: 100%;
       max-width: 95vw;
@@ -533,7 +533,7 @@
     margin: 20px auto;
     width: 60%;
   }
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     .prod-ingredients { font-size: 14px; }
   }
   /* ════ choose your box ════ */
@@ -747,7 +747,7 @@
     transition: opacity 0.2s ease-in, transform 0.2s ease-in;
   }
   .toast-flower { color: #a4b894; }
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     .bag-toast { font-size: 17px; }
   }
 
@@ -994,14 +994,14 @@
   }
   .rg-dot.active { background: #c4615a; border-color: #c4615a; transform: scale(1.2); }
 
-  @media (max-width: 880px) {
+  @media (max-width: 1023px) {
     .rg-stage { width: min(240px, 85%); height: auto; aspect-ratio: 3 / 4; }
     .rg-arrow { display: none; }
     .rg-flip-hint { font-size: 12px; }
   }
 
   /* ════════════════════ RESPONSIVE ════════════════════ */
-  @media (max-width: 880px) {
+  @media (max-width: 1023px) {
     .sidebar {
       transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
       transform: translateX(-110%);
@@ -1042,7 +1042,7 @@
     .footer-inner { padding: 0 24px; }
   }
 
-  @media (max-width: 880px) {
+  @media (max-width: 1023px) {
     /* ── section reorder: box-photo first, then text frame ── */
     main {
       display: flex;
@@ -1108,8 +1108,8 @@
     }
   }
 
-  /* ─── below 880px: simplified frame card ─── */
-  @media (max-width: 880px) {
+  /* ─── below 1024px: simplified frame card ─── */
+  @media (max-width: 1023px) {
     .frame-overlay { display: none; }
     .hero-frame {
       max-width: 100%;
@@ -1152,7 +1152,7 @@
 </style>
 </head>
 <body>
-<script>(function(){try{if(localStorage.getItem('noosh_sb')==='closed'&&window.innerWidth>880)document.body.classList.add('sb-closed');}catch(e){}})();</script>
+<script>(function(){try{if(localStorage.getItem('noosh_sb')==='closed'&&window.innerWidth>1023)document.body.classList.add('sb-closed');}catch(e){}})();</script>
 
 <!-- floating petals -->
 <div class="petals" aria-hidden="true">
@@ -1341,7 +1341,7 @@
   }
 
   deskCloseBtn.addEventListener("click", () => {
-    if (window.innerWidth <= 880) return;
+    if (window.innerWidth <= 1023) return;
     document.body.classList.add("sb-closed");
     try { localStorage.setItem("noosh_sb", "closed"); } catch(e) {}
   });
@@ -1351,7 +1351,7 @@
     triggerPetalBreeze();
   });
   window.addEventListener("resize", () => {
-    if (window.innerWidth <= 880) document.body.classList.remove("sb-closed");
+    if (window.innerWidth <= 1023) document.body.classList.remove("sb-closed");
   }, { passive: true });
 
   menuToggle.addEventListener("click", () => {
