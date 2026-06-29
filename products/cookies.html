@@ -866,26 +866,6 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='rg'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='9'/><feColorMatrix values='0 0 0 0 0.24 0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0.03 0'/></filter><rect width='100%25' height='100%25' filter='url(%23rg)'/></svg>");
   }
 
-  /* ribbon bookmark */
-  .rg-ribbon {
-    position: absolute;
-    top: 0; right: 16px;
-    width: 28px; height: 60px;
-    background: rgba(196, 97, 90, 0.85);
-    border-radius: 0 0 4px 4px;
-    z-index: 4;
-    pointer-events: none;
-  }
-  .rg-ribbon::after {
-    content: '';
-    position: absolute;
-    bottom: -8px; left: 50%;
-    transform: translateX(-50%);
-    border-left: 14px solid transparent;
-    border-right: 14px solid transparent;
-    border-top: 8px solid rgba(196, 97, 90, 0.85);
-  }
-
   /* page header */
   .rg-page-header {
     display: flex;
@@ -1129,9 +1109,6 @@
     .rg-num     { font-size: 13px; }
     .rg-ref     { font-size: 14px; }
     .rg-caption { font-size: 16px; }
-
-    /* ribbon proportionally larger */
-    .rg-ribbon { width: 32px; height: 72px; }
 
     /* ── right column: distribute content down the full gallery height ── */
     .box-card-ui {
@@ -1494,7 +1471,6 @@
     page.dataset.index = index;
     page.innerHTML =
       '<div class="rg-front">' +
-        '<div class="rg-ribbon"></div>' +
         '<div class="rg-page-header">' +
           '<span class="rg-num">' + photo.num + '</span>' +
           '<span class="rg-ref">' + photo.ref + '</span>' +
