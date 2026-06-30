@@ -229,6 +229,13 @@
         font-weight: 600;
         color: #3d2d1c;
       }
+      @keyframes noosh-glow {
+        0%   { background: #c4615a; opacity: 0.52; }
+        35%  { background: #e8a8a2; opacity: 0.40; }
+        65%  { background: #f4c8b6; opacity: 0.44; }
+        100% { background: #c4615a; opacity: 0.52; }
+      }
+
       .cd-checkout-btn {
         width: 100%;
         background: #c4615a;
@@ -245,6 +252,22 @@
         box-shadow: 0 4px 0 -1px #5c4530;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         margin-bottom: 10px;
+        position: relative;
+        isolation: isolate;
+      }
+      .cd-checkout-btn::before {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border-radius: 20px;
+        filter: blur(14px);
+        z-index: -1;
+        pointer-events: none;
+        animation: noosh-glow 3.5s ease-in-out infinite;
+        animation-delay: -0.6s;
+      }
+      .cd-checkout-btn:disabled::before {
+        opacity: 0;
       }
       .cd-checkout-btn:hover:not(:disabled) {
         transform: translateY(-2px);
