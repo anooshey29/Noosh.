@@ -1110,12 +1110,13 @@
     .rg-ref     { font-size: 14px; }
     .rg-caption { font-size: 16px; }
 
-    /* ── right column: distribute content down the full gallery height ── */
+    /* ── right column: vertically centered, tightly grouped ── */
     .box-card-ui {
       padding: 52px 44px;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 24px;
     }
-    /* Remove fixed bottom margins — space-between handles the gaps */
+    /* Zero out base margins so gap owns all vertical spacing */
     .box-heading      { margin-bottom: 0; }
     .size-pills       { margin-bottom: 0; }
     /* Keep price + caption as a single visual unit */
