@@ -1327,5 +1327,76 @@
 <script src="assets/js/cart-icon.js"></script>
 <script src="assets/js/cart-drawer.js"></script>
 <script src="assets/js/pickup-picker.js"></script>
+
+<script>
+/* ── menu card 3D tilt on hover — desktop / real-pointer only ── */
+(function () {
+  'use strict';
+
+  // Skip entirely on touch screens and narrow viewports
+  if (!window.matchMedia('(pointer: fine) and (min-width: 1024px)').matches) return;
+
+  var MAX_DEG  = 9;   // maximum tilt in degrees (each axis)
+  var PERSP_PX = 800; // perspective distance
+
+  document.querySelectorAll('.treat-card').forEach(function (card) {
+    var raf      = null;
+    var restXfrm = ''; // computed resting transform, captured on mouseenter
+
+    card.addEventListener('mouseenter', function () {
+      // Snapshot the CSS resting transform (e.g. rotate(-1deg) → matrix(...))
+      // so the spring-back target is the card's natural tilted position.
+      restXfrm = window.getComputedStyle(card).transform;
+
+      // While tracking the cursor we want zero transition lag — suppress
+      // the CSS transition for transform and keep only box-shadow easing.
+      card.style.setProperty('transition', 'box-shadow 250ms ease', 'important');
+    });
+
+    card.addEventListener('mousemove', function (e) {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(function () {
+        var rect = card.getBoundingClientRect();
+        // Normalise cursor to [-0.5, 0.5] relative to card centre
+        var nx = (e.clientX - rect.left)  / rect.width  - 0.5;
+        var ny = (e.clientY - rect.top)   / rect.height - 0.5;
+        // rotateX: cursor toward top → positive (top faces viewer)
+        // rotateY: cursor toward right → positive (right goes back, left faces viewer)
+        var rX = (-ny * MAX_DEG * 2).toFixed(2);
+        var rY = ( nx * MAX_DEG * 2).toFixed(2);
+
+        // Must use setProperty + 'important' to beat the CSS hover !important rule
+        card.style.setProperty(
+          'transform',
+          'perspective(' + PERSP_PX + 'px) rotateX(' + rX + 'deg) rotateY(' + rY + 'deg) translateY(-6px)',
+          'important'
+        );
+      });
+    });
+
+    card.addEventListener('mouseleave', function () {
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+
+      // Spring back: slight overshoot for a lively settle
+      card.style.setProperty(
+        'transition',
+        'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 250ms ease',
+        'important'
+      );
+      // Animate back to the natural resting rotation
+      card.style.setProperty('transform', restXfrm, 'important');
+
+      // Once the spring finishes, hand transform back to CSS entirely
+      function onDone(e) {
+        if (e.propertyName !== 'transform') return;
+        card.removeEventListener('transitionend', onDone);
+        card.style.removeProperty('transform');
+        card.style.removeProperty('transition');
+      }
+      card.addEventListener('transitionend', onDone);
+    });
+  });
+})();
+</script>
 </body>
 </html>
