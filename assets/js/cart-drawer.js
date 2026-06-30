@@ -320,6 +320,26 @@
         color: #3d2d1c;
         margin: 0 0 12px;
       }
+
+      /* ── pickup title shimmer — plays twice then settles ── */
+      @keyframes cd-shimmer-sweep {
+        0%   { background-position: -200% center; }
+        100% { background-position:  200% center; }
+      }
+      .cd-pickup-shimmer {
+        background: linear-gradient(90deg,
+          #3d2d1c 20%,
+          #c4615a 38%,
+          #f8d4ba 50%,
+          #c4615a 62%,
+          #3d2d1c 80%
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: cd-shimmer-sweep 1.3s ease-in-out 2;
+      }
       .cd-pickup-confirm {
         font-family: "Caveat", cursive;
         font-size: 16px;
@@ -569,6 +589,7 @@
       updatePickupMobileState();
       updateDelightState();
     }
+    shimmerPickupTitle();
   }
 
   function closeDrawer() {
@@ -581,6 +602,22 @@
 
   function isMobile() {
     return window.matchMedia('(max-width: 767px)').matches;
+  }
+
+  function shimmerPickupTitle() {
+    if (cdPickup.style.display === 'none') return;
+    const title = drawer.querySelector('.cd-pickup-title');
+    if (!title) return;
+    // Reset any in-progress shimmer so re-opens always play from the start
+    title.classList.remove('cd-pickup-shimmer');
+    void title.offsetWidth; // force reflow to restart animation
+    // Delay start until after the 300ms drawer slide-in transition
+    setTimeout(function () {
+      title.classList.add('cd-pickup-shimmer');
+      title.addEventListener('animationend', function () {
+        title.classList.remove('cd-pickup-shimmer');
+      }, { once: true });
+    }, 350);
   }
 
   function openPicker() {
